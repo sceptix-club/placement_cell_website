@@ -1,11 +1,17 @@
 const express = require('express')
 const app = express();
-let PORT = process.env.PORT||3000
+require('dotenv').config()
+const bodyParser = require('body-parser')
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+let PORT = process.env.PORT || 3000
+const placementUpdate = require('./routes/routes')
 
-app.get("/", (req, res) => {
-    res.send("Hello World!")
-})
+
+app.use('/api/placement', placementUpdate)
+
+
 
 app.listen(PORT, () => {
-    console.log("Server is running in port 3000")
+    console.log(`Server is running in port ${PORT}`)
 })
