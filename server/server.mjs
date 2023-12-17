@@ -1,14 +1,19 @@
-const express = require('express')
+import express from 'express';
 const app = express();
-require('dotenv').config()
-const bodyParser = require('body-parser')
+import 'dotenv/config'
+import bodyParser from 'body-parser';
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 let PORT = process.env.PORT || 3000
-const placementUpdate = require('./routes/palcement_routes')
+import placementUpdate from './routes/palcement_routes.mjs'
 
 
 app.use('/api/placement', placementUpdate)
+
+
+app.get('/', (req, res) => {
+    
+})
 
 
 
