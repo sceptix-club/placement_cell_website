@@ -4,11 +4,11 @@ import Link from 'next/link'
 const login = () => {
   return (
     <>
-      <h1>Placement cell website</h1>
-      <div className="flex items-center  justify-center h-screen bg-gradient-to-r from-green-700 to-green-400">
+
+      <div className="flex items-center  justify-center h-screen bg-gradient-radial bg-background-clr">
 
 
-        <div className="max-w-md w-full py-10 px-10 bg-white rounded-lg overflow-hidden shadow-md hover:shadow-xl">
+        <div className="max-w-md w-full py-4 px-10 bg-white rounded-lg overflow-hidden shadow-md hover:shadow-xl">
           <div className="px-6 py-8">
 
             <div className="font-bold text-2xl mb-5 font-serif text-gray-700 text-center "> Login to your account</div>
@@ -20,25 +20,25 @@ const login = () => {
                 <input
                   type="text"
                   id="username"
-                  className="w-full  p-1 border rounded-md"
+                  className="w-full  p-2 border rounded-md text-sm"
                   placeholder="Enter your username"
                 />
               </div>
-              <div className="mb-4">
-                <label htmlFor="password" className="block text-gray-700 text-sm  mb-2">
-                  Password<Link href="/forgot" className="text-green-500 font-normal px-10">Forgot password?</Link>
+              <div className="flexmb-4">
+                <label htmlFor="password" className="flex  block text-gray-700 text-sm  mb-2">
+                  Password<Link href="/forgot" className="text-green-500 font-normal mr-8 px-10">Forgot password?</Link>
                 </label>
 
                 <input
                   type="password"
                   id="password"
-                  className="w-full p-1 border rounded-md"
+                  className="w-full p-2 border rounded-md text-sm"
                   placeholder="Enter your password"
 
                 />
 
               </div>
-              <div className="flex items-center justify-between">
+              <div className="flex items-center py-3 justify-between">
                 <button
                   type="submit"
                   className="bg-green-700 py-2 text-white w-full rounded-md hover:bg-green-700 transition-all"
