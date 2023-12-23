@@ -1,62 +1,41 @@
+
 import React from "react";
 import Link from 'next/link'
 
 const login = () => {
+
+
+
   return (
     <>
 
 
-      <div className="flex items-center  justify-center h-screen bg-gradient-radial bg-background-clr">
 
 
-        <div className="max-w-md w-full py-4 px-10 bg-white rounded-lg overflow-hidden shadow-md hover:shadow-xl">
-          <div className="px-6 py-8">
 
-            <div className="font-bold text-2xl mb-5 font-serif text-gray-700 text-center "> Login to your account</div>
-            <form>
-              <div className="mb-4">
-                <label htmlFor="username" className="block text-gray-700 text-sm  mb-2">
-                  Email
-                </label>
-                <input
-                  type="text"
-                  id="username"
-                  className="w-full  p-2 border rounded-md text-sm"
-                  placeholder="Enter your username"
-                />
-              </div>
-              <div className="mb-4">
-                <label htmlFor="password" className="flex justify-between mr-2  block text-gray-700 text-sm  mb-2">
-                  Password
-                  <Link href="/forgot" className="text-green-500 font-normal mr-8 px-10">Forgot password?</Link>
-                </label>
 
-                <input
-                  type="password"
-                  id="password"
-                  className="w-full p-2 border rounded-md text-sm"
-                  placeholder="Enter your password"
+      <div className="flex items-center justify-center h-screen">
+        <div className="bg-white p-10 rounded shadow-md w-96">
+          <h2 className="text-2xl font-semibold mb-6  text-black text-center">Login to your account</h2>
 
-                />
-
-              </div>
-              <div className="flex items-center py-3 justify-between">
-                <button
-                  type="submit"
-                  className="bg-green-700 py-2 text-white w-full rounded-md hover:bg-green-700 transition-all hover:shadow-xl"
-                >
-                  Login
-                </button>
-
-              </div>
-              <div className="flex px-9 text-sm text-black py-3">
-
-                <Link href="/Mentor" className="text-green-500 font-normal px-14">Sign in as a Mentor</Link>
-              </div>
-            </form>
+          <div className="mb-4">
+            <label htmlFor="email" className="block text-gray-600 text-sm font-medium mb-2">Email</label>
+            <input type="email" id="email" className="w-full border rounded py-2 px-3" placeholder="Enter your email" />
           </div>
+
+          <div className="mb-4 relative">
+            <label htmlFor="password" className="block text-gray-600 text-sm font-medium mb-2">Password</label>
+            <input type="password" id="password" className="w-full border rounded py-2 px-3" placeholder="Enter your password" />
+            <Link href="/forgot" className="text-green-500 text-sm absolute top-0 right-0 mt-1 mr-1 ">Forgot Password?</Link>
+          </div>
+
+          <button className="bg-green-700 text-white py-2 px-4 rounded w-full mb-4" >Login</button>
+
+          <p className="text-center text-gray-600 text-sm"><Link href="/mentor" className="text-green-500">Sign in as a Mentor</Link></p>
         </div>
       </div>
+
+
 
 
     </>
