@@ -1,6 +1,6 @@
 "use client";
-import React, { useState } from 'react';
-import Image from '/public/testimg.png'; 
+import React, { useState } from 'react'; 
+import Image from "next/image";
 
 const UserName="Vyasa";
 const LoggedIn=true;
@@ -9,11 +9,15 @@ const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div className="flex justify-between lg:h-38 w-full items-center p-4 bg-transparent-500 text-white ">
-      <h1 className="pl-2 font-serif lg:text-2xl text-2xl font-bold text-white">PLACEMENT_WEBSITE</h1>
+    <div className="flex justify-between lg:h-38 w-full items-center p-4 bg-transparent-500 text-white font-inter">
+      <h1 className="pl-2 lg:text-2xl text-2xl font-bold text-white ">PLACEMENT_WEBSITE</h1>
       <div className="relative pr-3">
-        <img 
-          src={Image} alt="." className="h-6 cursor-pointer" onClick={() => setIsOpen(!isOpen)}
+        <Image
+              src="/testimg.png"
+              alt="."
+              width={100}
+              height={24}
+              priority className="w-12 h-12 rounded-full object-cover dark:invert cursor-pointer" onClick={() => setIsOpen(!isOpen)}
         />
          {isOpen && ( 
           <>
@@ -28,8 +32,8 @@ const Header = () => {
       ) : (
         <>
           <div className="absolute right-0 mt-2 w-48 h-30  bg-white rounded-md overflow-hidden shadow-xl z-10">
-          <p className='text-3xl text-black  font-bold text-center py-4'>Hello</p>
-          <a href="#" className=" text-center block px-4 py-2 text-xl text-gray-700 hover:bg-blue-500 hover:text-white">Log in</a>
+          <p className='text-3xl text-black  font-bold text-center py-3'>Hello</p>
+          <a href="#" className=" text-center block px-4 py-3 text-xl text-gray-700 hover:bg-blue-500 hover:text-white">Log in</a>
           </div>
         </>
       )}
