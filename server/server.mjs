@@ -9,7 +9,7 @@ import placementUpdate from "./routes/palcement_routes.mjs";
 import getdrives from "./routes/getdrives.mjs";
 
 app.use("/api/placement", placementUpdate);
-app.use("/api/getdrives", getdrives);
+app.use("/api/drives", getdrives);
 
 app.listen(PORT, () => {
     console.log(`Server is running in port ${PORT}`);
