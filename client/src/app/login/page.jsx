@@ -1,8 +1,18 @@
-
-import React from "react";
+'use client'
+import React, { useState } from "react";
 import Link from 'next/link'
 
 const login = () => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  const handleLogin = (e) => {
+    e.preventDefault();
+
+    // Add your authentication logic here (e.g., connecting to a backend)
+    console.log('Logging in with:', { email, password });
+  };
+
 
 
 
@@ -16,26 +26,30 @@ const login = () => {
 
 
 
-      <div className="flex items-center justify-center h-screen font-sans ">
+
+
+      <div className="flex items-center justify-center h-screen font-sans bg-gradient-to-r from-[#199252]  to-[#199252] ">
         <div className="bg-white p-10 rounded shadow-md w-96 hover-shadow">
           <h2 className="text-2xl font-semibold mb-6  text-black text-center">Login to your account</h2>
 
           <div className="mb-4">
-            <label htmlFor="email" className="block text-gray-600 text-sm font-medium mb-2">Email</label>
-            <input type="email" id="email" className="w-full border rounded py-2 px-3 text-sm" placeholder="Enter your email" />
+            <label htmlFor="email" className="block text-gray-600 text-sm font-bold mb-2">Email</label>
+            <input type="email" id="email" className="w-full border-2 border-black rounded py-2 px-3 text-sm text-black " value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Enter your email" />
           </div>
 
           <div className="mb-4 relative">
-            <label htmlFor="password" className="block text-gray-600 text-sm font-medium mb-2">Password</label>
-            <input type="password" id="password" className="w-full border rounded py-2 px-3 text-sm" placeholder="Enter your password" />
-            <Link href="/forgot" className="text-green-500 text-sm absolute top-0 right-0 mt-1 mr-1  ">Forgot Password?</Link>
+            <label htmlFor="password" className="block text-gray-600 text-sm font-bold mb-2">Password</label>
+            <input type="password" id="password" className="w-full  border-2 border-black rounded py-2 px-3 text-sm text-black" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Enter your password" />
+            <Link href="/forgot" className="text-green-500 text-sm absolute top-0 right-0 mt-1 mr-1 font-bold  ">Forgot Password?</Link>
           </div>
 
-          <button className="bg-green-700 text-white py-2 px-4 rounded w-full mb-4" >Login</button>
+          <button type="submit" className=" text-white py-2 px-4 rounded w-full mb-4 bg-gradient-to-r from-[#199252] to-[#199252] " onClick={handleLogin}>Login</button>
 
-          <p className="text-center text-gray-600 text-sm"><Link href="/mentor" className="text-green-500">Sign in as a Mentor</Link></p>
+          <p className="text-center text-gray-600 text-sm"><Link href="/mentor" className="text-green-500 font-bold" >Sign in as a Mentor</Link></p>
+
         </div>
       </div>
+
 
 
 
