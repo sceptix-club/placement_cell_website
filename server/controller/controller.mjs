@@ -4,6 +4,8 @@ import "dotenv/config";
 import bodyParse from "body-parser";
 import Jwt from "jsonwebtoken";
 import fs from "fs";
+import cookieParser from "cookie-parser";
+app.use(cookieParser())
 
 // app.use(bodyParser.urlencoded({ extended: true }));
 // app.use(bodyParser.json());
