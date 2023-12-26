@@ -1,7 +1,7 @@
 import  Jwt  from "jsonwebtoken";
 
 
-const verifyJwtToken = (req, res, next) => {
+export const verifyManagerJwtToken = (req, res, next) => {
     let authHeader = req.headers.authorization;
     if (authHeader == undefined) {
         res.status(401).send({error:"no token provided"})
@@ -11,14 +11,70 @@ const verifyJwtToken = (req, res, next) => {
         let token = authHeader && authHeader.split(" ")[1]
         Jwt.verify(token, process.env.MANAGER_SECRET_KEY, (err, decoded) => {
             if (err) {
-                res.status(401).send({error:"Invalid token"})
+                res.status(401).send({ error: "Invalid token" })
+                return false
             }
             else { 
                 next()
+                return true
             }
             
         })
         
     }
 }
-export default verifyJwtToken
+
+export const verifyMentorJwtToken = (req,res,next) => {
+    let authHeader = req.headers.authorization;
+    if (authHeader == undefined) {
+        res.status(401).send({error:"no token provided"})
+    }
+    else {
+        
+        let token = authHeader && authHeader.split(" ")[1]
+        Jwt.verify(token, process.env.MENTOR_SECRET_KEY, (err, decoded) => {
+            if (err) {
+                res.status(401).send({ error: "Invalid token" })
+                return false
+            }
+            else { 
+                next()
+                return true
+            }
+            
+        })
+        
+    }
+    
+}
+
+export const verifyStudentJwtToken = (req,res,next) => {
+    let authHeader = req.headers.authorization;
+    if (authHeader == undefined) {
+        res.status(401).send({error:"no token provided"})
+    }
+    else {
+        
+        let token = authHeader && authHeader.split(" ")[1]
+        Jwt.verify(token, process.env.STUDENT_SECRET_KEY, (err, decoded) => {
+            if (err) {
+                res.status(401).send({ error: "Invalid token" })
+                return false
+            }
+            else { 
+                next()
+                return true
+            }
+            
+        })
+        
+    }
+    
+}
+
+
+    
+
+
+
+
