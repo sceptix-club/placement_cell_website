@@ -15,7 +15,7 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body suppressHydrationWarning={true} className={inter.className}>
         <Header />
-        {children}
+        <div className="min-h-screen bg-background-clr">{children}</div>
         <Footer />
       </body>
     </html>
