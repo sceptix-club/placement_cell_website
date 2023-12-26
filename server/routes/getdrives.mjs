@@ -7,7 +7,7 @@ const router = express.Router()
 import { getDrives } from '../controller/controller.mjs'
 
 
-router.get('/drives', getDrives)
+router.get('/getdrives', getDrives)
 
 
 export default router
