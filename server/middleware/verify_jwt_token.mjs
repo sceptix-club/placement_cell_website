@@ -22,7 +22,7 @@ export const verifyManagerJwtToken = (req, res, next) => {
     }
 }
 
-export const verifyMentorJwtToken = () => {
+export const verifyMentorJwtToken = (req,res,next) => {
     let authHeader = req.headers.authorization;
     if (authHeader == undefined) {
         res.status(401).send({error:"no token provided"})
@@ -44,7 +44,7 @@ export const verifyMentorJwtToken = () => {
     
 }
 
-export const verifyStudentJwtToken = () => {
+export const verifyStudentJwtToken = (req,res,next) => {
     let authHeader = req.headers.authorization;
     if (authHeader == undefined) {
         res.status(401).send({error:"no token provided"})
@@ -65,3 +65,4 @@ export const verifyStudentJwtToken = () => {
     }
     
 }
+
