@@ -45,7 +45,7 @@ const login = () => {
 
           <button type="submit" className=" text-white py-2 px-4 rounded w-full mb-4 bg-gradient-to-r from-[#199252] to-[#199252] " onClick={handleLogin}>Login</button>
 
-          <p className="text-center text-gray-600 text-sm"><Link href="/mentor" className="text-green-500 font-bold" >Sign in as a Mentor</Link></p>
+
 
         </div>
       </div>
