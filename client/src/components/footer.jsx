@@ -2,14 +2,11 @@ import React from "react";
 
 const Footer = () => {
   return (
-    <footer>
-      <hr className="border-t-2 border-gray-300" />
-      <div className="flex items-center justify-center w-full lg:h-8 px-auto bg-transparent font-inter">
-        <a href="https://www.sjec.ac.in/" target="_blank" rel="noopener noreferrer" className="lg:text-2xl text-xl font-bold text-white text-center w-full hover:underline">ST JOSEPH ENGINEERING COLLEGE</a>
-      </div>
-      <div className="flex justify-between px-4 py-2 bg-transparent font-inter">
-        <p className="lg:pl-4 pl-2 text-white text-xs">&#169; 2023 All rights reserved.</p>
-        <p className="lg:pr-4 pl-2 text-white text-xs">Powered by Sceptix</p>
+    <footer className="flex justify-center">
+      <div className="flex justify-between items-center px-2 bg-primary-card font-inter lg:3/5 w-5/6 rounded-t-md">
+        <p className=" text-role-text text-xs">&#169; 2023 All rights reserved.</p>
+        <a href="https://www.sjec.ac.in/" target="_blank" rel="noopener noreferrer" className="lg:text-2xl text-xl  text-role-text text-center hover:text-white">SJEC</a>
+        <p className="lg:pr-4 pl-2 text-role-text text-xs">Powered by <a href="https://sceptix-website.vercel.app/" target="_blank" rel="noopener noreferrer" className="text-role-text hover:text-white">Sceptix</a></p>
       </div>
     </footer>
   );
