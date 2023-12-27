@@ -15,8 +15,11 @@ module.exports = {
       colors: {
         "background-clr": "#222222",
         "primary-card": "#393939",
+        "secondary-card": "#656565",
+        "tertiary-card": "#8b8b8b",
         "main-heading": "#FFFFFF",
         "role-text": "#909090",
+        "role-text-2": "#d8d8d8",
         "role-background": "#D9D9D9",
         "divider-color": "#D9D9D9",
         "card-hover": "#6E6E6E",
@@ -25,4 +28,4 @@ module.exports = {
     },
   },
   plugins: [],
-};
+}
