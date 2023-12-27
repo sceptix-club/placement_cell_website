@@ -11,10 +11,12 @@ export const verifyManagerJwtToken = (req, res, next) => {
         let token = authHeader && authHeader.split(" ")[1]
         Jwt.verify(token, process.env.MANAGER_SECRET_KEY, (err, decoded) => {
             if (err) {
-                res.status(401).send({error:"Invalid token"})
+                res.status(401).send({ error: "Invalid token" })
+                return false
             }
             else { 
                 next()
+                return true
             }
             
         })
@@ -22,7 +24,7 @@ export const verifyManagerJwtToken = (req, res, next) => {
     }
 }
 
-export const verifyMentorJwtToken = () => {
+export const verifyMentorJwtToken = (req,res,next) => {
     let authHeader = req.headers.authorization;
     if (authHeader == undefined) {
         res.status(401).send({error:"no token provided"})
@@ -32,10 +34,12 @@ export const verifyMentorJwtToken = () => {
         let token = authHeader && authHeader.split(" ")[1]
         Jwt.verify(token, process.env.MENTOR_SECRET_KEY, (err, decoded) => {
             if (err) {
-                res.status(401).send({error:"Invalid token"})
+                res.status(401).send({ error: "Invalid token" })
+                return false
             }
             else { 
                 next()
+                return true
             }
             
         })
@@ -44,7 +48,7 @@ export const verifyMentorJwtToken = () => {
     
 }
 
-export const verifyStudentJwtToken = () => {
+export const verifyStudentJwtToken = (req,res,next) => {
     let authHeader = req.headers.authorization;
     if (authHeader == undefined) {
         res.status(401).send({error:"no token provided"})
@@ -54,10 +58,12 @@ export const verifyStudentJwtToken = () => {
         let token = authHeader && authHeader.split(" ")[1]
         Jwt.verify(token, process.env.STUDENT_SECRET_KEY, (err, decoded) => {
             if (err) {
-                res.status(401).send({error:"Invalid token"})
+                res.status(401).send({ error: "Invalid token" })
+                return false
             }
             else { 
                 next()
+                return true
             }
             
         })
@@ -65,3 +71,10 @@ export const verifyStudentJwtToken = () => {
     }
     
 }
+
+
+    
+
+
+
+
