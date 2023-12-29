@@ -2,8 +2,8 @@ import React from "react"
 
 const RolesCard = ({ props }) => {
   return (
-    <section className="flex flex-col mt-5 text-base">
-      <h2 className="text-lg text-role-text">{props.role}</h2>
+    <section className="flex flex-col mt-6 mb-3 text-base">
+      <h2 className="text-2xl">{props.role}</h2>
       <div className="relative bg-secondary-card rounded-md py-6 px-6 leading-tight">
         {/* this is the description */}
         <p className="mb-5">{props.roleDescription}</p>
