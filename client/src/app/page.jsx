@@ -25,45 +25,49 @@ const Home = () => {
     <>
       <div className="flex justify-center items-center flex-col">
         {" "}
+        {/* Added flex-col */}
         <section className="w-5/6">
           {" "}
-          <h2 className="text-4xl font-bold">Ongoing</h2>{" "}
-          <div className="flex justify-center flex-wrap">
-            {" "}
-            {cardData.map((card, index) => (
-              <div
-                key={index}
-                className="m-4 flex flex-col border border-gray-300 bg-gray-800 rounded-lg p-4 w-full sm:w-screen h-48"
-              >
-                <h3 className="text-3xl font-bold capitalize">{card.title}</h3>{" "}
-                <p className="text-right text-green-500">
-                  {calculateTimeDifference(currentDateTime)}
-                </p>{" "}
-                <p className="text-right text-gray-400 mt-2">{currentDate}</p>{" "}
-                <p>{card.content}</p>
-              </div>
-            ))}
+          {/* Increased width to 83.33% */}
+          <h2>Ongoing</h2>
+          {/* Add your ongoing section content here */}
+          <div className="flex justify-center">
+            <div className="m-4 flex flex-col border border-gray-300 bg-gray-800 rounded-lg p-4 w-full sm:w-screen h-48">
+              {" "}
+              {/* Changed width to full */}
+              <h3 className="text-lg font-bold">hp Card 1</h3>
+              <p>Content for hp Card 1</p>
+            </div>
+          </div>
+          <div className="flex justify-center">
+            <div className="m-4 flex flex-col border border-gray-300 bg-gray-800 rounded-lg p-4 w-full sm:w-screen h-48">
+              {" "}
+              {/* Changed width to full */}
+              <h3 className="text-lg font-bold">hp Card 1</h3>
+              <p>Content for hp Card 1</p>
+            </div>
           </div>
         </section>
-        <hr className="my-8" />
         <section className="w-5/6">
           {" "}
-          <h2 className="text-4xl font-bold">Upcoming</h2>{" "}
-          <div className="flex justify-center flex-wrap">
-            {" "}
-            {cardData.map((card, index) => (
-              <div
-                key={index}
-                className="m-4 flex flex-col border border-gray-300 bg-gray-800 rounded-lg p-4 w-full sm:w-screen h-48"
-              >
-                <h3 className="text-3xl font-bold capitalize">{card.title}</h3>{" "}
-                <p className="text-right text-green-500">
-                  {calculateTimeDifference(currentDateTime)}
-                </p>{" "}
-                <p className="text-right text-gray-400 mt-2">{currentDate}</p>{" "}
-                <p>{card.content}</p>
-              </div>
-            ))}
+          {/* Increased width to 83.33% */}
+          <h2>Upcoming</h2>
+          {/* Add your ongoing section content here */}
+          <div className="flex justify-center">
+            <div className="m-4 flex flex-col border border-gray-300 bg-gray-800 rounded-lg p-4 w-full sm:w-screen h-48">
+              {" "}
+              {/* Changed width to full */}
+              <h3 className="text-lg font-bold">hp Card 1</h3>
+              <p>Content for hp Card 1</p>
+            </div>
+          </div>
+          <div className="flex justify-center">
+            <div className="m-4 flex flex-col border border-gray-300 bg-gray-800 rounded-lg p-4 w-full sm:w-screen h-48">
+              {" "}
+              {/* Changed width to full */}
+              <h3 className="text-lg font-bold">hp Card 1</h3>
+              <p>Content for hp Card 1</p>
+            </div>
           </div>
         </section>
       </div>
