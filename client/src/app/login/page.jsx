@@ -69,7 +69,7 @@ const login = () => {
             <button
               type="button"
               onClick={togglePasswordVisibility}
-              className="absolute top-1/2 right-3 transform -translate-y-1/2"
+              className="absolute top-3/4 right-3 transform -translate-y-1/2"
             >
               {showPassword ? <FaRegEye className="h-6 w-6 text-gray-500" /> : <FaEyeSlash className="h-6 w-6 text-gray-500" />}
             </button>
