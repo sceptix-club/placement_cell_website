@@ -53,7 +53,7 @@ const login = () => {
 
 
 
-      <div className="flex items-center justify-center h-screen font-sans bg-gradient-to-r from-[#199252]  to-[#199252] ">
+      <div className="flex items-center justify-center h-screen font-sans bg-gradient-to-r from-[#222222]  to-[#222222] ">
         <div className="bg-white p-10 rounded shadow-md w-96 hover-shadow">
           <h2 className="text-2xl font-semibold mb-6  text-black text-center">Login to your account</h2>
 
@@ -77,7 +77,7 @@ const login = () => {
           </div>
 
           <button type="submit" className=" text-white py-2 px-4 rounded w-full mb-4 bg-gradient-to-r from-[#199252] to-[#199252] " onClick={handleLogin}>Login</button>
-          {errorMessage && <p className="text-red-500 mb-4">{errorMessage}</p>}
+          {errorMessage && <p className="text-red-500 mb-4 text-center">{errorMessage}</p>}
 
 
 
