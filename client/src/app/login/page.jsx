@@ -1,11 +1,14 @@
 'use client'
 import React, { useState } from "react";
+import { FaRegEye, FaEyeSlash } from "react-icons/fa";
 import Link from 'next/link'
+
 
 const login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleLogin = () => {
     // Validate username and password
@@ -26,6 +29,9 @@ const login = () => {
     if (e.key === 'Enter') {
       handleLogin();
     }
+  };
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
   };
 
   // Add your authentication logic here (e.g., connecting to a backend)
@@ -59,7 +65,14 @@ const login = () => {
 
           <div className="mb-4 relative">
             <label htmlFor="password" className="block text-gray-600 text-sm font-bold mb-2">Password</label>
-            <input type="password" id="password" className="w-full  border-2 border-black rounded py-2 px-3 text-sm text-black" onKeyPress={handleKeyPress} value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Enter your password" />
+            <input type={showPassword ? 'text' : 'password'} id="password" className="w-full  border-2 border-black rounded py-2 px-3 text-sm text-black" onKeyPress={handleKeyPress} value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Enter your password" />
+            <button
+              type="button"
+              onClick={togglePasswordVisibility}
+              className="absolute top-1/2 right-3 transform -translate-y-1/2"
+            >
+              {showPassword ? <FaRegEye className="h-6 w-6 text-gray-500" /> : <FaEyeSlash className="h-6 w-6 text-gray-500" />}
+            </button>
             <Link href="/forgot" className="text-green-500 text-sm absolute top-0 right-0 mt-1 mr-1 font-bold  ">Forgot Password?</Link>
           </div>
 
