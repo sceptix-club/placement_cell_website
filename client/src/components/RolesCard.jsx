@@ -8,7 +8,7 @@ const RolesCard = ({ props }) => {
         {/* this is the description */}
         <p className="mb-5">{props.roleDescription}</p>
 
-        <div className="mt-3">
+        <div className="mt-3 flex flex-row">
           <h3 className="">Qualifications:</h3>
           <p className="text-role-text-2 ml-2 font-light">
             {props.qualification}

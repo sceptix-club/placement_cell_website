@@ -17,17 +17,6 @@ const data = [
         serviceAgreement: "2 years",
         location: "Maleshwaram, Bangalore",
       },
-      {
-        role: "Node Developer",
-        roleDescription:
-          "Node Developer is responsible for developing user interface components and implementing them following well-known Node.js workflows (such as Flux or Redux). They should ensure that these components and the overall application are robust and easy to maintain. They coordinate with the rest of the team working on different layers of the infrastructure. Therefore, a commitment to collaborative problem solving, sophisticated design, and quality product is important.",
-        qualification: "B.Tech",
-        cutoff: "7.5 CGPA",
-        ctc: "20 LPA",
-        stipend: "2 LPA",
-        serviceAgreement: "2 years",
-        location: "Ballalbagh, North Korea",
-      },
     ],
   },
   {

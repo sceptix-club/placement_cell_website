@@ -20,7 +20,7 @@ const Header = () => {
   return (
   <header>
     <div className="flex justify-between lg:h-38 w-full items-center p-4 bg-background-clr text-role-text font-inter">
-      <h1 className="pl-2 lg:text-3xl text-2xl font-bold text-main-heading pl-5">PLACEMENT_WEBSITE</h1>
+      <h1 className="pl-2 lg:text-3xl text-2xl font-semibold text-main-heading pl-5">PLACEMENT_WEBSITE</h1>
       <div className="relative pr-3 ">
           <>
           { PathName === '/login'?

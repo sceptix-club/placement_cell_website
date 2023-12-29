@@ -11,13 +11,13 @@ module.exports = {
       fontFamily: {
         inter: ["Inter", "sans-serif"],
       },
-/*       fontWeight: {
+      fontWeight: {
         light: 300,
         normal: 400,
         medium: 500,
         semibold: 600,
         bold: 700,
-      }, */
+      },
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
         "gradient-conic":
