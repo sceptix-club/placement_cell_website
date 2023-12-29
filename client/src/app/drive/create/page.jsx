@@ -1,9 +1,11 @@
-import React from 'react'
+import React from "react"
 
-const page = () => {
+const create = () => {
   return (
-    <div>page</div>
+    <>
+      <div className="flex justify-center items-center">Create page </div>
+    </>
   )
 }
 
-export default page
+export default create
