@@ -13,7 +13,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body suppressHydrationWarning={true} className={inter.className}>
+      <body className={inter.className}>
         <Header />
         <div className="min-h-screen bg-background-clr">{children}</div>
         <Footer />
