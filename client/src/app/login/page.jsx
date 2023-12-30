@@ -11,13 +11,13 @@ const login = () => {
   const [showPassword, setShowPassword] = useState(false);
 
   const handleLogin = () => {
-    // Validate username and password
-    const emailRegex = /@sjec\.ac\.in/; // Example regex for alphanumeric usernames
+
+    const emailRegex = /@sjec\.ac\.in/;
 
     if (email.trim() === '' || password.trim() === '') {
-      setErrorMessage('Invalid Credentials: Username and password cannot be empty.');
+      setErrorMessage('Invalid Credentials: Email and password cannot be empty.');
     } else if (!emailRegex.test(email)) {
-      setErrorMessage('Invalid Credentials: Username must contain only letters, numbers, and underscores.');
+      setErrorMessage('Invalid Credentials: Entered email is incorrect.');
     } else {
       // Perform login logic here
       setErrorMessage(''); // Clear error message if login is successful
@@ -34,9 +34,7 @@ const login = () => {
     setShowPassword(!showPassword);
   };
 
-  // Add your authentication logic here (e.g., connecting to a backend)
-  //   console.log('Logging in with:', { email, password });
-  // };
+
 
 
 
