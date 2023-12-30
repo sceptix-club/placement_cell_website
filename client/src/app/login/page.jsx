@@ -12,7 +12,7 @@ const login = () => {
 
   const handleLogin = () => {
     // Validate username and password
-    const emailRegex = /^[a-zA-Z0-9_]+$/; // Example regex for alphanumeric usernames
+    const emailRegex = /@sjec\.ac\.in/; // Example regex for alphanumeric usernames
 
     if (email.trim() === '' || password.trim() === '') {
       setErrorMessage('Invalid Credentials: Username and password cannot be empty.');
