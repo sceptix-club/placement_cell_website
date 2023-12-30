@@ -71,7 +71,7 @@ const login = () => {
             >
               {showPassword ? <FaRegEye className="h-6 w-6 text-gray-500" /> : <FaEyeSlash className="h-6 w-6 text-gray-500" />}
             </button>
-            <Link href="/forgot" className="text-green-500 text-sm absolute top-0 right-0 mt-1 mr-1 font-bold  ">Forgot Password?</Link>
+            <Link href="/forgot" className="text-green-500 text-sm absolute top-0 right-0 mt-1 mr-1  ">Forgot Password?</Link>
           </div>
 
           <button type="submit" className=" text-white py-2 px-4 rounded w-full mb-4 bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-600 focus:ring-opacity-50 " onClick={handleLogin}>Login</button>
