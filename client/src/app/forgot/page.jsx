@@ -32,7 +32,7 @@ const OtpPage = () => {
 
                 <button
                     type="button"
-                    className={`bg-blue-500 text-white py-2 px-4 rounded w-full mb-4 hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 ${otpSent ? 'cursor-not-allowed opacity-50' : ''
+                    className={`bg-green-700 text-white py-2 px-4 rounded w-full mb-4 hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50 ${otpSent ? 'cursor-not-allowed opacity-50' : ''
                         }`}
                     onClick={handleSendOtp}
                     disabled={otpSent}
@@ -57,7 +57,7 @@ const OtpPage = () => {
                 {otpSent && (
                     <button
                         type="button"
-                        className="bg-green-500 text-white py-2 px-4 rounded w-full mb-4 hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50"
+                        className="bg-green-700 text-white py-2 px-4 rounded w-full mb-4 hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50"
                         onClick={handleSendOtp}
                     >
                         Verify OTP
