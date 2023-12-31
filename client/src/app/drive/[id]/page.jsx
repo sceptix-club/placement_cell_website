@@ -26,7 +26,7 @@ const driveinfo = () => {
         <div className="text-md lg:text-xl py-2 leading-tight lg:leading-tight font-medium">
           <p>{dataAll.description}</p>
         </div>
-        <div className="flex flex-row item-center mt-5">
+        <div className="flex flex-row item-center mt-2 lg:mt-5">
           <h3 className="text-sm lg:text-lg font-medium">Roles:&nbsp;</h3>
           {dataAll.roles.map((role) => {
             return (

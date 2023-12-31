@@ -11,30 +11,28 @@ const RolesCard = ({ props }) => {
         </p>
 
         <div className="mt-3 flex flex-row">
-          <h3 className="">Qualifications:</h3>
-          <p className="text-role-text-2 ml-2 font-light">
-            {props.qualification}
-          </p>
+          <h3 className="">Qualifications:&nbsp;</h3>
+          <p className="text-role-text-2 ">{props.qualification}</p>
         </div>
         <div className="mt-3 flex flex-row">
           <h3 className="">Cutoff:&nbsp;</h3>
-          <p className="text-role-text-2 ml-2">{props.cutoff}</p>
+          <p className="text-role-text-2">{props.cutoff}</p>
         </div>
         <div className="mt-3 flex flex-row">
           <h3 className="">CTC:&nbsp;</h3>
-          <p className="text-role-text-2 ml-2">{props.ctc}</p>
+          <p className="text-role-text-2">{props.ctc}</p>
         </div>
         <div className="mt-3 flex flex-row">
           <h3 className="">Stipend:&nbsp;</h3>
-          <p className="text-role-text-2 ml-2">{props.stipend}</p>
+          <p className="text-role-text-2">{props.stipend}</p>
         </div>
         <div className="mt-3 flex flex-row items-center">
           <h3 className="">Service Agreement:&nbsp;</h3>
-          <p className="text-role-text-2 ml-2">{props.serviceAgreement}</p>
+          <p className="text-role-text-2">{props.serviceAgreement}</p>
         </div>
         <div className="mt-3 flex flex-row">
           <h3 className="">Location:&nbsp;</h3>
-          <p className="text-role-text-2 ml-2 ">{props.location}</p>
+          <p className="text-role-text-2">{props.location}</p>
         </div>
       </div>
     </section>
