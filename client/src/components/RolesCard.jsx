@@ -2,11 +2,13 @@ import React from "react"
 
 const RolesCard = ({ props }) => {
   return (
-    <section className="flex flex-col mt-6 mb-3 text-base font-medium">
-      <h2 className="text-2xl">{props.role}</h2>
-      <div className="relative bg-secondary-card rounded-md py-6 px-6 leading-tight">
+    <section className="flex flex-col mt-6 mb-3 font-medium text-sm lg:text-base">
+      <h2 className="text-xl lg:text-2xl">{props.role}</h2>
+      <div className="bg-secondary-card rounded-md p-3 sm:p-6 lg:p-6">
         {/* this is the description */}
-        <p className="mb-5">{props.roleDescription}</p>
+        <p className="mb-5  leading-tight lg:leading-tight">
+          {props.roleDescription}
+        </p>
 
         <div className="mt-3 flex flex-row">
           <h3 className="">Qualifications:</h3>

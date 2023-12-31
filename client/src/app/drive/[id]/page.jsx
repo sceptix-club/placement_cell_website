@@ -15,22 +15,24 @@ const driveinfo = () => {
   }
 
   return (
-    <div className="py-10 flex items-center justify-center h-full  bg-background-clr font-inter text-xl font-normal">
-      <section className="flex flex-col lg:p-16 p-4 lg:w-3/5 w-10/12 border-white h-auto rounded-md bg-primary-card">
-        <h2 className="text-2xl text-role-text font-semibold">
+    <div className="py-10 flex items-center justify-center h-full  bg-background-clr font-inter font-normal">
+      <section className="flex flex-col p-4 sm:p-8 lg:p-16  w-11/12 sm:w-10/12 md:w-2/3 lg:w-3/5 border-white h-auto rounded-md bg-primary-card">
+        <h2 className="text-lg lg:text-2xl text-role-text font-semibold">
           {dataAll.placementName}
         </h2>
-        <h2 className="text-4xl mb-1 font-semibold">{dataAll.companyName}</h2>
-        <div className=" py-2 leading-tight font-medium">
+        <h2 className="text-2xl lg:text-4xl mb-1 font-semibold">
+          {dataAll.companyName}
+        </h2>
+        <div className="text-md lg:text-xl py-2 leading-tight lg:leading-tight font-medium">
           <p>{dataAll.description}</p>
         </div>
         <div className="flex flex-row item-center mt-5">
-          <h3 className="text-lg font-medium">Roles:&nbsp;</h3>
+          <h3 className="text-sm lg:text-lg font-medium">Roles:&nbsp;</h3>
           {dataAll.roles.map((role) => {
             return (
               <p
                 key={role.subID}
-                className="bg-secondary-card text-role-text-2 rounded-md px-2 ml-2 text-base font-medium"
+                className="bg-secondary-card text-role-text-2 rounded-md px-2 ml-2 text-sm lg:text-lg font-medium"
               >
                 {role.role}
               </p>
