@@ -1,7 +1,7 @@
 'use client'
 import React, { useState } from 'react';
 
-const OtpPage = () => {
+const Forgot = () => {
     const [email, setEmail] = useState('');
     const [otpSent, setOtpSent] = useState(false);
     const [otp, setOtp] = useState('');
@@ -68,4 +68,4 @@ const OtpPage = () => {
     );
 };
 
-export default OtpPage;
+export default Forgot;
