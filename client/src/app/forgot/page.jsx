@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 const OtpPage = () => {
     const [email, setEmail] = useState('');
     const [otpSent, setOtpSent] = useState(false);
+    const [otp, setOtp] = useState('');
 
     const handleSendOtp = () => {
 
@@ -11,7 +12,7 @@ const OtpPage = () => {
     };
 
     return (
-        <div className="flex items-center justify-center h-screen bg-gray-100">
+        <div className="flex items-center justify-center h-screen bg-[#222222]">
             <div className="bg-white p-8 rounded shadow-md max-w-md w-full">
                 <h2 className="text-2xl font-semibold mb-6 text-center text-black">Account Details</h2>
 
@@ -24,7 +25,7 @@ const OtpPage = () => {
                         className="w-full border-2 text-black border-gray-300 rounded py-2 px-3 text-sm"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
-                        placeholder="Enter your email"
+                        placeholder="Enter Your Email"
                     />
                 </div>
 
@@ -40,14 +41,14 @@ const OtpPage = () => {
                 </button>
                 {otpSent && (
                     <div className="mb-4">
-                        <label htmlFor="otp" className="block text-gray-600 text-sm font-bold mb-2">Enter OTP</label>
+                        <label htmlFor="otp" className="block text-gray-600 text-sm font-bold mb-2">Enter 6-Digit OTP Sent To Your Email</label>
                         <input
                             type="text"
                             id="otp"
-                            className="w-full border-2 border-gray-300 rounded py-2 px-3 text-sm"
+                            className=" w-5/12 border-2 border-gray-300 rounded py-2 px-3 text-sm text-black"
                             value={otp}
                             onChange={(e) => setOtp(e.target.value)}
-                            placeholder="Enter OTP"
+
                         />
                     </div>
                 )}
@@ -57,7 +58,7 @@ const OtpPage = () => {
                     <button
                         type="button"
                         className="bg-green-500 text-white py-2 px-4 rounded w-full mb-4 hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50"
-                        onClick={handleVerifyOtp}
+                        onClick={handleSendOtp}
                     >
                         Verify OTP
                     </button>
