@@ -3,12 +3,16 @@
 import RolesCard from "@/components/RolesCard"
 import Data from "../../../../public/data"
 import { usePathname } from "next/navigation"
+import { notFound } from "next/navigation"
 
 const driveinfo = () => {
   const pathName = usePathname()
   const pathNo = pathName.slice("/drive/".length)
-  console.log(pathNo)
   const dataAll = Data.find((item) => item.id === Number(pathNo))
+
+  if (!dataAll) {
+    return notFound()
+  }
 
   return (
     <div className="py-10 flex items-center justify-center h-full  bg-background-clr font-inter text-xl font-normal">
