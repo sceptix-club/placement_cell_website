@@ -8,7 +8,7 @@ const Home = () => {
     <>
       <div className="flex justify-center items-center flex-col bg-background-clr overflow-y-auto">
         <section className="w-2/3">
-          <h1 className="text-3xl font-bold text-white mb-6">Ongoing</h1>
+          <h1 className="text-3xl font-bold text-white mb-6">Ongoingsss</h1>
           {Data.map((placement) => (
             <DriveCard key={placement.id} placement={placement} />
           ))}
