@@ -1,21 +1,21 @@
-"use client"
+"use client";
 
-import RolesCard from "@/components/RolesCard"
-import Data from "../../../../public/data"
-import { usePathname } from "next/navigation"
-import { notFound } from "next/navigation"
+import RolesCard from "@/components/RolesCard";
+import Data from "../../../../public/data";
+import { usePathname } from "next/navigation";
+import { notFound } from "next/navigation";
 
 const driveinfo = () => {
-  const pathName = usePathname()
-  const pathNo = pathName.slice("/drive/".length)
-  const dataAll = Data.find((item) => item.id === Number(pathNo))
+  const pathName = usePathname();
+  const pathNo = pathName.slice("/drive/".length);
+  const dataAll = Data.find((item) => item.id === Number(pathNo));
 
   if (!dataAll) {
-    return notFound()
+    return notFound();
   }
 
   return (
-    <div className="flex items-center justify-center py-10 h-auto bg-background-clr font-inter font-normal">
+    <div className="flex items-center justify-center py-10 mb-10 h-auto bg-background-clr font-inter font-normal">
       <section className="flex flex-col p-5 sm:p-8 lg:p-16  w-11/12 sm:w-10/12 md:w-2/3 lg:w-3/5 border-white h-auto rounded-md bg-primary-card">
         <h2 className="text-lg lg:text-2xl text-role-text font-semibold">
           {dataAll.placementName}
@@ -36,17 +36,17 @@ const driveinfo = () => {
               >
                 {role.role}
               </p>
-            )
+            );
           })}
         </div>
         <hr className=" border-divider-color mt-5" />
 
         {dataAll.roles.map((innerRole) => {
-          return <RolesCard key={innerRole.subID} props={innerRole} />
+          return <RolesCard key={innerRole.subID} props={innerRole} />;
         })}
       </section>
     </div>
-  )
-}
+  );
+};
 
-export default driveinfo
+export default driveinfo;
