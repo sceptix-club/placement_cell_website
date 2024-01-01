@@ -1,5 +1,7 @@
 'use client'
 import React, { useState } from 'react';
+import Link from 'next/link';
+
 
 const Forgot = () => {
     const [email, setEmail] = useState('');
@@ -97,7 +99,9 @@ const Forgot = () => {
 
 
                     >
+
                         {otpSent ? 'Verify OTP' : 'Send OTP'}
+
                     </button>
 
                 )}
