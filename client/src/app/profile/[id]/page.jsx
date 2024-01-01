@@ -6,6 +6,8 @@ import Header from "../../../components/Header";
 import profileData from "../../../../public/profile_data";
 import { usePathname } from "next/navigation"; // Import from next/navigation
 
+
+
 const ProfilePage = () => {
   const pathName = usePathname(); // Use usePathname from next/navigation
   const pathNo = pathName.slice("/profile/".length);
@@ -18,7 +20,7 @@ const ProfilePage = () => {
 
   return (
     <div className="bg-black text-primary-text min-h-screen">
-      <Header />
+    
 
       <div className="flex justify-center items-center mt-10 mx-4">
         <div className="w-1/3 mr-4">
@@ -29,7 +31,7 @@ const ProfilePage = () => {
              
               </div>
               <h2 className="text-2xl font-bold text-center text-main-text">
-                Name: {dataAll.name}
+              {dataAll.name}
               </h2>
             </div>
             <div className="text-left text-main-text">
@@ -45,25 +47,27 @@ const ProfilePage = () => {
           <h2 className="text-2xl mb-4">Academics</h2>
           <div className="bg-background-clr p-8 rounded-lg h-[460px]">
             <div className="flex mb-4 items-center">
-              <div className="w-1/3">
+              <div className="w-2/3">
                 <label className="block text-white">CGPA:</label>
               </div>
-              <div className="w-2/3">
-                <input
-                  type="text"
-                  className="text-white bg-primary-card rounded-md w-full p-2"
-                  defaultValue={dataAll.cgpa}
-                />
-              </div>
+              <div className="flex w-2/3">
+  <input
+    type="text"
+    className="text-white bg-primary-card rounded-md w-full p-2 text-center ml-auto"
+    defaultValue={dataAll.cgpa}
+  />
+</div>
+
+             
             </div>
             <div className="flex mb-4 items-center">
-              <div className="w-1/3">
+              <div className="w-2/3">
                 <label className="block text-white">Active Backlogs:</label>
               </div>
               <div className="w-2/3">
               <input
   type="text"
-  className="text-white bg-primary-card rounded-md w-full p-2"
+  className="text-white bg-primary-card rounded-md w-full p-2 text-center"
   defaultValue={dataAll.activeBacklogs}
 />
 
@@ -73,10 +77,10 @@ const ProfilePage = () => {
            <label className="block text-white">Skills:</label>
 <div className="flex flex-wrap -mx-2">
   {dataAll.skills.map((skill, index) => (
-    <div key={index} className="w-1/3 px-2 mb-4">
+    <div key={index} className="w-1/3 px-2 mb-4 text">
       <input
         type="text"
-        className="text-white bg-primary-card rounded-md w-full p-2"
+        className="text-white bg-primary-card rounded-md w-full p-2 text-center"
         defaultValue={skill}
       />
     </div>
@@ -94,7 +98,7 @@ const ProfilePage = () => {
               <div className="w-2/3">
                 <input
                   type="text"
-                  className="text-white bg-primary-card rounded-md w-full p-2"
+                  className="text-white bg-primary-card rounded-md w-full p-2 text-center"
                   defaultValue={dataAll.resumeUpload}
                 />
               </div>
@@ -107,7 +111,7 @@ const ProfilePage = () => {
               <div className="w-2/3">
                 <input
                   type="text"
-                  className="text-white bg-primary-card rounded-md w-full p-2"
+                  className="text-white bg-primary-card rounded-md w-full p-2 text-center"
                   defaultValue={dataAll.aadhaarUpload}
                 />
               </div>

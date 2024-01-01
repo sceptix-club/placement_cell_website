@@ -21,7 +21,7 @@ const profileData = [
       email: "anyone@example.com",
       cgpa: "9.0",
       activeBacklogs: "0",
-      skills: ["HTML", "CSS", "JavaScript"],
+      skills: ["HTML", "JavaScript"],
       aadhaarUpload: "aadhaar.pdf",
       resumeUpload: "resume.pdf",
     },
