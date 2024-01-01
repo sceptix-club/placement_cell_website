@@ -5,10 +5,30 @@ const Forgot = () => {
     const [email, setEmail] = useState('');
     const [otpSent, setOtpSent] = useState(false);
     const [otp, setOtp] = useState('');
+    const [errorMessage, setErrorMessage] = useState('');
+    const handleLogin = () => {
+
+        const emailRegex = /@sjec\.ac\.in/;
+
+        if (email.trim() === '') {
+            setErrorMessage('Invalid Credentials: Email and password cannot be empty.');
+        } else if (!emailRegex.test(email)) {
+            setErrorMessage('Invalid Credentials: Entered email is incorrect.');
+        } else {
+            // Perform login logic here
+            setErrorMessage(''); // Clear error message if login is successful
+            console.log(`Logging in with username: ${email}`);
+        }
+    };
 
     const handleSendOtp = () => {
 
         setOtpSent(true);
+    };
+    const handleKeyPress = (e) => {
+        if (e.key === 'Enter') {
+            handleLogin();
+        }
     };
 
     return (
@@ -24,10 +44,13 @@ const Forgot = () => {
                         id="email"
                         className="w-full border-2 text-black border-gray-300 rounded py-2 px-3 text-sm"
                         value={email}
+                        onKeyPress={handleKeyPress}
                         onChange={(e) => setEmail(e.target.value)}
                         placeholder="Enter Your Email"
                     />
                 </div>
+                {errorMessage && <p className="text-red-500 mb-4 text-center">{errorMessage}</p>}
+
 
 
                 <button
@@ -58,7 +81,10 @@ const Forgot = () => {
                     <button
                         type="button"
                         className="bg-green-700 text-white py-2 px-4 rounded w-full mb-4 hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50"
-                        onClick={handleSendOtp}
+                        onClick={handleSendOtp || handleKeyPress}
+
+
+
                     >
                         Verify OTP
                     </button>
