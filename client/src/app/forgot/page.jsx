@@ -6,35 +6,38 @@ const Forgot = () => {
     const [otpSent, setOtpSent] = useState(false);
     const [otp, setOtp] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
-    const handleLogin = () => {
-
-        const emailRegex = /@sjec\.ac\.in/;
-
-        if (email.trim() === '') {
-            setErrorMessage('Invalid Credentials: Email cannot be empty.');
-        } else if (!emailRegex.test(email)) {
-            setErrorMessage('Invalid Credentials: Entered email is incorrect.');
-        } else {
-            // Perform login logic here
-            setErrorMessage(''); // Clear error message if login is successful
-            console.log(`Logging in with email: ${email}`);
-        }
-    };
-
+    const emailRegex = /@sjec\.ac\.in/;
     const handleSendOtp = () => {
+        if (email.trim() === '' || !emailRegex.test(email)) {
+            setErrorMessage('Invalid Credentials: Email cannot be empty or incorrect.');
+            return;
+        }
 
+        setErrorMessage('');
         setOtpSent(true);
+        console.log(`OTP Sent to ${email}`);
     };
+
+    const handleVerifyOtp = () => {
+        if (otp.trim() === '' || !/^\d{6}$/.test(otp)) {
+            setErrorMessage('Invalid OTP: Please enter a valid 6-digit OTP.');
+            return;
+        }
+
+        setErrorMessage('');
+        console.log(`Verified OTP: ${otp}`);
+    };
+
     const handleKeyPress = (e) => {
         if (e.key === 'Enter') {
-            handleLogin();
+            otpSent ? handleVerifyOtp() : handleSendOtp();
         }
     };
 
     return (
         <div className="flex items-center justify-center font-sans h-screen bg-[#222222]">
             <div className="bg-white p-8 rounded shadow-md max-w-md w-full">
-                <h2 className="text-2xl font-semibold mb-6 text-center text-black">Account Details</h2>
+                <h2 className="text-2xl font-bold mb-6 text-center text-black">Account Details</h2>
 
                 {/* Email Input */}
                 <div className="mb-4">
@@ -49,7 +52,7 @@ const Forgot = () => {
                         placeholder="Enter Your Email"
                     />
                 </div>
-                {errorMessage && <p className="text-red-500 mb-4 text-center">{errorMessage}</p>}
+
 
 
 
@@ -70,6 +73,7 @@ const Forgot = () => {
                             id="otp"
                             className=" w-5/12 border-2 border-gray-300 rounded py-2 px-3 text-sm text-black"
                             value={otp}
+                            onKeyPress={handleKeyPress}
                             onChange={(e) => setOtp(e.target.value)}
 
                         />
@@ -81,14 +85,16 @@ const Forgot = () => {
                     <button
                         type="button"
                         className="bg-green-700 text-white py-2 px-4 rounded w-full mb-4 hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50"
-                        onClick={handleSendOtp || handleKeyPress}
+                        onClick={otpSent ? handleVerifyOtp : handleSendOtp}
 
 
 
                     >
-                        Verify OTP
+                        {otpSent ? 'Verify OTP' : 'Send OTP'}
                     </button>
+
                 )}
+                {errorMessage && <p className="text-red-500 mb-4 text-center">{errorMessage}</p>}
             </div>
         </div>
     );
