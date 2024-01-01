@@ -8,9 +8,16 @@ const Forgot = () => {
     const [errorMessage, setErrorMessage] = useState('');
     const emailRegex = /@sjec\.ac\.in/;
     const handleSendOtp = () => {
-        if (email.trim() === '' || !emailRegex.test(email)) {
+        if (email.trim() === '') {
             setErrorMessage('Invalid Credentials: Email cannot be empty or incorrect.');
             return;
+        }
+        else if (!emailRegex.test(email)) {
+            setErrorMessage('Invalid Credentials: Entered Email is Incorrect');
+            return;
+
+
+
         }
 
         setErrorMessage('');
@@ -84,7 +91,7 @@ const Forgot = () => {
                 {otpSent && (
                     <button
                         type="button"
-                        className="bg-green-700 text-white py-2 px-4 rounded w-full mb-4 hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50"
+                        className="bg-green-700 text-white py-2 px-4 rounded w-9/12 mb-4 hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50"
                         onClick={otpSent ? handleVerifyOtp : handleSendOtp}
 
 
