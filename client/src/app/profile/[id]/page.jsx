@@ -19,13 +19,13 @@ const ProfilePage = () => {
   }
 
   return (
-    <div className="bg-black text-primary-text min-h-screen">
+    <div className="bg-background-clr text-primary-text min-h-screen">
     
 
       <div className="flex justify-center items-center mt-10 mx-4">
         <div className="w-1/3 mr-4">
           <h2 className="text-2xl mb-4">Personal Details</h2>
-          <div className="bg-background-clr p-8 rounded-lg h-[460px]">
+          <div className="bg-primary-card p-8 rounded-lg h-[460px]">
             <div className="p-8 flex flex-col items-center justify-center">
               <div className="bg-role-background p-0 rounded-lg mb-4 w-1/2 mt-0 m-0 h-[150px] overflow-hidden my-0">
              
@@ -45,7 +45,7 @@ const ProfilePage = () => {
 
         <div className="w-1/3 ml-4">
           <h2 className="text-2xl mb-4">Academics</h2>
-          <div className="bg-background-clr p-8 rounded-lg h-[460px]">
+          <div className="bg-primary-card p-8 rounded-lg h-[460px]">
             <div className="flex mb-4 items-center">
               <div className="w-2/3">
                 <label className="block text-white">CGPA:</label>
@@ -53,8 +53,9 @@ const ProfilePage = () => {
               <div className="flex w-2/3">
   <input
     type="text"
-    className="text-white bg-primary-card rounded-md w-full p-2 text-center ml-auto"
+    className="text-white bg-secondary-card rounded-md w-full p-2 text-center ml-auto h-8"
     defaultValue={dataAll.cgpa}
+    readOnly
   />
 </div>
 
@@ -67,21 +68,23 @@ const ProfilePage = () => {
               <div className="w-2/3">
               <input
   type="text"
-  className="text-white bg-primary-card rounded-md w-full p-2 text-center"
+  className="text-white bg-secondary-card rounded-md w-full p-2 text-center h-8"
   defaultValue={dataAll.activeBacklogs}
+  readOnly
 />
 
               </div>
             </div>
             <hr className="my-4" />
-           <label className="block text-white">Skills:</label>
+           <label className="block text-white mb-4">Skills:</label>
 <div className="flex flex-wrap -mx-2">
   {dataAll.skills.map((skill, index) => (
     <div key={index} className="w-1/3 px-2 mb-4 text">
       <input
         type="text"
-        className="text-white bg-primary-card rounded-md w-full p-2 text-center"
+        className="text-white bg-secondary-card rounded-md w-full p-2 text-center h-8"
         defaultValue={skill}
+        readOnly
       />
     </div>
   ))}
@@ -90,7 +93,7 @@ const ProfilePage = () => {
 
 
             <hr className="my-4" />
-            <label className="block text-white">Documents:</label>
+            <label className="block text-white mb-4">Documents:</label>
             <div className="flex mb-4 items-center">
               <div className="w-1/3">
                 <label className="block text-white ml-8">Resume:</label>
@@ -98,8 +101,9 @@ const ProfilePage = () => {
               <div className="w-2/3">
                 <input
                   type="text"
-                  className="text-white bg-primary-card rounded-md w-full p-2 text-center"
+                  className="text-white bg-secondary-card rounded-md w-full p-2 text-center h-8"
                   defaultValue={dataAll.resumeUpload}
+                  readOnly
                 />
               </div>
             </div>
@@ -111,8 +115,9 @@ const ProfilePage = () => {
               <div className="w-2/3">
                 <input
                   type="text"
-                  className="text-white bg-primary-card rounded-md w-full p-2 text-center"
+                  className="text-white bg-secondary-card rounded-md w-full p-2 text-center h-8"
                   defaultValue={dataAll.aadhaarUpload}
+                  readOnly
                 />
               </div>
             </div>
