@@ -11,13 +11,13 @@ const Forgot = () => {
         const emailRegex = /@sjec\.ac\.in/;
 
         if (email.trim() === '') {
-            setErrorMessage('Invalid Credentials: Email and password cannot be empty.');
+            setErrorMessage('Invalid Credentials: Email cannot be empty.');
         } else if (!emailRegex.test(email)) {
             setErrorMessage('Invalid Credentials: Entered email is incorrect.');
         } else {
             // Perform login logic here
             setErrorMessage(''); // Clear error message if login is successful
-            console.log(`Logging in with username: ${email}`);
+            console.log(`Logging in with email: ${email}`);
         }
     };
 

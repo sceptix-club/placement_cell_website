@@ -21,7 +21,7 @@ const login = () => {
     } else {
       // Perform login logic here
       setErrorMessage(''); // Clear error message if login is successful
-      console.log(`Logging in with username: ${email} and password: ${password}`);
+      console.log(`Logging in with email: ${email} and password: ${password}`);
     }
   };
 
