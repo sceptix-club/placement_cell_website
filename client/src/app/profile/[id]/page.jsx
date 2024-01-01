@@ -1,7 +1,6 @@
 "use client"
 
 import React from "react";
-import Header from "../../../components/Header";
 
 import profileData from "../../../../public/profile_data";
 import { usePathname } from "next/navigation"; // Import from next/navigation
