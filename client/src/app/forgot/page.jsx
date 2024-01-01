@@ -45,7 +45,7 @@ const Forgot = () => {
 
     return (
         <div className="flex items-center justify-center font-sans h-screen bg-[#222222]">
-            <div className="bg-white p-8 rounded shadow-md max-w-md w-full">
+            <div className="bg-white  p-10 rounded shadow-md  w-96">
                 <h2 className="text-2xl font-bold mb-6 text-center text-black">Account Details</h2>
 
                 {/* Email Input */}
@@ -67,48 +67,52 @@ const Forgot = () => {
 
                 <button
                     type="button"
-                    className={`bg-green-700 text-white py-2 px-4 rounded w-full mb-4 hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50 ${otpSent ? 'cursor-not-allowed opacity-50' : ''
+                    className={`bg-green-700 text-white py-2 px-3 w-full justify-center rounded  mb-4 hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50 ${otpSent ? 'cursor-not-allowed opacity-50' : ''
                         }`}
                     onClick={handleSendOtp}
                     disabled={otpSent}
                 >
                     {otpSent ? 'OTP Sent' : 'Send OTP'}
                 </button>
-                {otpSent && (
-                    <div className="mb-4">
-                        <label htmlFor="otp" className="block text-gray-600 text-sm font-bold mb-2">Enter 6-Digit OTP Sent To Your Email</label>
-                        <input
-                            type="text"
-                            id="otp"
-                            className=" w-5/12 border-2 border-gray-300 rounded py-2 px-3 text-sm text-black"
-                            value={otp}
-                            onKeyPress={handleKeyPress}
-                            onChange={(e) => setOtp(e.target.value)}
+                <div className="flex">
+                    {otpSent && (
+                        <div className="mb-4">
+                            <label htmlFor="otp" className="block text-gray-600 text-sm font-bold mb-2">Enter 6-Digit OTP Sent To Your Email</label>
+                            <input
+                                type="text"
+                                id="otp"
+                                className=" w-32 border-2 border-gray-300 rounded py-2 px-3 text-sm text-black"
+                                value={otp}
+                                onKeyPress={handleKeyPress}
+                                onChange={(e) => setOtp(e.target.value)}
 
-                        />
-                    </div>
-                )}
-
-
-                {otpSent && (
-                    <button
-                        type="button"
-                        className="bg-green-700 text-white py-2 px-4 rounded w-9/12 mb-4 hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50"
-                        onClick={otpSent ? handleVerifyOtp : handleSendOtp}
+                            />
+                        </div>
+                    )}
 
 
+                    {otpSent && (
+                        <button
+                            type="button"
+                            className="flex bg-green-700 text-white py-3 px-2 rounded w-10 mb-4 hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50"
+                            onClick={otpSent ? handleVerifyOtp : handleSendOtp}
 
-                    >
 
-                        {otpSent ? 'Verify OTP' : 'Send OTP'}
 
-                    </button>
+                        >
 
-                )}
+                            {otpSent ? 'Verify OTP' : 'Send OTP'}
+
+                        </button>
+
+                    )}
+                </div>
                 {errorMessage && <p className="text-red-500 mb-4 text-center">{errorMessage}</p>}
             </div>
-        </div>
+        </div >
     );
 };
 
 export default Forgot;
+
+
