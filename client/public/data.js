@@ -3,6 +3,7 @@ const data = [
     id: 1,
     placementName: "TCS Campus Placement Drive",
     companyName: "TCS",
+    date: "01-01-2024",
     description:
       "TCS is a multinational company which provides IT services, consulting and business solutions. It is a subsidiary of Tata Group and operates in 149 locations across 46 countries. TCS is the second largest Indian company by market capitalisation.",
     roles: [
@@ -23,6 +24,7 @@ const data = [
     id: 2,
     placementName: "Infosys Campus Placement Drive",
     companyName: "Infosys",
+    date: "10-01-2024",
     description:
       "Infosys is a multinational company which provides IT services, consulting and business solutions. It is a subsidiary of Tata Group and operates in 149 locations across 46 countries. TCS is the second largest Indian company by market capitalisation.",
     roles: [
