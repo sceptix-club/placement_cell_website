@@ -7,6 +7,50 @@ generator client {
 
 datasource db {
   provider  = "postgresql"
-  url       = env("POSTGRES_PRISMA_URL") // uses connection pooling
+  url       = env("POSTGRES_URL") // uses connection pooling
   directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
+}
+
+model User {
+  id       Int       @id @default(autoincrement())
+  name     String
+  email    String    @unique
+  role     role      @default(STUDENT)
+  password String
+  student  student[]
+
+  @@index([name])
+}
+
+model student {
+  id       Int     @id @default(autoincrement())
+  userId   Int     @unique
+  user     User    @relation(fields: [userId], references: [id])
+  usn      String  @unique
+  branch   branch
+  sem      Int     @default(3)
+  year     Int
+  cgpa     Float
+  backlogs Int     @default(0)
+  resume   String?
+  aadhar   String?
+
+  @@index([usn])
+}
+
+enum role {
+  STUDENT
+  MENTOR
+  MANAGER
+}
+
+enum branch {
+  Computer_Science_Engineering
+  Electronics_and_Communication_Engineering
+  Electrical_and_Electronics_Engineering
+  Mechanical_Engineering
+  Civil_Engineering
+  Artificial_Intelligence_and_Machine_Learning
+  CSE_Data_Science
+  Computer_Science_and_Business_Systems
 }
