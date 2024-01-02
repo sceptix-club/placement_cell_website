@@ -11,16 +11,38 @@ const candidates = () => {
             <div className="h-10 w-full py-2 pl-5 border-b-2 border-divider-color">
               <p>Filters</p>
             </div>
+            <div>
+              <select className="select w-full max-w-xs">
+                <option disabled selected>
+                  Pick your favorite Simpson
+                </option>
+                <option>Homer</option>
+                <option>Marge</option>
+                <option>Bart</option>
+                <option>Lisa</option>
+                <option>Maggie</option>
+              </select>
+              <select className="select w-full max-w-xs z-10">
+                <option disabled selected>
+                  Pick your favorite Simpson
+                </option>
+                <option>Homer</option>
+                <option>Marge</option>
+                <option>Bart</option>
+                <option>Lisa</option>
+                <option>Maggie</option>
+              </select>
+            </div>
           </div>
           <div className="border-l border-divider-color"></div>
           <div className="flex basis-3/4 flex-col bg-background-clr w-4/5 ml-2">
             <div className="flex items-center bg-search-bar h-12 mb-4 rounded-lg drop-shadow-[0px_0px_2px_rgba(0,0,0,1)]">
               <input
-                className="bg-transparent outline-none flex-grow px-2" 
+                className="bg-transparent outline-none flex-grow px-2"
                 type="text"
                 placeholder="Search..."
               />
-              <button type="submit" className="focus:outline-none pr-2"> 
+              <button type="submit" className="focus:outline-none pr-2">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
