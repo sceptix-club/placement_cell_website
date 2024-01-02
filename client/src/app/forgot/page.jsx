@@ -74,9 +74,10 @@ const Forgot = () => {
                 >
                     {otpSent ? 'OTP Sent' : 'Send OTP'}
                 </button>
-                <div className="flex">
-                    {otpSent && (
-                        <div className="mb-4">
+
+                {otpSent && (
+                    <div className="flex mb-4">
+                        <div className="mr-2">
                             <label htmlFor="otp" className="block text-gray-600 text-sm font-bold mb-2">Enter 6-Digit OTP Sent To Your Email</label>
                             <input
                                 type="text"
@@ -88,25 +89,26 @@ const Forgot = () => {
 
                             />
                         </div>
-                    )}
 
 
-                    {otpSent && (
+
+
                         <button
                             type="button"
-                            className="flex bg-green-700 text-white py-3 px-2 rounded w-10 mb-4 hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50"
+                            className=" bg-green-700 text-white py-2 px-2 rounded w-full mb-4 mt-12 ml-2 mr-20  content-center hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50"
                             onClick={otpSent ? handleVerifyOtp : handleSendOtp}
 
 
 
                         >
+                            <label htmlFor="verify" className="py-1 text-sm">Verify OTP</label>
 
-                            <label htmlFor="verify" className="py-1">Verify OTP</label>
 
                         </button>
+                    </div>
 
-                    )}
-                </div>
+                )}
+
                 {errorMessage && <p className="text-red-500 mb-4 text-center">{errorMessage}</p>}
             </div>
         </div >
