@@ -1,8 +1,19 @@
-import React from "react";
+"use client";
+
+import React, {useState} from "react";
 //Data to be displayed in the table
 import CandidateTestData from "../../../public/CandidateTestData.js";
+import Dropdown from "../../components/Dropdown.jsx";
 
 const candidates = () => {
+  const [isFirstSelectOpened, setIsFirstSelectOpened] = useState(false);
+
+  const handleSelectChange = (event) => {
+    if (event.target.value) {
+      setIsFirstSelectOpened(true);
+    }
+  };
+
   return (
     <>
       <div className="flex justify-center items-center h-screen w-full bg-background-clr">
@@ -12,26 +23,8 @@ const candidates = () => {
               <p>Filters</p>
             </div>
             <div>
-              <select className="select w-full max-w-xs">
-                <option disabled selected>
-                  Pick your favorite Simpson
-                </option>
-                <option>Homer</option>
-                <option>Marge</option>
-                <option>Bart</option>
-                <option>Lisa</option>
-                <option>Maggie</option>
-              </select>
-              <select className="select w-full max-w-xs z-10">
-                <option disabled selected>
-                  Pick your favorite Simpson
-                </option>
-                <option>Homer</option>
-                <option>Marge</option>
-                <option>Bart</option>
-                <option>Lisa</option>
-                <option>Maggie</option>
-              </select>
+              <Dropdown />
+              <hr />
             </div>
           </div>
           <div className="border-l border-divider-color"></div>
