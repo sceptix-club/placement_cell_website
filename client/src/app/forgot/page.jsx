@@ -45,7 +45,7 @@ const Forgot = () => {
 
     return (
         <div className="flex items-center justify-center font-sans h-screen bg-[#222222]">
-            <div className="bg-white  p-10 rounded shadow-md  w-96">
+            <div className="bg-white  p-6 rounded shadow-md  w-96">
                 <h2 className="text-2xl font-bold mb-6 text-center text-black">Account Details</h2>
 
                 {/* Email Input */}
@@ -82,7 +82,7 @@ const Forgot = () => {
                             <input
                                 type="text"
                                 id="otp"
-                                className=" w-32 border-2 border-gray-300 rounded py-2 px-3 text-sm text-black"
+                                className=" w-32 border-2 border-gray-300 rounded py-2 px-3 mt-2 text-sm text-black"
                                 value={otp}
                                 onKeyPress={handleKeyPress}
                                 onChange={(e) => setOtp(e.target.value)}
@@ -95,7 +95,7 @@ const Forgot = () => {
 
                         <button
                             type="button"
-                            className=" bg-green-700 text-white py-2 px-2 rounded w-full mb-4 mt-12 ml-2 mr-20  content-center hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50"
+                            className=" bg-green-700 text-white py-2 px-2 rounded w-96  mb-4 mt-14 ml-2 mr-20  content-center hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50"
                             onClick={otpSent ? handleVerifyOtp : handleSendOtp}
 
 
@@ -109,7 +109,7 @@ const Forgot = () => {
 
                 )}
 
-                {errorMessage && <p className="text-red-500 mb-4 text-center">{errorMessage}</p>}
+                {errorMessage && <p className="text-red-500 mb-5  text-center">{errorMessage}</p>}
             </div>
         </div >
     );
