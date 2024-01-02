@@ -25,8 +25,8 @@ const create = () => {
   }
 
   return (
-    <div className="flex justify-center items-center">
-      <section className="w-10/12 sm:w-sm md:w-md lg:w-lg h-auto p-4 sm:p-10 md:p-14 bg-primary-card rounded-md">
+    <div className="flex justify-center items-center h-auto py-10 mb-10">
+      <section className="w-10/12 sm:w-sm md:w-md lg:w-lg h-auto p-4 sm:p-8 md:p-12 bg-primary-card rounded-md">
         <h2 className="font-inter text-2xl sm:text-3xl md:text-4xl font-bold text-divider-color mb-8">
           Create a Draft
         </h2>
@@ -39,7 +39,7 @@ const create = () => {
           </label>
           <input
             className="bg-secondary-card rounded-md px-5
-            py-2 mb-6 placeholder-role-text text-divider-color"
+            py-2 mb-5 placeholder-role-text text-divider-color"
             type="text"
             id="placementName"
             name="placementName"
@@ -55,7 +55,7 @@ const create = () => {
           </label>
           <input
             className="bg-secondary-card rounded-md px-5
-            py-2 mb-6 placeholder-role-text text-divider-color"
+            py-2 mb-5 placeholder-role-text text-divider-color"
             type="text"
             id="companyName"
             name="companyName"
@@ -71,7 +71,7 @@ const create = () => {
           </label>
           <textarea
             className="bg-secondary-card rounded-md px-5
-            py-2 mb-6 placeholder-role-text text-divider-color resize-none"
+            py-2 mb-5 placeholder-role-text text-divider-color resize-none"
             rows={6}
             type="text"
             id="companyDesc"
@@ -88,7 +88,7 @@ const create = () => {
           </label>
           <input
             className="bg-secondary-card rounded-md px-5
-            py-2 mb-6 text-divider-color"
+            py-2 mb-5 text-divider-color"
             type="date"
             id="date"
             name="date"
