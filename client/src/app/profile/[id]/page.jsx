@@ -18,7 +18,7 @@ const ProfilePage = () => {
   }
 
   return (
-    <div className="bg-background-clr text-primary-text min-h-screen">
+    <div className="bg-background-clr text-primary-text min-h-full">
     
 
       <div className="flex justify-center items-center mt-10 mx-4">
