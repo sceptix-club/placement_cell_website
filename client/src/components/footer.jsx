@@ -1,8 +1,8 @@
-import React from "react"
+import React from "react";
 
 const Footer = () => {
   return (
-    <footer className="flex justify-center bg-background-clr">
+    <footer className="flex w-full justify-center bg-background-clr absolute  bottom-0">
       <div className="flex justify-between items-center px-2 bg-primary-card font-inter lg:w-3/5 w-5/6 rounded-t-md">
         <p className=" text-role-text text-xs">
           &#169; 2024 All rights reserved.
@@ -28,7 +28,7 @@ const Footer = () => {
         </p>
       </div>
     </footer>
-  )
-}
+  );
+};
 
 export default Footer;
