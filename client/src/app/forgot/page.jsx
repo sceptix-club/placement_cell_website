@@ -101,7 +101,7 @@ const Forgot = () => {
 
                         >
 
-                            {otpSent ? 'Verify OTP' : 'Send OTP'}
+                            <label htmlFor="verify" className="py-1">Verify OTP</label>
 
                         </button>
 
