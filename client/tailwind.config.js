@@ -30,6 +30,11 @@ module.exports = {
         "card-hover": "#6E6E6E",
         "logo-bg": "#60CE72",
       },
+      spacing: {
+        "lg": "44rem",
+        "md": "36rem",
+        "sm": "28rem",
+      },
     },
   },
   plugins: [],
