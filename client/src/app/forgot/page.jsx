@@ -45,7 +45,7 @@ const Forgot = () => {
 
     return (
         <div className="flex items-center justify-center font-sans h-screen  bg-[#222222]">
-            <div className="bg-white  p-10  rounded shadow-md md:max-w-md lg:max-w-lg xl:max-w-xl w-96">
+            <div className="bg-white  p-6  rounded shadow-md md:max-w-md lg:max-w-lg xl:max-w-xl w-96">
                 <h2 className="text-2xl font-bold mb-6 text-center text-black">Account Details</h2>
 
                 {/* Email Input */}
