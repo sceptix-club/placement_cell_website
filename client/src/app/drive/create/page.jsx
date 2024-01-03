@@ -39,12 +39,12 @@ const create = () => {
           </label>
           <input
             className="bg-secondary-card rounded-md px-5
-            py-2 mb-5 placeholder-role-text text-divider-color"
+            py-2 mb-5 placeholder-plcholder-text text-divider-color"
             type="text"
             id="placementName"
             name="placementName"
-            placeholder="Enter Placement Name.."
-            defaultValuealue={submitData.placementName}
+            placeholder="Enter Placement Name"
+            defaultValue={submitData.placementName}
             onChange={handleInputChange}
           />
           <label
@@ -55,11 +55,11 @@ const create = () => {
           </label>
           <input
             className="bg-secondary-card rounded-md px-5
-            py-2 mb-5 placeholder-role-text text-divider-color"
+            py-2 mb-5 placeholder-plcholder-text text-divider-color"
             type="text"
             id="companyName"
             name="companyName"
-            placeholder="Enter Company Name.."
+            placeholder="Enter Company Name"
             defaultValue={submitData.companyName}
             onChange={handleInputChange}
           />
@@ -71,12 +71,12 @@ const create = () => {
           </label>
           <textarea
             className="bg-secondary-card rounded-md px-5
-            py-2 mb-5 placeholder-role-text text-divider-color resize-none"
+            py-2 mb-5 placeholder-plcholder-text text-divider-color resize-none"
             rows={6}
             type="text"
             id="companyDesc"
             name="companyDesc"
-            placeholder="Enter Company Description.."
+            placeholder="Enter Company Description"
             defaultValue={submitData.companyDesc}
             onChange={handleInputChange}
           />
@@ -95,8 +95,11 @@ const create = () => {
             defaultValue={submitData.date}
             onChange={handleInputChange}
           />
-          <div className="flex justify-center bg-logo-bg w-32 h-10 rounded-md ">
-            <button className="font-medium" type="submit">
+          <div className="flex justify-center w-32 h-10">
+            <button
+              className="font-medium bg-logo-bg w-32 h-10 rounded-md "
+              type="submit"
+            >
               Save
             </button>
           </div>
