@@ -115,6 +115,7 @@ const Role = () => {
                         className="w-full border rounded-md px-3 py-2 bg-secondary-card placeholder-plcholder-text text-divider-color focus:outline-none focus:border-blue-500"
                     />
                 </div>
+                <button>Save</button>
             </div>
         </div>
     );
