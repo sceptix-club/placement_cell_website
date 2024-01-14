@@ -12,11 +12,13 @@ let PORT = process.env.PORT || 3000;
 import placementUpdate from "./routes/palcement_routes.mjs";
 import getdrives from "./routes/getdrives.mjs";
 import login from './routes/login.mjs'
+import studentdetails from './routes/studentdetails.mjs'
 
 
 app.use("/api/placement", placementUpdate);
 app.use("/api/drives", getdrives);
-app.use("/api/login",login)
+app.use("/api/login", login)
+app.use("/api/student",studentdetails)
 
 
 app.listen(PORT, () => {
