@@ -35,7 +35,7 @@ const Role = () => {
 
         <div className="w-1/2 px-10 mx-auto">
             <h1 className="font-sans font-bold text-4xl">Create a Role</h1>
-            <div className="p-5 border rounded-md mt-5 mb-16 font-sans  bg-primary-card shadow-md">
+            <div className="p-5  rounded-md mt-5 mb-16 font-sans  bg-primary-card ">
                 <div className="mb-4 px-5">
                     <label className="block text-lg font-semibold mt-5  text-main-heading mb-2">Name of the Role</label>
                     <input
@@ -44,7 +44,7 @@ const Role = () => {
                         value={jobInfo.roleName}
                         onChange={handleChange}
 
-                        className="w-11/12 border rounded-md px-3 py-2 bg-secondary-card placeholder-plcholder-text text-divider-color focus:outline-none focus:border-blue-500"
+                        className="w-11/12 rounded-md px-3 py-2 bg-secondary-card placeholder-plcholder-text text-divider-color "
                         placeholder="Enter the role"
                     />
                 </div>
@@ -52,7 +52,7 @@ const Role = () => {
 
                     <label className="block text-lg font-semibold  text-main-heading mb-2">Description</label>
                     <textarea
-                        className="w-11/12 pb-10 border px-2 bg-secondary-card placeholder-plcholder-text text-divider-color rounded-md resize-none focus:outline-none focus:border-blue-500 overflow-hidden "
+                        className="w-11/12 pb-10  px-2 bg-secondary-card placeholder-plcholder-text text-divider-color rounded-md resize-none overflow-hidden "
 
                         name="description"
 
@@ -74,7 +74,7 @@ const Role = () => {
                         name="qualificationCutoff"
                         value={jobInfo.qualificationCutoff}
                         onChange={handleChange}
-                        className="w-11/12 border rounded-md px-3 py-2 bg-secondary-card placeholder-plcholder-text text-divider-color focus:outline-none focus:border-blue-500"
+                        className="w-11/12  rounded-md px-3 py-2 bg-secondary-card placeholder-plcholder-text text-divider-color  "
                         placeholder="Enter the Qualification"
                     />
                 </div>
@@ -86,7 +86,7 @@ const Role = () => {
                             name="Cutoff"
                             value={jobInfo.Cutoff}
                             onChange={handleChange}
-                            className="w-11/12 border rounded-md px-3 py-2 bg-secondary-card placeholder-plcholder-text text-divider-color focus:outline-none focus:border-blue-500"
+                            className="w-11/12  rounded-md px-3 py-2 bg-secondary-card placeholder-plcholder-text text-divider-color  "
                             placeholder="Enter the Cutoff"
                         />
                     </div>
@@ -98,7 +98,7 @@ const Role = () => {
                             name="ctc"
                             value={jobInfo.ctc}
                             onChange={handleChange}
-                            className="w-11/12 border rounded-md px-3 py-2 bg-secondary-card placeholder-plcholder-text text-divider-color focus:outline-none focus:border-blue-500"
+                            className="w-11/12 rounded-md px-3 py-2 bg-secondary-card placeholder-plcholder-text text-divider-color  "
                             placeholder="Enter the CTC"
                         />
                     </div>
@@ -111,7 +111,7 @@ const Role = () => {
                         name="stipend"
                         value={jobInfo.stipend}
                         onChange={handleChange}
-                        className="w-11/12 border rounded-md px-3 py-2 bg-secondary-card placeholder-plcholder-text text-divider-color focus:outline-none focus:border-blue-500"
+                        className="w-11/12 rounded-md px-3 py-2 bg-secondary-card placeholder-plcholder-text text-divider-color  "
                         placeholder="Enter the Stipend"
                     />
                 </div>
@@ -123,7 +123,7 @@ const Role = () => {
                         name="location"
                         value={jobInfo.location}
                         onChange={handleChange}
-                        className="w-11/12 border rounded-md px-3 py-2 bg-secondary-card placeholder-plcholder-text text-divider-color focus:outline-none focus:border-blue-500"
+                        className="w-11/12  rounded-md px-3 py-2 bg-secondary-card placeholder-plcholder-text text-divider-color  "
                         placeholder="Enter the Location"
                     />
                 </div>
@@ -135,7 +135,7 @@ const Role = () => {
                         name="serviceAgreement"
                         value={jobInfo.serviceAgreement}
                         onChange={handleChange}
-                        className="w-11/12 border rounded-md px-3 py-2 bg-secondary-card placeholder-plcholder-text text-divider-color focus:outline-none focus:border-blue-500"
+                        className="w-11/12 rounded-md px-3 py-2 bg-secondary-card placeholder-plcholder-text text-divider-color  "
                         placeholder="Enter the Service Agreement"
                     />
                 </div>
