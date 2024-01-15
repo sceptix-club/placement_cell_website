@@ -34,10 +34,10 @@ const Role = () => {
     return (
 
         <div className="w-1/2 px-10 mx-auto">
-            <h1 className="font-sans font-bold text-4xl">Create a Role</h1>
-            <div className="p-5  rounded-md mt-5 mb-16 font-sans justify-center   bg-primary-card  ">
+            <h1 className="font-gabarito font-bold text-4xl text-divider-color">Create a Role</h1>
+            <div className="p-5  rounded-md mt-5 mb-16  justify-center font-gabarito   bg-primary-card  ">
                 <div className="mb-4 px-5">
-                    <label className="block text-lg font-semibold mt-5  text-main-heading mb-2">Name of the Role</label>
+                    <label className="block text-lg font-semibold mt-5  text-divider-color mb-2">Name of the Role</label>
                     <input
                         type="text"
                         name="roleName"
@@ -50,7 +50,7 @@ const Role = () => {
                 </div>
                 <div className="mb-4 px-5 flex-wrap h-auto">
 
-                    <label className="block text-lg font-semibold  text-main-heading mb-2">Description</label>
+                    <label className="block text-lg font-semibold  text-divider-color mb-2">Description</label>
                     <textarea
                         className="w-11/12 pb-10  px-2 bg-secondary-card placeholder-plcholder-text text-divider-color rounded-md resize-none overflow-hidden "
 
@@ -68,7 +68,7 @@ const Role = () => {
                 </div>
 
                 <div className="mb-4 px-5">
-                    <label className="block text-lg font-semibold text-main-heading mb-2">Qualification</label>
+                    <label className="block text-lg font-semibold text-divider-color mb-2">Qualification</label>
                     <input
                         type="text"
                         name="qualificationCutoff"
@@ -80,7 +80,7 @@ const Role = () => {
                 </div>
 
                 <div className="mb-4 px-5  ">
-                    <label className="block text-lg font-semibold text-main-heading mb-2">Cutoff</label>
+                    <label className="block text-lg font-semibold text-divider-color mb-2">Cutoff</label>
                     <input
                         type="text"
                         name="Cutoff"
@@ -93,7 +93,7 @@ const Role = () => {
                 <div className="flex ">
 
                     <div className="mb-4 px-5">
-                        <label className="block text-lg font-semibold text-main-heading mb-2">CTC</label>
+                        <label className="block text-lg font-semibold text-divider-color mb-2">CTC</label>
                         <input
                             type="text"
                             name="ctc"
@@ -106,7 +106,7 @@ const Role = () => {
 
 
                     <div className="mb-4 ml-14 px-5">
-                        <label className="block text-lg font-semibold text-main-heading mb-2">Stipend</label>
+                        <label className="block text-lg font-semibold text-divider-color mb-2">Stipend</label>
                         <input
                             type="text"
                             name="stipend"
@@ -119,7 +119,7 @@ const Role = () => {
                 </div>
 
                 <div className="mb-4 px-5">
-                    <label className="block text-lg font-semibold text-main-heading mb-2">Location</label>
+                    <label className="block text-lg font-semibold text-divider-color mb-2">Location</label>
                     <input
                         type="text"
                         name="location"
@@ -131,7 +131,7 @@ const Role = () => {
                 </div>
 
                 <div className="mb-4 px-5">
-                    <label className="block text-lg font-semibold text-main-heading mb-2">Service Agreement</label>
+                    <label className="block text-lg font-semibold text-divider-color mb-2">Service Agreement</label>
                     <input
                         type="text"
                         name="serviceAgreement"
