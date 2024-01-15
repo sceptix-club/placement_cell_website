@@ -35,7 +35,7 @@ const Role = () => {
 
         <div className="w-1/2 px-10 mx-auto">
             <h1 className="font-sans font-bold text-4xl">Create a Role</h1>
-            <div className="p-5  rounded-md mt-5 mb-16 font-sans  bg-primary-card ">
+            <div className="p-5  rounded-md mt-5 mb-16 font-sans justify-center   bg-primary-card  ">
                 <div className="mb-4 px-5">
                     <label className="block text-lg font-semibold mt-5  text-main-heading mb-2">Name of the Role</label>
                     <input
@@ -99,20 +99,20 @@ const Role = () => {
                             name="ctc"
                             value={jobInfo.ctc}
                             onChange={handleChange}
-                            className="w-full rounded-md px-3 py-2 bg-secondary-card placeholder-plcholder-text text-divider-color  "
+                            className=" w-56 rounded-md px-3 py-2 bg-secondary-card placeholder-plcholder-text text-divider-color  "
                             placeholder="Enter the CTC"
                         />
                     </div>
 
 
-                    <div className="mb-4 ml-24 px-5">
+                    <div className="mb-4 ml-14 px-5">
                         <label className="block text-lg font-semibold text-main-heading mb-2">Stipend</label>
                         <input
                             type="text"
                             name="stipend"
                             value={jobInfo.stipend}
                             onChange={handleChange}
-                            className="w-full rounded-md px-3 py-2 bg-secondary-card placeholder-plcholder-text text-divider-color  "
+                            className="w-56 rounded-md px-3 py-2 bg-secondary-card placeholder-plcholder-text text-divider-color  "
                             placeholder="Enter the Stipend"
                         />
                     </div>
