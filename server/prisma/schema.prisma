@@ -27,15 +27,67 @@ model student {
   userId   Int     @unique
   user     User    @relation(fields: [userId], references: [id])
   usn      String  @unique
-  branch   branch
+  branch   Branch
   sem      Int     @default(3)
-  year     Int
+  year     Int     @default(2020)
   cgpa     Float
   backlogs Int     @default(0)
   resume   String?
   aadhar   String?
+  skill    Skill[]
+  Stat     Stat[]
 
   @@index([usn])
+}
+
+model Skill {
+  id        Int     @id @default(autoincrement())
+  name      String
+  studentId Int     @unique
+  student   student @relation(fields: [studentId], references: [id])
+
+  @@index([studentId])
+}
+
+model Drive {
+  id          Int       @id @default(autoincrement())
+  name        String //drive name
+  company     String //company name
+  description String //description about company
+  date        DateTime
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  deletedAt   DateTime?
+  profile     Profile[]
+  Stat        Stat[]
+}
+
+model Profile {
+  id               Int    @id @default(autoincrement())
+  name             String
+  description      String
+  qualification    String
+  cutoff           String
+  ctc              String
+  stipend          String
+  location         String
+  serviceAgreement String
+  driveID          Int
+  drive            Drive  @relation(fields: [driveID], references: [id])
+
+  @@index([driveID])
+}
+
+model Stat {
+  id        Int      @id @default(autoincrement())
+  driveID   Int
+  drive     Drive    @relation(fields: [driveID], references: [id])
+  studentID Int
+  student   student  @relation(fields: [studentID], references: [id])
+  updatedAt DateTime @updatedAt
+
+  @@unique([driveID, studentID])
+  @@index([driveID])
 }
 
 enum role {
@@ -44,13 +96,15 @@ enum role {
   MANAGER
 }
 
-enum branch {
-  Computer_Science_Engineering
-  Electronics_and_Communication_Engineering
-  Electrical_and_Electronics_Engineering
-  Mechanical_Engineering
-  Civil_Engineering
-  Artificial_Intelligence_and_Machine_Learning
-  CSE_Data_Science
-  Computer_Science_and_Business_Systems
+enum Branch {
+  CSE
+  ME
+  ECE
+  EEE
+  CIVIL
+  CSDS
+  AIML
+  CSBS
+  MCA
+  MBA
 }
