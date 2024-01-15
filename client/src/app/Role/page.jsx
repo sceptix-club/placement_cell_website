@@ -22,11 +22,18 @@ const Role = () => {
             [name]: value,
         });
     };
+    // const handleTextareaResize = (event) => {
+    //     const textarea = event.target;
+    //     textarea.style.height = 'auto';
+    //     textarea.style.height = `${textarea.scrollHeight}px`;
+    // };
+
+
     return (
 
         <div className="w-1/2 px-10 mx-auto">
             <h1 className="font-sans font-bold text-4xl">Create a Role</h1>
-            <div className="p-5 border rounded-md mt-5 mb-16  bg-primary-card shadow-md">
+            <div className="p-5 border rounded-md mt-5 mb-16 font-sans  bg-primary-card shadow-md">
                 <div className="mb-4 px-5">
                     <label className="block text-lg font-semibold mt-5  text-main-heading mb-2">Name of the Role</label>
                     <input
@@ -36,18 +43,25 @@ const Role = () => {
                         onChange={handleChange}
 
                         className="w-11/12 border rounded-md px-3 py-2 bg-secondary-card placeholder-plcholder-text text-divider-color focus:outline-none focus:border-blue-500"
-                        placeholder="Enter the role..."
+                        placeholder="Enter the role"
                     />
                 </div>
-                <div className="mb-4 px-5">
+                <div className="mb-4 px-5 flex-wrap h-auto">
+
                     <label className="block text-lg font-semibold  text-main-heading mb-2">Description</label>
-                    <input
-                        type="text"
+                    <textarea
+                        className="w-11/12 pb-10 border px-2 bg-secondary-card placeholder-plcholder-text text-divider-color rounded-md resize-none focus:outline-none focus:border-blue-500 overflow-hidden "
+
                         name="description"
+
                         value={jobInfo.description}
+
                         onChange={handleChange}
-                        className="mt-1 p-10 w-11/12 border  bg-secondary-card placeholder-plcholder-text text-divider-color rounded-md focus:outline-none focus:ring focus:border-blue-300"
-                    ></input>
+                        style={{ minHeight: '100px', maxHeight: '200px' }}
+
+
+                        placeholder="Enter the description..."
+                    />
                 </div>
 
                 <div className="mb-4 px-5">
@@ -58,10 +72,11 @@ const Role = () => {
                         value={jobInfo.qualificationCutoff}
                         onChange={handleChange}
                         className="w-11/12 border rounded-md px-3 py-2 bg-secondary-card placeholder-plcholder-text text-divider-color focus:outline-none focus:border-blue-500"
+                        placeholder="Enter the Qualification"
                     />
                 </div>
                 <div className="flex space-x-8">
-                    <div className="mb-4 px-5">
+                    <div className="mb-4 px-5 ">
                         <label className="block text-lg font-semibold text-main-heading mb-2">Cutoff</label>
                         <input
                             type="text"
@@ -69,6 +84,7 @@ const Role = () => {
                             value={jobInfo.Cutoff}
                             onChange={handleChange}
                             className="w-11/12 border rounded-md px-3 py-2 bg-secondary-card placeholder-plcholder-text text-divider-color focus:outline-none focus:border-blue-500"
+                            placeholder="Enter the Cutoff"
                         />
                     </div>
 
@@ -80,6 +96,7 @@ const Role = () => {
                             value={jobInfo.ctc}
                             onChange={handleChange}
                             className="w-11/12 border rounded-md px-3 py-2 bg-secondary-card placeholder-plcholder-text text-divider-color focus:outline-none focus:border-blue-500"
+                            placeholder="Enter the CTC"
                         />
                     </div>
                 </div>
@@ -92,6 +109,7 @@ const Role = () => {
                         value={jobInfo.stipend}
                         onChange={handleChange}
                         className="w-11/12 border rounded-md px-3 py-2 bg-secondary-card placeholder-plcholder-text text-divider-color focus:outline-none focus:border-blue-500"
+                        placeholder="Enter the Stipend"
                     />
                 </div>
 
@@ -103,6 +121,7 @@ const Role = () => {
                         value={jobInfo.location}
                         onChange={handleChange}
                         className="w-11/12 border rounded-md px-3 py-2 bg-secondary-card placeholder-plcholder-text text-divider-color focus:outline-none focus:border-blue-500"
+                        placeholder="Enter the Location"
                     />
                 </div>
 
@@ -114,6 +133,7 @@ const Role = () => {
                         value={jobInfo.serviceAgreement}
                         onChange={handleChange}
                         className="w-11/12 border rounded-md px-3 py-2 bg-secondary-card placeholder-plcholder-text text-divider-color focus:outline-none focus:border-blue-500"
+                        placeholder="Enter the Service Agreement"
                     />
                 </div>
                 <button className="px-10 py-2 ml-5 mb-5 mt-5 bg-green-600 hover:bg-green-700 text-white font-bold  rounded-md">
