@@ -5,13 +5,12 @@ import bodyParse from "body-parser";
 import Jwt from "jsonwebtoken";
 import fs from "fs";
 import cookieParser from "cookie-parser";
-app.use(cookieParser())
+app.use(cookieParser());
 
 // app.use(bodyParser.urlencoded({ extended: true }));
 // app.use(bodyParser.json());
 
 export const addPlacement = async (req, res) => {
-    
     // res.status(200).send({ message: `you got access you added ${req.body.company} placement drive` })
     try {
         const json = JSON.stringify(req.body);
@@ -20,13 +19,12 @@ export const addPlacement = async (req, res) => {
                 console.log(err);
                 return;
             }
-            res.status(200).send({message:"Data added "})
+            res.status(200).send({ message: "Data added " });
         });
     } catch (err) {
         throw err;
     }
 };
-
 
 export const getDrives = (req, res) => {
     fs.readFile("data.json", "utf-8", (err, data) => {
@@ -38,7 +36,23 @@ export const getDrives = (req, res) => {
     });
 };
 
-
 export const login = (req, res) => {
-    console.log("Login function")
-}
+    console.log("Login function");
+};
+
+export const getstudent = (req, res) => {
+    
+    res.json({
+        id: 2,
+        name: "from db",
+        usn: req.params['id'],
+        branch: "from database",
+        year: "from database",
+        email: "from database@example.com",
+        cgpa: "from database",
+        activeBacklogs: "from database",
+        skills: ["from db", "from db"],
+        aadhaarUpload: "aadhaar.pdf",
+        resumeUpload: "resume.pdf",
+    })
+};
