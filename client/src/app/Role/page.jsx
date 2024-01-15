@@ -1,5 +1,5 @@
 'use client'
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 
 
 
@@ -14,6 +14,7 @@ const Role = () => {
         location: '',
         serviceAgreement: '',
     });
+    const textAreaRef = useRef(null);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -22,11 +23,12 @@ const Role = () => {
             [name]: value,
         });
     };
-    // const handleTextareaResize = (event) => {
-    //     const textarea = event.target;
-    //     textarea.style.height = 'auto';
-    //     textarea.style.height = `${textarea.scrollHeight}px`;
-    // };
+    useEffect(() => {
+        textAreaRef.current.style.height = "auto";
+
+        textAreaRef.current.style.height = textAreaRef.current.scrollHeight + "px";
+    }, [jobInfo])
+
 
 
     return (
@@ -57,7 +59,8 @@ const Role = () => {
                         value={jobInfo.description}
 
                         onChange={handleChange}
-                        style={{ minHeight: '100px', maxHeight: '200px' }}
+                        rows="2"
+                        ref={textAreaRef}
 
 
                         placeholder="Enter the description..."
