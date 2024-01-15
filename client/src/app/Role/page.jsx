@@ -78,18 +78,19 @@ const Role = () => {
                         placeholder="Enter the Qualification"
                     />
                 </div>
-                <div className="flex space-x-8">
-                    <div className="mb-4 px-5 ">
-                        <label className="block text-lg font-semibold text-main-heading mb-2">Cutoff</label>
-                        <input
-                            type="text"
-                            name="Cutoff"
-                            value={jobInfo.Cutoff}
-                            onChange={handleChange}
-                            className="w-11/12  rounded-md px-3 py-2 bg-secondary-card placeholder-plcholder-text text-divider-color  "
-                            placeholder="Enter the Cutoff"
-                        />
-                    </div>
+
+                <div className="mb-4 px-5  ">
+                    <label className="block text-lg font-semibold text-main-heading mb-2">Cutoff</label>
+                    <input
+                        type="text"
+                        name="Cutoff"
+                        value={jobInfo.Cutoff}
+                        onChange={handleChange}
+                        className="w-11/12   rounded-md px-3 py-2 bg-secondary-card placeholder-plcholder-text text-divider-color  "
+                        placeholder="Enter the Cutoff"
+                    />
+                </div>
+                <div className="flex ">
 
                     <div className="mb-4 px-5">
                         <label className="block text-lg font-semibold text-main-heading mb-2">CTC</label>
@@ -98,22 +99,23 @@ const Role = () => {
                             name="ctc"
                             value={jobInfo.ctc}
                             onChange={handleChange}
-                            className="w-11/12 rounded-md px-3 py-2 bg-secondary-card placeholder-plcholder-text text-divider-color  "
+                            className="w-full rounded-md px-3 py-2 bg-secondary-card placeholder-plcholder-text text-divider-color  "
                             placeholder="Enter the CTC"
                         />
                     </div>
-                </div>
 
-                <div className="mb-4 px-5">
-                    <label className="block text-lg font-semibold text-main-heading mb-2">Stipend</label>
-                    <input
-                        type="text"
-                        name="stipend"
-                        value={jobInfo.stipend}
-                        onChange={handleChange}
-                        className="w-11/12 rounded-md px-3 py-2 bg-secondary-card placeholder-plcholder-text text-divider-color  "
-                        placeholder="Enter the Stipend"
-                    />
+
+                    <div className="mb-4 ml-24 px-5">
+                        <label className="block text-lg font-semibold text-main-heading mb-2">Stipend</label>
+                        <input
+                            type="text"
+                            name="stipend"
+                            value={jobInfo.stipend}
+                            onChange={handleChange}
+                            className="w-full rounded-md px-3 py-2 bg-secondary-card placeholder-plcholder-text text-divider-color  "
+                            placeholder="Enter the Stipend"
+                        />
+                    </div>
                 </div>
 
                 <div className="mb-4 px-5">
@@ -143,7 +145,7 @@ const Role = () => {
                     Save
                 </button>
             </div>
-        </div>
+        </div >
     );
 };
 
