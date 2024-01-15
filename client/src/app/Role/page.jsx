@@ -52,7 +52,7 @@ const Role = () => {
 
                     <label className="block text-lg font-semibold  text-divider-color mb-2">Description</label>
                     <textarea
-                        className="w-11/12 pb-10  px-2 bg-secondary-card placeholder-plcholder-text text-divider-color rounded-md resize-none overflow-hidden "
+                        className="w-11/12 pb-10 pt-1  px-3 bg-secondary-card placeholder-plcholder-text text-divider-color rounded-md resize-none overflow-hidden "
 
                         name="description"
 
