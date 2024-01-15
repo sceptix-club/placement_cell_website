@@ -12,6 +12,7 @@ let PORT = process.env.PORT || 3001;
 import placementUpdate from "./routes/palcement_routes.mjs";
 import getdrives from "./routes/getdrives.mjs";
 import login from "./routes/login.mjs";
+import studentdetails from "./routes/studentdetails.mjs";
 
 import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
@@ -19,6 +20,7 @@ const prisma = new PrismaClient();
 app.use("/api/placement", placementUpdate);
 app.use("/api/drives", getdrives);
 app.use("/api/login", login);
+app.use("/api/student", studentdetails);
 
 app.listen(PORT, () => {
   console.log(`Server is running in port ${PORT}`);
