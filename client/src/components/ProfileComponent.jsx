@@ -5,7 +5,7 @@ import profileData from "../../public/profile_data";
 const ProfileComponent = ({ routePrefix, isMenteeVerify }) => {
   const pathName = usePathname();
   const pathNo = pathName.slice(`/${routePrefix}/`.length);
-  
+  const pathWithoutPrefix = pathName.slice(1);
 
   // Initialize state for profile data, edit mode, new skill, and adding skill flag
   const [dataAll, setDataAll] = useState(
@@ -27,17 +27,17 @@ const ProfileComponent = ({ routePrefix, isMenteeVerify }) => {
     // Update the state or make API calls to save changes
   };
 
-  // Handle click on Add Skill button
-  const handleAddSkill = () => {
-    setAddingSkill(true);
-  };
-
   const handleCancelClick = () => {
     // Reset data and cancel changes
     setDataAll(profileData.find((item) => item.id === Number(pathNo)));
     setEditMode(false);
     setNewSkill("");
     setAddingSkill(false);
+  };
+
+  // Handle click on Add Skill button
+  const handleAddSkill = () => {
+    setAddingSkill(true);
   };
 
   // Handle removing a skill by index
@@ -90,10 +90,10 @@ const ProfileComponent = ({ routePrefix, isMenteeVerify }) => {
 
   return (
     <div className="bg-background-clr text-primary-text ">
-      <div className="flex flex-col md:flex-row justify-center items-center mt-10 mb-16 mx-4">
-        <div className="w-full md:w-1/3 mb-4 md:mb-0 md:mr-4">
+      <div className="flex justify-center items-center mt-10 mb-16 mx-4">
+        <div className="w-1/3 mr-4">
           <h2 className="text-2xl mb-4">Personal Details</h2>
-          <div className="bg-primary-card p-8 rounded-lg md:h-[460px]">
+          <div className="bg-primary-card p-8 rounded-lg h-[460px]">
             <div className="p-8 flex flex-col items-center justify-center">
               <div className="bg-role-background p-0 rounded-lg mb-4 w-1/2 mt-0 m-0 h-[150px] overflow-hidden my-0"></div>
               <h2 className="text-2xl font-bold text-center text-main-text">
@@ -109,9 +109,9 @@ const ProfileComponent = ({ routePrefix, isMenteeVerify }) => {
           </div>
         </div>
 
-        <div className="w-full md:w-1/3 ml-4">
+        <div className="w-1/3 ml-4">
           <h2 className="text-2xl mb-4">Academics</h2>
-          <div className="bg-primary-card p-8 rounded-lg md:h-[460px]">
+          <div className="bg-primary-card p-8 rounded-lg h-[460px]">
             <div className="flex mb-4 items-center">
               <div className="w-2/3">
                 <label className="block text-white">CGPA:</label>
@@ -224,9 +224,7 @@ const ProfileComponent = ({ routePrefix, isMenteeVerify }) => {
                {/* Resume upload */}
                <div className="flex mb-4 items-center">
             <div className="w-1/3">
-            <label className="block text-white ml-8 w-full max-w-[360px] mx-auto ml-0">
-  Resume:
-</label>
+              <label className="block text-white ml-8">Resume:</label>
             </div>
             <div className="w-2/3">
               {editMode ? (
@@ -259,7 +257,7 @@ const ProfileComponent = ({ routePrefix, isMenteeVerify }) => {
           {/* Aadhaar upload */}
           <div className="flex mb-4 items-center">
             <div className="w-1/3">
-            <label className="block text-white ml-8 w-full max-w-[360px] mx-auto ml-0">Aadhaar:</label>
+              <label className="block text-white ml-8">Aadhaar:</label>
             </div>
             <div className="w-2/3">
               {editMode ? (
@@ -289,8 +287,9 @@ const ProfileComponent = ({ routePrefix, isMenteeVerify }) => {
             </div>
           </div>
 
-          <div className="mb-4 flex flex-col md:flex-row justify-center items-center">
-  {editMode && (
+
+          <div className="mb-4 flex justify-center items-center">
+          {editMode && (
     <button
       className="bg-logo-bg text-black font-bold px-4 py-2 rounded-md mb-2 md:mr-4 md:mb-0"
       onClick={handleCancelClick}
@@ -298,17 +297,16 @@ const ProfileComponent = ({ routePrefix, isMenteeVerify }) => {
       Cancel
     </button>
   )}
-
   {isMenteeVerify ? (
     <button
-      className="bg-logo-bg text-black font-bold px-4 py-2 rounded-md"
+      className="bg-logo-bg text-black font-bold px-10 py-0 rounded-md"
       onClick={handleVerifyClick}
     >
       {isMenteeVerify ? "Verify" : "Edit"}
     </button>
   ) : (
     <button
-      className="bg-logo-bg text-black font-bold px-4 py-2 rounded-md ml-2"
+      className="bg-logo-bg text-black font-bold px-10 py-0 rounded-md"
       onClick={editMode ? handleSaveClick : handleEditClick}
     >
       {editMode ? "Save" : "Edit"}
