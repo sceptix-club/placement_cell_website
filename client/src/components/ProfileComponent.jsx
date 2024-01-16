@@ -5,7 +5,7 @@ import profileData from "../../public/profile_data";
 const ProfileComponent = ({ routePrefix, isMenteeVerify }) => {
   const pathName = usePathname();
   const pathNo = pathName.slice(`/${routePrefix}/`.length);
-  const pathWithoutPrefix = pathName.slice(1);
+  
 
   // Initialize state for profile data, edit mode, new skill, and adding skill flag
   const [dataAll, setDataAll] = useState(
@@ -315,7 +315,6 @@ const ProfileComponent = ({ routePrefix, isMenteeVerify }) => {
     </button>
   )}
 </div>
-
 
           </div>
         </div>

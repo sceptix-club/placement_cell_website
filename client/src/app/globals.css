@@ -33,3 +33,7 @@ body {
   display: flex;
   flex-direction: column;
 }
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(1) brightness(80%);
+}
