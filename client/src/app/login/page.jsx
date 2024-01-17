@@ -4,7 +4,7 @@ import { FaRegEye, FaEyeSlash } from "react-icons/fa";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useCookies } from 'react-cookie';
-import { Chokokutai } from "next/font/google";
+
 
 const login = () => {
     const [email, setEmail] = useState("");
@@ -39,7 +39,6 @@ const login = () => {
                   method: 'POST',
                   headers: {
                     'Content-Type': 'application/json',
-                    authorization:`bearer ${cookies["token"]}`
                   },
                   body: JSON.stringify({
                     userName: email,
