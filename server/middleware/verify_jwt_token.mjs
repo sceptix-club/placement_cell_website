@@ -49,7 +49,7 @@ export const verifyMentorJwtToken = (req,res,next) => {
     
 }
 
-export const verifyStudentJwtToken = (req,res,next) => {
+export const verifyStudentJwtToken = (req, res, next) => {
     let authHeader = req.headers.authorization;
     if (authHeader == undefined) {
         res.status(401).send({error:"no token provided"})
@@ -63,10 +63,19 @@ export const verifyStudentJwtToken = (req,res,next) => {
                 return false
             }
             else { 
-                console.log("decoded value is " ,decoded)
-                console.log("token verified")
-                next()
-                return true
+                let Paramusn  = req.params['id']
+                // console.log("decoded value is " ,decoded)
+                if (Paramusn == decoded.usn && decoded.usn  == req.headers.usn) {
+                    req.isPageSame = true
+                    // res.status(200).json({isPageSame:true})
+                    next()
+                    return true
+                }
+                else {
+                    req.isPageSame = false
+                   
+                    res.status(401).json({isPageSame : false})
+                }
             }
             
         })
