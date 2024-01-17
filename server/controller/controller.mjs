@@ -5,7 +5,11 @@ import bodyParse from "body-parser";
 import Jwt from "jsonwebtoken";
 import fs from "fs";
 import cookieParser from "cookie-parser";
+
+
 app.use(cookieParser());
+
+
 
 // app.use(bodyParser.urlencoded({ extended: true }));
 // app.use(bodyParser.json());
@@ -36,8 +40,13 @@ export const getDrives = (req, res) => {
     });
 };
 
-export const login = (req, res) => {
-    console.log("Login function");
+export const login = async (req, res) => {
+    const data = {
+        usn: "4so22",
+        token:req.jwt_token
+        // Add other data properties here
+    };
+    res.send(data);
 };
 
 export const getstudent = (req, res) => {
