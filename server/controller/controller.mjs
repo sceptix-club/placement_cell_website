@@ -50,8 +50,7 @@ export const login = async (req, res) => {
 };
 
 export const getstudent = (req, res) => {
-    
-    res.json({
+    let userDetails = {
         id: 2,
         name: "from db",
         usn: req.params['id'],
@@ -63,5 +62,8 @@ export const getstudent = (req, res) => {
         skills: ["from db", "from db"],
         aadhaarUpload: "aadhaar.pdf",
         resumeUpload: "resume.pdf",
+    }
+    res.json({
+        userDetails:userDetails , isPageSame:req.isPageSame
     })
 };
