@@ -38,6 +38,7 @@ export const verifyMentorJwtToken = (req,res,next) => {
                 return false
             }
             else { 
+                console.log("decoded value is " ,decoded)
                 next()
                 return true
             }
@@ -62,6 +63,8 @@ export const verifyStudentJwtToken = (req,res,next) => {
                 return false
             }
             else { 
+                console.log("decoded value is " ,decoded)
+                console.log("token verified")
                 next()
                 return true
             }
