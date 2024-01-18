@@ -51,7 +51,7 @@ const login = () => {
                 await sessionStorage.setItem("usn", `${data.usn}`)
                 let usn = sessionStorage.getItem("usn")
                 setCookie("token",data.token)
-                // {usn == undefined ? router.push(""): router.push(`/profile/${usn}`)}
+                {usn == undefined ? router.push(""): router.push(`/profile/${usn}`)}
 
               } catch (err) {
                 console.log(err);
