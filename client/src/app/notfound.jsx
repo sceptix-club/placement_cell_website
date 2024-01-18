@@ -12,7 +12,7 @@ const NotFound = () => {
       </div>
 
       <div className="h-1/3 flex items-center justify-center relative">
-        <div className="relative z-10 text-[36vh] text-logo-bg text-center font-bold hover:bottom-[20px] hover:right-[5px]">
+        <div className="relative z-10 text-[36vh] text-logo-bg text-center font-bold hover:bottom-[20px] hover:right-[5px] transform hover:scale-110 transition-transform duration-300">
           404
         </div>
         <div className="absolute text-[36vh] text-white text-center font-bold">
@@ -24,7 +24,7 @@ const NotFound = () => {
         <div className="text-[30px] text-white mb-2">Page  does  not  exist!</div>
         <div className="text-lg text-white mb-2">
           Return to&nbsp;
-          <Link href="../" className="text-green-500 hover:underline">
+          <Link href="./" className="text-green-500 hover:underline">
             Home
           </Link>
         </div>
