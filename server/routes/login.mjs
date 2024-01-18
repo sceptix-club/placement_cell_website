@@ -4,8 +4,10 @@ import 'dotenv/config'
 import bodyParser from 'body-parser';
 app.use(bodyParser.json())
 const router = express.Router()
-import {login} from '../controller/controller.mjs'
+import { login } from '../controller/controller.mjs'
+import {createJwtForStudents} from '../middleware/create_jwt.mjs'
 
-router.post("/", login);
+
+router.post("/",createJwtForStudents,login);
 
 export default router
