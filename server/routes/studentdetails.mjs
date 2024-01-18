@@ -4,8 +4,9 @@ import "dotenv/config";
 import bodyParser from "body-parser";
 app.use(bodyParser.json());
 const router = express.Router();
-import { getstudent } from '../controller/controller.mjs'
+import { getstudent } from "../controller/controller.mjs";
+import { verifyStudentJwtToken } from "../middleware/verify_jwt_token.mjs";
 
-router.get('/:id', getstudent);
+router.get("/:id", verifyStudentJwtToken, getstudent);
 
-export default router
+export default router;
