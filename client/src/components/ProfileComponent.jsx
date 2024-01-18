@@ -2,8 +2,10 @@ import React, { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
 import profileData from "../../public/profile_data";
 import { useCookies } from "react-cookie";
+import { useRouter } from "next/navigation";
 
 const ProfileComponent = ({ routePrefix, isMenteeVerify }) => {
+    const router =  useRouter()
     const pathName = usePathname();
     const pathNo = pathName.slice(`/${routePrefix}/`.length);
     const pathWithoutPrefix = pathName.slice(1);
@@ -29,6 +31,9 @@ const ProfileComponent = ({ routePrefix, isMenteeVerify }) => {
    
     useEffect(() => {
         if (routePrefix == "profile") {
+            if (cookies['token'] == undefined) {
+                router.push("/login")
+            }
             const fetchData = async () => {
                 try {
                     const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER}/student/${pathNo}`, {
