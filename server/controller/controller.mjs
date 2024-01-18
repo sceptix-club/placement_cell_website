@@ -5,6 +5,7 @@ import bodyParse from "body-parser";
 import Jwt from "jsonwebtoken";
 import fs from "fs";
 import cookieParser from "cookie-parser";
+
 app.use(cookieParser());
 
 // app.use(bodyParser.urlencoded({ extended: true }));
@@ -36,16 +37,20 @@ export const getDrives = (req, res) => {
     });
 };
 
-export const login = (req, res) => {
-    console.log("Login function");
+export const login = async (req, res) => {
+    const data = {
+        usn: "4so22",
+        token: req.jwt_token,
+        // Add other data properties here
+    };
+    res.send(data);
 };
 
 export const getstudent = (req, res) => {
-    
-    res.json({
+    let userDetails = {
         id: 2,
         name: "from db",
-        usn: req.params['id'],
+        usn: req.params["id"],
         branch: "from database",
         year: "from database",
         email: "from database@example.com",
@@ -54,5 +59,9 @@ export const getstudent = (req, res) => {
         skills: ["from db", "from db"],
         aadhaarUpload: "aadhaar.pdf",
         resumeUpload: "resume.pdf",
-    })
+    };
+    res.json({
+        userDetails: userDetails,
+        isPageSame: req.isPageSame,
+    });
 };
