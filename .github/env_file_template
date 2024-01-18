@@ -2,7 +2,7 @@
 create a file. Name it as .env.local
 
 
-NEXT_PUBLIC_SERVER = "backend server url"
+NEXT_PUBLIC_SERVER = "http://localhost:port/api"
 
 
 #in server folder
