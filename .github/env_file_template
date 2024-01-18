@@ -1,0 +1,13 @@
+#in client folder
+create a file. Name it as .env.local
+
+
+NEXT_PUBLIC_SERVER = "http://localhost:port/api"
+
+
+#in server folder
+create a file. Name it as .env
+
+STUDENT_SECRET_KEY = "here you can type anything u want"
+PORT = "port number (eg:3001)"
+
