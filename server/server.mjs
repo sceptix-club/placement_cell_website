@@ -8,7 +8,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(cors());
-let PORT = process.env.PORT || 3001;
+let PORT = process.env.PORT || 3000;
 import placementUpdate from "./routes/palcement_routes.mjs";
 import getdrives from "./routes/getdrives.mjs";
 import login from "./routes/login.mjs";
