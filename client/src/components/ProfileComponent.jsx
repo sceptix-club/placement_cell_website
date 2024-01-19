@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { usePathname } from "next/navigation";
 import profileData from "../../public/profile_data";
-import NotFound from "../app/notfound"; // Import the NotFound component
+import NotFound from "@/app/notfound";
+
 
 const ProfileComponent = ({ routePrefix, isMenteeVerify }) => {
   const pathName = usePathname();
@@ -13,14 +14,10 @@ const ProfileComponent = ({ routePrefix, isMenteeVerify }) => {
     profileData.find((item) => item.id === Number(pathNo))
   );
 
-  // Check if dataAll is undefined (profile not found)
-  if (!dataAll) {
-    // Redirect to NotFound component or display a message
-    return <NotFound />;
-  }
+if (!dataAll){
+  return <NotFound />
+}
 
-
- 
   const [editMode, setEditMode] = useState(false);
   const [newSkill, setNewSkill] = useState("");
   const [addingSkill, setAddingSkill] = useState(false);
@@ -44,6 +41,8 @@ const ProfileComponent = ({ routePrefix, isMenteeVerify }) => {
     setNewSkill("");
     setAddingSkill(false);
   };
+
+
 
   // Handle click on Add Skill button
   const handleAddSkill = () => {
@@ -106,14 +105,14 @@ const ProfileComponent = ({ routePrefix, isMenteeVerify }) => {
           <div className="bg-primary-card p-8 rounded-lg md:h-[460px]"><div className="p-8 flex flex-col items-center justify-center">
               <div className="bg-role-background p-0 rounded-lg mb-4 w-1/2 mt-0 m-0 h-[150px] overflow-hidden my-0"></div>
               <h2 className="text-2xl font-bold text-center text-main-text">
-                {dataAll && dataAll.name}
+                {dataAll.name}
               </h2>
             </div>
             <div className="text-left text-main-text">
-              <p className="mb-4">USN: {dataAll && dataAll.usn}</p>
-              <p className="mb-4">BRANCH: {dataAll && dataAll.branch}</p>
-              <p className="mb-4">YEAR: {dataAll && dataAll.year}</p>
-              <p>Email: {dataAll && dataAll.email}</p>
+              <p className="mb-4">USN: {dataAll.usn}</p>
+              <p className="mb-4">BRANCH: {dataAll.branch}</p>
+              <p className="mb-4">YEAR: {dataAll.year}</p>
+              <p>Email: {dataAll.email}</p>
             </div>
           </div>
         </div>
@@ -129,11 +128,11 @@ const ProfileComponent = ({ routePrefix, isMenteeVerify }) => {
                   <input
                     type="text"
                     className="text-white bg-secondary-card rounded-md w-full p-2 text-center ml-auto h-8"
-                    defaultValue={dataAll && dataAll.cgpa}
+                    defaultValue={dataAll.cgpa}
                   />
                 ) : (
                   <div className="text-white bg-secondary-card rounded-md w-full p-2 text-center ml-auto h-8">
-                    {dataAll && dataAll.cgpa}
+                    {dataAll.cgpa}
                   </div>
                 )}
               </div>
@@ -147,11 +146,11 @@ const ProfileComponent = ({ routePrefix, isMenteeVerify }) => {
                   <input
                     type="text"
                     className="text-white bg-secondary-card rounded-md w-full p-2 text-center h-8"
-                    defaultValue={dataAll && dataAll.activeBacklogs}
+                    defaultValue={dataAll.activeBacklogs}
                   />
                 ) : (
                   <div className="text-white bg-secondary-card rounded-md w-full p-2 text-center h-8">
-                    {dataAll && dataAll.activeBacklogs}
+                    {dataAll.activeBacklogs}
                   </div>
                 )}
               </div>
@@ -159,7 +158,7 @@ const ProfileComponent = ({ routePrefix, isMenteeVerify }) => {
             <hr className="my-4" />
           <label className="block text-white mb-4">Skills:</label>
           <div className="flex flex-wrap -mx-2">
-            {dataAll && dataAll.skills.map((skill, index) => (
+            {dataAll.skills.map((skill, index) => (
               <div
                 key={index}
                 className={`w-1/3 px-2 mb-4 text ${
@@ -255,7 +254,7 @@ const ProfileComponent = ({ routePrefix, isMenteeVerify }) => {
                 <input
                   type="text"
                   className="text-white bg-secondary-card rounded-md w-full p-2 text-center h-8"
-                  defaultValue={dataAll && dataAll.resumeUpload}
+                  defaultValue={dataAll.resumeUpload}
                   readOnly
                 />
               )}
@@ -288,7 +287,7 @@ const ProfileComponent = ({ routePrefix, isMenteeVerify }) => {
                 <input
                   type="text"
                   className="text-white bg-secondary-card rounded-md w-full p-2 text-center h-8"
-                  defaultValue={dataAll && dataAll.aadhaarUpload}
+                  defaultValue={dataAll.aadhaarUpload}
                   readOnly
                 />
               )}
