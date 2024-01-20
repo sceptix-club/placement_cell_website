@@ -38,7 +38,7 @@ const Role = () => {
                 Create a Role
             </h2>
 
-            <section className="font-gabarito w-10/12 ml-10 md:ml-40 lg:ml-96 sm:text-2xl md:text-2xl  sm:ml-20    mt-4 p-4 sm:w-sm md:w-md lg:w-lg h-auto md:p-12 sm:p-8  bg-primary-card rounded-md">
+            <section className="font-gabarito w-10/12 ml-10 md:ml-40 lg:ml-96 sm:text-2xl md:text-2xl  sm:ml-24    mt-4 p-4 sm:w-sm md:w-md lg:w-lg h-auto md:p-12 sm:p-8  bg-primary-card rounded-md">
                 <form className=" flex flex-col mb-4  ">
                     <label className="block text-lg font-semibold mt-1 sm:text-xl md:text-2xl   text-divider-color mb-2">Name of the Role</label>
                     <input
