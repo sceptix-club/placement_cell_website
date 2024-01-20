@@ -146,7 +146,7 @@ const Role = () => {
                     <div className="flex justify-center w-32 h-10">
 
                         <button
-                            className="font-medium bg-logo-bg w-32 h-10 rounded-md mt-5"
+                            className="  text-sm bg-logo-bg w-32 h-10 rounded-md mt-5"
                             type="submit"
                         >
                             Save
