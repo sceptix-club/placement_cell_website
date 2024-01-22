@@ -26,7 +26,7 @@ const create = () => {
 
   return (
     <div className="flex justify-center items-center h-auto py-10 mb-10">
-      <section className="w-10/12 sm:w-sm md:w-md lg:w-lg h-auto p-4 sm:p-8 md:p-12 bg-primary-card rounded-md">
+      <section className="w-10/12  sm:w-sm md:w-md lg:w-lg h-auto p-4 sm:p-8 md:p-12 bg-primary-card rounded-md">
         <h2 className="font-inter text-2xl sm:text-3xl md:text-4xl font-bold text-divider-color mb-8">
           Create a Draft
         </h2>
