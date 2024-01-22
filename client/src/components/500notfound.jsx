@@ -24,7 +24,7 @@ const NotFound = () => {
         <div className="text-[30px] text-white mb-2">Internal server error!</div>
         <div className="text-lg text-white mb-2">
           Return to&nbsp;
-          <Link href="./" className="text-green-500 hover:underline">
+          <Link href="../" className="text-green-500 hover:underline">
             Home
           </Link>
         </div>
