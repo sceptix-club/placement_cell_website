@@ -10,6 +10,7 @@ module.exports = {
     extend: {
       fontFamily: {
         inter: ["Inter", "sans-serif"],
+        gabarito: ["Gabarito","sans-serif"],
       },
 
       backgroundImage: {
@@ -25,12 +26,18 @@ module.exports = {
         "main-heading": "#FFFFFF",
         "role-text": "#909090",
         "role-text-2": "#d8d8d8",
+        "plcholder-text": "#C4C4C4",
         "role-background": "#D9D9D9",
         "divider-color": "#D9D9D9",
         "card-hover": "#6E6E6E",
         "logo-bg": "#60CE72",
         "search-bar":"#2e2e2e",
         "divider-color": "#868686"
+      },
+      spacing: {
+        lg: "44rem",
+        md: "36rem",
+        sm: "28rem",
       },
     },
   },
