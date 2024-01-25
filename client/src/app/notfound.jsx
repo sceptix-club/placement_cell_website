@@ -5,14 +5,14 @@ const NotFound = () => {
   return (
     <div className="flex flex-col items-center justify-center bg-background-clr text-primary-text relative">
       <div className="h-1/3 flex flex-col items-center justify-center">
-        <div className="text-3xl text-white text-center font-bold mb-2 hover:text-white hover:shadow-md transition-all duration-300">
+        <div className="text-3xl text-white text-center font-bold mb-2  ">
           WHOOPS
         </div>
         <div className="text-lg text-white mb-0">You've reached </div>
       </div>
 
       <div className="h-1/3 flex items-center justify-center relative">
-        <div className="relative z-10 text-[36vh] text-logo-bg text-center font-bold transform hover:translate-y-[-15px] hover:translate-x-[-10px] transition-transform duration-900">
+        <div className="relative z-10 text-[36vh] text-logo-bg text-center font-bold transform hover:translate-y-[-15px] hover:translate-x-[-10px] transition-transform duration-500 transform:translate3d(0,0,0)">
           404
         </div>
         <div className="absolute text-[36vh] text-white text-center font-bold">
