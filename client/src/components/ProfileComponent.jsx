@@ -144,13 +144,14 @@ const ProfileComponent = ({ routePrefix, isMenteeVerify }) => {
                     <div className="bg-primary-card p-8 rounded-lg md:h-[460px]">
                         <div className="p-8 flex flex-col items-center justify-center">
                             <div className="bg-role-background p-0 rounded-lg mb-4 w-1/2 mt-0 m-0 h-[150px] overflow-hidden my-0"></div>
-                            <h2 className="text-2xl font-bold text-center text-main-text">{dataAll?.name}</h2>
+                            <h2 className="text-2xl mb-0 mt-0 font-bold text-center text-main-text">{dataAll?.name}</h2>
                         </div>
-                        <div className="text-left text-main-text">
-                            <p className="mb-4">USN: {dataAll?.usn}</p>
-                            <p className="mb-4">BRANCH: {dataAll?.branch}</p>
-                            <p className="mb-4">YEAR: {dataAll?.year}</p>
-                            <p>Email: {dataAll?.email}</p>
+                        <div className="text-left mt-0 text-main-text">
+                            <p className="mb-[10px]">USN: {dataAll?.usn}</p>
+                            <p className="mb-[10px]">BRANCH: {dataAll?.branch}</p>
+                            <p className="mb-[10px]">YEAR: {dataAll?.year}</p>
+                            <p className="mb-[10px]">Email: {dataAll?.email}</p>
+                            <p className="mb-[10px]">Phone Number: {dataAll?.phone}</p>
                         </div>
                     </div>
                 </div>
