@@ -23,6 +23,7 @@ const ProfileComponent = ({ routePrefix, isMenteeVerify }) => {
         year: "server Error",
         email: "server Error",
         cgpa: "server Error",
+        phone:"Server Error",
         activeBacklogs: "server Error",
         skills: ["server", "Error"],
         aadhaarUpload: "aadhaar.pdf",
@@ -31,9 +32,10 @@ const ProfileComponent = ({ routePrefix, isMenteeVerify }) => {
    
     useEffect(() => {
         if (routePrefix == "profile") {
-            if (cookies['token'] == undefined) {
-                router.push("/login")
-            }
+            // temporary comment
+            // if (cookies['token'] == undefined) {
+            //     router.push("/login")
+            // }
             const fetchData = async () => {
                 try {
                     const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER}/student/${pathNo}`, {
