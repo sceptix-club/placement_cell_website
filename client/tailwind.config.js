@@ -10,6 +10,7 @@ module.exports = {
     extend: {
       fontFamily: {
         inter: ["Inter", "sans-serif"],
+        gabarito: ["Gabarito","sans-serif"],
       },
 
       backgroundImage: {
