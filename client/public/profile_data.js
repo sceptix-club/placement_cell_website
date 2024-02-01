@@ -11,6 +11,7 @@ const profileData = [
       skills: ["React", "Node.js", "JavaScript"],
       aadhaarUpload: "aadhaar.pdf",
       resumeUpload: "resume.pdf",
+      phone:"1234567890",
     },
     {
       id: 2,
@@ -24,6 +25,7 @@ const profileData = [
       skills: ["HTML", "JavaScript"],
       aadhaarUpload: "aadhaar.pdf",
       resumeUpload: "resume.pdf",
+      phone:"0234567891"
     },
   
   ];
