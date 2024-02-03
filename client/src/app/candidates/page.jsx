@@ -1,22 +1,111 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 //Data to be displayed in the table
 import CandidateTestData from "../../../public/CandidateTestData.js";
 import Dropdown from "../../components/DropdownFilter.jsx";
 
-const candidates = () => {
-  const [isFirstSelectOpened, setIsFirstSelectOpened] = useState(false);
+//Filter options
+const CGPA = ["5.0", "6.0", "7.0", "8.0", "9.0", "10.0"];
+const Branch = ["CSE", "CSDS", "ECE", "EEE", "MECH", "CIVIL", "CSBS"];
+const Skills = [
+  "React",
+  "Astro",
+  "Baking",
+  "Cooking",
+  "Dancing",
+  "Eating",
+  "Fishing",
+  "Gaming",
+  "Hiking",
+  "Jogging",
+  "Kiting",
+  "Lifting",
+  "Meditating",
+];
 
+const candidates = () => {
   const [searchTerm, setSearchTerm] = useState("");
+  const [selectedBranchOptions, setSelectedBranchOptions] = useState([]);
+  const [selectedCGPAOptions, setSelectedCGPAOptions] = useState([]);
+  const [selectedSkillsOptions, setSelectedSkillsOptions] = useState([]);
+  const [filteredData, setFilteredData] = useState([]);
 
   const handleSearch = (event) => {
     setSearchTerm(event.target.value);
   };
 
-  const filteredCandidates = CandidateTestData.filter((candidate) =>
-    candidate.name.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  //To handle the change in the selected options
+  const handleBranchOptionChange = (optionValue, isChecked) => {
+    if (isChecked) {
+      setSelectedBranchOptions((prevOptions) => [...prevOptions, optionValue]);
+    } else {
+      setSelectedBranchOptions((prevOptions) =>
+        prevOptions.filter((option) => option !== optionValue)
+      );
+    }
+  };
+
+  const handleCGPAOptionChange = (optionValue, isChecked) => {
+    if (isChecked) {
+      setSelectedCGPAOptions((prevOptions) => [...prevOptions, optionValue]);
+    } else {
+      setSelectedCGPAOptions((prevOptions) =>
+        prevOptions.filter((option) => option !== optionValue)
+      );
+    }
+  };
+
+  const handleSkillsOptionChange = (optionValue, isChecked) => {
+    if (isChecked) {
+      setSelectedSkillsOptions((prevOptions) => [...prevOptions, optionValue]);
+    } else {
+      setSelectedSkillsOptions((prevOptions) =>
+        prevOptions.filter((option) => option !== optionValue)
+      );
+    }
+  };
+
+  //To filter out the data based on the selected options
+  useEffect(() => {
+    let newFilteredData = CandidateTestData;
+
+    if (selectedBranchOptions.length > 0) {
+      newFilteredData = newFilteredData.filter((candidate) =>
+        selectedBranchOptions.includes(candidate.branch)
+      );
+    }
+
+    if (selectedCGPAOptions.length > 0) {
+      const maxCGPA = Math.max(...selectedCGPAOptions.map(parseFloat));
+      newFilteredData = newFilteredData.filter(
+        (candidate) => parseFloat(candidate.CGPA) >= maxCGPA
+      );
+    }
+
+    if (selectedSkillsOptions.length > 0) {
+      newFilteredData = newFilteredData.filter(
+        (candidate) =>
+          candidate.skills &&
+          selectedSkillsOptions.every((skill) =>
+            candidate.skills.includes(skill)
+          )
+      );
+    }
+
+    if (searchTerm) {
+      newFilteredData = newFilteredData.filter((candidate) =>
+        candidate.name.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+    }
+
+    setFilteredData(newFilteredData);
+  }, [
+    selectedBranchOptions,
+    selectedCGPAOptions,
+    selectedSkillsOptions,
+    searchTerm,
+  ]);
 
   return (
     <>
@@ -27,7 +116,24 @@ const candidates = () => {
               <p>Filters</p>
             </div>
             <div className="flex-grow overflow-auto scrollbar-hide">
-              <Dropdown />
+              <Dropdown
+                options={Branch}
+                handleOptionChange={handleBranchOptionChange}
+                selectedOptions={selectedBranchOptions}
+                title="Branch"
+              />
+              <Dropdown
+                options={CGPA}
+                handleOptionChange={handleCGPAOptionChange}
+                selectedOptions={selectedCGPAOptions}
+                title="CGPA"
+              />
+              <Dropdown
+                options={Skills}
+                handleOptionChange={handleSkillsOptionChange}
+                selectedOptions={selectedSkillsOptions}
+                title="Skills"
+              />
             </div>
           </div>
           <div className="border-l border-divider-color"></div>
@@ -56,7 +162,7 @@ const candidates = () => {
                 </svg>
               </button>
             </div>
-            <div className="bg-primary-card h-full rounded-lg ">
+            <div className="bg-primary-card h-full rounded-lg overflow-auto">
               <div className="flex text-left rounded-2xl">
                 <table className="w-full rounded-2xl">
                   <tr>
@@ -64,11 +170,14 @@ const candidates = () => {
                     <th className="bg-search-bar py-2 pl-4">Name</th>
                     <th className="bg-search-bar py-2 pl-4">Branch</th>
                   </tr>
-                  {filteredCandidates.map((candidate, index) => (
-                    <tr className="border-b border-divider-color" key={index}>
+                  {filteredData.map((candidate, index) => (
+                    <tr
+                      className="border-b border-divider-color overflow-auto "
+                      key={index}
+                    >
                       <td className="py-2 pl-3">{candidate.usn}</td>
-                      <td className="py-2 pl-3">{candidate.name}</td>
-                      <td className="py-2 pl-3">{candidate.branch}</td>
+                      <td className="py-2 ">{candidate.name}</td>
+                      <td className="py-2 ">{candidate.branch}</td>
                     </tr>
                   ))}
                 </table>

@@ -1,45 +1,158 @@
 const CandidateTestData = [
-    {
-        usn: "4SO22CS069",
-        name: "Vyasa",
-        branch: "MBBS"
-    },
-    {
-        usn: "4SO22CS969",
-        name: "Vyasa 2 ",
-        branch: "Anesthesiology"
-    },
-    {
-        usn: "4SO22CS",
-        name: "Vyasa 3 ",
-        branch: "Paediatrics"
-    },
-    {
-        usn: "4SO22CS915",
-        name: "Vyasa 4 ",
-        branch: "Cardiology"
-    },
-    {
-        usn: "4SO22CS9h",
-        name: "Vyasa 5 ",
-        branch: "Neurology"
-    },
-    {
-        usn: "4SO22Cdwa",
-        name: "Vyasa 6 ",
-        branch: "Orthopaedic "
-    },
-    {
-        usn: "4SO22C484",
-        name: "Vyasa 7 ",
-        branch: "Urology"
-    },
-    {
-        usn: "4SO22CSad",
-        name: "Vyasa 8 big name 12345",
-        branch: "Plastic Surgery"
-    },
-    
-]
-  
-  export default CandidateTestData
+  {
+    usn: "4SO22CS001",
+    name: "Student 1",
+    branch: "CSE",
+    CGPA: "10",
+    skills: ["React", "Astro"],
+  },
+  {
+    usn: "4SO22CS002",
+    name: "Student 2",
+    branch: "CSDS",
+    CGPA: "5",
+    skills: ["Baking", "Cooking"],
+  },
+  {
+    usn: "4SO22CS003",
+    name: "Student 3",
+    branch: "ECE",
+    CGPA: "7.5",
+    skills: ["Dancing", "Eating"],
+  },
+  {
+    usn: "4SO22CS004",
+    name: "Student 4",
+    branch: "EEE",
+    CGPA: "8.2",
+    skills: ["Astro", "Gaming"],
+  },
+  {
+    usn: "4SO22CS005",
+    name: "Student 5",
+    branch: "MECH",
+    CGPA: "9.1",
+    skills: ["Hiking", "Jogging"],
+  },
+  {
+    usn: "4SO22CS006",
+    name: "Student 6",
+    branch: "CIVIL",
+    CGPA: "7.8",
+    skills: ["Kiting", "Lifting"],
+  },
+  {
+    usn: "4SO22CS007",
+    name: "Student 7",
+    branch: "CSBS",
+    CGPA: "8.9",
+    skills: ["Meditating"],
+  },
+  {
+    usn: "4SO22CS008",
+    name: "Student 8",
+    branch: "ECE",
+    CGPA: "8.2",
+    skills: ["Reading", "Writing"],
+  },
+  {
+    usn: "4SO22CS009",
+    name: "Student 9",
+    branch: "EEE",
+    CGPA: "8.5",
+    skills: ["Swimming", "Cycling"],
+  },
+  {
+    usn: "4SO22CS010",
+    name: "Student 10",
+    branch: "MECH",
+    CGPA: "8.7",
+    skills: ["Running", "Jumping"],
+  },
+  {
+    usn: "4SO22CS011",
+    name: "Student 11",
+    branch: "CIVIL",
+    CGPA: "8.3",
+    skills: ["Singing", "Dancing"],
+  },
+  {
+    usn: "4SO22CS012",
+    name: "Student 12",
+    branch: "CSBS",
+    CGPA: "9.0",
+    skills: ["Coding", "Debugging"],
+  },
+  {
+    usn: "4SO22CS013",
+    name: "Student 13",
+    branch: "ECE",
+    CGPA: "8.6",
+    skills: ["Painting", "Sketching"],
+  },
+  {
+    usn: "4SO22CS014",
+    name: "Student 14",
+    branch: "EEE",
+    CGPA: "8.4",
+    skills: ["Cooking", "Baking"],
+  },
+  {
+    usn: "4SO22CS015",
+    name: "Student 15",
+    branch: "MECH",
+    CGPA: "8.8",
+    skills: ["Gardening", "Fishing"],
+  },
+  {
+    usn: "4SO22CS016",
+    name: "Student 16",
+    branch: "CIVIL",
+    CGPA: "8.1",
+    skills: ["Photography", "Videography"],
+  },
+  {
+    usn: "4SO22CS017",
+    name: "Student 17",
+    branch: "CSBS",
+    CGPA: "9.2",
+    skills: ["Gaming", "Streaming"],
+  },
+  {
+    usn: "4SO22CS018",
+    name: "Student 18",
+    branch: "ECE",
+    CGPA: "8.9",
+    skills: ["Hiking", "Camping"],
+  },
+  {
+    usn: "4SO22CS019",
+    name: "Student 19",
+    branch: "EEE",
+    CGPA: "8.0",
+    skills: ["Knitting", "Sewing"],
+  },
+  {
+    usn: "4SO22CS020",
+    name: "Student 20",
+    branch: "MECH",
+    CGPA: "8.5",
+    skills: ["Driving", "Riding"],
+  },
+  {
+    usn: "4SO22CS021",
+    name: "Student 21",
+    branch: "CIVIL",
+    CGPA: "8.7",
+    skills: ["Climbing", "Trekking"],
+  },
+  {
+    usn: "4SO22CS022",
+    name: "Student 22",
+    branch: "CSBS",
+    CGPA: "9.1",
+    skills: ["Yoga", "Meditation"],
+  },
+];
+
+export default CandidateTestData;
