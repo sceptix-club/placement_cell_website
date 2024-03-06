@@ -11,19 +11,15 @@
     "author": "",
     "license": "ISC",
     "dependencies": {
-        "@prisma/client": "^5.7.1",
-        "@vercel/postgres": "^0.5.1",
         "body-parser": "^1.20.2",
         "cookie-parser": "^1.4.6",
         "cors": "^2.8.5",
         "dotenv": "^16.3.1",
         "express": "^4.18.2",
         "fs": "^0.0.1-security",
-        "jsonwebtoken": "^9.0.2",
-        "vercel": "^33.2.0"
+        "jsonwebtoken": "^9.0.2"
     },
     "devDependencies": {
-        "nodemon": "^3.0.2",
-        "prisma": "^5.7.1"
+        "nodemon": "^3.0.2"
     }
 }
