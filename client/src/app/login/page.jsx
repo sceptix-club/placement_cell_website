@@ -16,7 +16,7 @@ const login = () => {
     const {isLoggedIn, setIsLoggedIn } = useContext(LoginContext);
     //   const [cookies, setCookie, removeCookie] = useCookies(['token']);
     const router = useRouter();
-    
+
 
     const handleLogin = () => {
         const emailRegex = /@sjec\.ac\.in/;
@@ -36,6 +36,7 @@ const login = () => {
                         password: password,
                     });
                     if (data.session !== null) {
+                        setIsLoggedIn(true);
                         router.push("/profile/0")
                     }
 
