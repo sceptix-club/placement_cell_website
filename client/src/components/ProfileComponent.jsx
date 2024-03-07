@@ -3,15 +3,14 @@ import { usePathname } from "next/navigation";
 import profileData from "../../public/profile_data";
 import { useCookies } from "react-cookie";
 import { useRouter } from "next/navigation";
+import supabase from "@/data/supabase";
 
 const ProfileComponent = ({ routePrefix, isMenteeVerify }) => {
     const router =  useRouter()
     const pathName = usePathname();
     const pathNo = pathName.slice(`/${routePrefix}/`.length);
     const pathWithoutPrefix = pathName.slice(1);
-
     // Initialize state for profile data, edit mode, new skill, and adding skill flag
-    const [cookies, setCookie, removeCookie] = useCookies(["token"]);
     const [verified , setVerified] = useState(true)
     
 
@@ -31,32 +30,19 @@ const ProfileComponent = ({ routePrefix, isMenteeVerify }) => {
     });
    
     useEffect(() => {
-        if (routePrefix == "profile") {
-            // temporary comment
-            // if (cookies['token'] == undefined) {
-            //     router.push("/login")
-            // }
-            const fetchData = async () => {
-                try {
-                    const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER}/student/${pathNo}`, {
-                        method: "GET",
-                        headers: {
-                            authorization: `bearer ${cookies["token"]}`,
-                            usn: sessionStorage.getItem("usn"),
-                        },
-                    });
-                    const data = await response.json();
-                    setDataAll(data.userDetails);
-                    setVerified(data.isPageSame)
-
-                    // Process the data here
-                } catch (error) {
-                    console.error("Error fetching data:", error);
+        if (routePrefix == "profile") { 
+            const checkUserStatus = async() => {
+                const { data, error } = await supabase.auth.getSession();
+                if (data.session !== null) {
+                    console.log("User is logged in");
                 }
-            };
-
-            fetchData();
+                else {
+                    router.push("/login")
+                }
+            }
+            checkUserStatus()
         }
+
     }, []);
     
     const [editMode, setEditMode] = useState(false);

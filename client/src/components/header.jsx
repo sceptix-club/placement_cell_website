@@ -5,6 +5,9 @@ import Image from "next/image";
 import { usePathname } from 'next/navigation'
 import { useCookies } from "react-cookie";
 import { useRouter } from 'next/navigation';
+import supabase from '@/data/supabase';
+import { useContext } from "react";
+import { LoginContext } from "@/context";
 
 
 
@@ -17,6 +20,7 @@ const Header = () => {
   const router =  useRouter()
   const [isOpen, setIsOpen] = useState(false);
   const [cookies, setCookie, removeCookie] = useCookies(["token"]);
+  const {isLoggedIn, setIsLoggedIn } = useContext(LoginContext);
 
   const PathName = usePathname();
   console.log(PathName);
@@ -68,10 +72,12 @@ const Header = () => {
                   Profile
                   <Image src="/user.svg" alt="profile" width={20} height={24} className="ml-2 dark:inverted h-5" />
                 </a>
-                        <a onClick={() => {
-                          removeCookie("token", { sameSite: "strict" });
-                          sessionStorage.clear()
-                          router.push("/")
+                        <a onClick={async() => { 
+                          const { error } = await supabase.auth.signOut()
+                          if (!error) {
+                            setIsLoggedIn(false);
+                            router.push("/")
+                          }
                           
                 }} className="flex items-center justify-end block px-4 py-4 lg:text-lg text-l text-role-text hover:bg-card-hover hover:text-white">
                   Log out

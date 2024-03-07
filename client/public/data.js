@@ -1,7 +1,7 @@
 const data = [
   {
     id: 1,
-    placementName: "TCS Campus Placement Drive",
+    placementName: "TCS Campus Drive",
     companyName: "TCS",
     date: "01-01-2024",
     description:
@@ -22,7 +22,7 @@ const data = [
   },
   {
     id: 2,
-    placementName: "Infosys Campus Placement Drive",
+    placementName: "Infosys Campus  Drive",
     companyName: "Infosys",
     date: "10-01-2024",
     description:
