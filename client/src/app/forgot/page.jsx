@@ -1,6 +1,7 @@
 'use client'
 import React, { useState } from 'react';
 import Link from 'next/link';
+import supabase from '@/data/supabase';
 
 
 const Forgot = () => {
@@ -9,7 +10,7 @@ const Forgot = () => {
     const [otp, setOtp] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
     const emailRegex = /@sjec\.ac\.in/;
-    const handleSendOtp = () => {
+    const handleSendOtp = async() => {
         if (email.trim() === '') {
             setErrorMessage('Invalid Credentials: Email cannot be empty or incorrect.');
             return;
@@ -17,13 +18,16 @@ const Forgot = () => {
         else if (!emailRegex.test(email)) {
             setErrorMessage('Invalid Credentials: Entered Email is Incorrect');
             return;
-
-
-
+        }
+        const { data, error } = await supabase.auth.resetPasswordForEmail(email, {
+            redirectTo: 'https://example.com/update-password',
+        })
+        if (data) {
+            console.log(data, error)
         }
 
-        setErrorMessage('');
-        setOtpSent(true);
+        setErrorMessage('check your email id');
+        // setOtpSent(true);
         console.log(`OTP Sent to ${email}`);
     };
 
