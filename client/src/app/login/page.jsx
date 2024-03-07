@@ -3,24 +3,20 @@ import React, { useEffect, useState } from "react";
 import { FaRegEye, FaEyeSlash } from "react-icons/fa";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useCookies } from 'react-cookie';
-
+import { useCookies } from "react-cookie";
+import supabase from "../../data/supabase";
+import { useContext } from "react";
+import { LoginContext } from "@/context";
 
 const login = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [errorMessage, setErrorMessage] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
-  const [cookies, setCookie, removeCookie] = useCookies(['token']);
-  const router = useRouter()
-  
-  useEffect(() => {
-    let usn = sessionStorage.getItem("usn")
-    let cookie = cookies['token']
-    if (usn && cookie != undefined) {
-      router.push(`/profile/${usn}`)
-    }
-  },[])
+    const [showPassword, setShowPassword] = useState(false);
+    const {isLoggedIn, setIsLoggedIn } = useContext(LoginContext);
+    //   const [cookies, setCookie, removeCookie] = useCookies(['token']);
+    const router = useRouter();
+    
 
     const handleLogin = () => {
         const emailRegex = /@sjec\.ac\.in/;
@@ -31,32 +27,40 @@ const login = () => {
             setErrorMessage("Invalid Credentials: Entered email is incorrect.");
         } else {
             // Perform login logic here
-          setErrorMessage(""); // Clear error message if login is successful
+            setErrorMessage(""); // Clear error message if login is successful
             console.log(`Logging in with email: ${email} and password: ${password}`);
             const handlelogin = async () => {
-              try {
-                const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER}/login`, {
-                  method: 'POST',
-                  headers: {
-                    'Content-Type': 'application/json',
-                  },
-                  body: JSON.stringify({
-                    userName: email,
-                    passWord: password,
-                    usn:sessionStorage.getItem("usn")
-                  })
-                });
+                try {
+                    const { data, error } = await supabase.auth.signInWithPassword({
+                        email: email,
+                        password: password,
+                    });
+                    if (data.session !== null) {
+                        router.push("/profile/0")
+                    }
 
-                const data = await response.json();
-                await sessionStorage.setItem("usn", `${data.usn}`)
-                let usn = sessionStorage.getItem("usn")
-                setCookie("token",data.token)
-                {usn == undefined ? router.push(""): router.push(`/profile/${usn}`)}
+                    // const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER}/login`, {
+                    //   method: 'POST',
+                    //   headers: {
+                    //     'Content-Type': 'application/json',
+                    //   },
+                    //   body: JSON.stringify({
+                    //     userName: email,
+                    //     passWord: password,
+                    //     usn:sessionStorage.getItem("usn")
+                    //   })
+                    // }
+                    // );
 
-              } catch (err) {
-                console.log(err);
-              }
-            }
+                    // const data = await response.json();
+                    // await sessionStorage.setItem("usn", `${data.usn}`)
+                    // let usn = sessionStorage.getItem("usn")
+                    // setCookie("token",data.token)
+                    // {usn == undefined ? router.push(""): router.push(`/profile/${usn}`)}
+                } catch (err) {
+                    console.log(err);
+                }
+            };
 
             handlelogin();
         }
