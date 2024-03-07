@@ -10,9 +10,7 @@ const ProfileComponent = ({ routePrefix, isMenteeVerify }) => {
     const pathName = usePathname();
     const pathNo = pathName.slice(`/${routePrefix}/`.length);
     const pathWithoutPrefix = pathName.slice(1);
-
     // Initialize state for profile data, edit mode, new skill, and adding skill flag
-    const [cookies, setCookie, removeCookie] = useCookies(["token"]);
     const [verified , setVerified] = useState(true)
     
 
