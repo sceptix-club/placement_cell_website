@@ -6,6 +6,8 @@ import { usePathname } from 'next/navigation'
 import { useCookies } from "react-cookie";
 import { useRouter } from 'next/navigation';
 import supabase from '@/data/supabase';
+import { useContext } from "react";
+import { LoginContext } from "@/context";
 
 
 
@@ -18,6 +20,7 @@ const Header = () => {
   const router =  useRouter()
   const [isOpen, setIsOpen] = useState(false);
   const [cookies, setCookie, removeCookie] = useCookies(["token"]);
+  const {isLoggedIn, setIsLoggedIn } = useContext(LoginContext);
 
   const PathName = usePathname();
   console.log(PathName);
@@ -72,6 +75,7 @@ const Header = () => {
                         <a onClick={async() => { 
                           const { error } = await supabase.auth.signOut()
                           if (!error) {
+                            setIsLoggedIn(false);
                             router.push("/")
                           }
                           
