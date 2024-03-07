@@ -13,10 +13,19 @@ const login = () => {
     const [password, setPassword] = useState("");
     const [errorMessage, setErrorMessage] = useState("");
     const [showPassword, setShowPassword] = useState(false);
-    const {isLoggedIn, setIsLoggedIn } = useContext(LoginContext);
+    const { isLoggedIn, setIsLoggedIn } = useContext(LoginContext);
     //   const [cookies, setCookie, removeCookie] = useCookies(['token']);
     const router = useRouter();
-
+    useEffect(() => {
+        const checkUserStatus = async () => {
+            const { data, error } = await supabase.auth.getSession();
+            if (data.session !== null) {
+                router.push("/profile/0");
+                setIsLoggedIn(true);
+            } 
+        };
+        checkUserStatus();
+    }, []);
 
     const handleLogin = () => {
         const emailRegex = /@sjec\.ac\.in/;
@@ -37,27 +46,8 @@ const login = () => {
                     });
                     if (data.session !== null) {
                         setIsLoggedIn(true);
-                        router.push("/profile/0")
+                        router.push("/profile/0");
                     }
-
-                    // const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER}/login`, {
-                    //   method: 'POST',
-                    //   headers: {
-                    //     'Content-Type': 'application/json',
-                    //   },
-                    //   body: JSON.stringify({
-                    //     userName: email,
-                    //     passWord: password,
-                    //     usn:sessionStorage.getItem("usn")
-                    //   })
-                    // }
-                    // );
-
-                    // const data = await response.json();
-                    // await sessionStorage.setItem("usn", `${data.usn}`)
-                    // let usn = sessionStorage.getItem("usn")
-                    // setCookie("token",data.token)
-                    // {usn == undefined ? router.push(""): router.push(`/profile/${usn}`)}
                 } catch (err) {
                     console.log(err);
                 }
