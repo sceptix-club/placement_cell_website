@@ -28,6 +28,11 @@ yarn-error.log*
 # local env files
 .env*.local
 
+#google idx config
+monospace.json
+.idx
+dev.nix
+
 # vercel
 .vercel
 
