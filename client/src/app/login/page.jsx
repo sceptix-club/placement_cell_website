@@ -20,7 +20,8 @@ const login = () => {
         const checkUserStatus = async () => {
             const { data, error } = await supabase.auth.getSession();
             if (data.session !== null) {
-                router.push("/profile/0");
+                const { user } = data.session;
+                router.push("/profile/"+user.id);
                 setIsLoggedIn(true);
             } 
         };
