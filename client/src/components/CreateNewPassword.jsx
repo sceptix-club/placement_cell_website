@@ -4,23 +4,14 @@ import React, { useState ,useEffect} from 'react';
 import supabase from '@/data/supabase';
 import { useRouter } from 'next/navigation';
 
-const newPassword = () => {
+
+const NewPassword = () => {
     const router = useRouter();
     const [password,setPassword] = useState("");
     const [confirmPassword , setConfirmPassword] = useState("");
     const [errorMessage, setErrorMessage] = useState('');
 
-    useEffect(()=>{
-        const checkForUserStatus = async()=>{
-            const {data,error} = await supabase.auth.getSession();
-            if(data.session===null){
-                router.push("/login");
-            }
-            console.log(data.session);
-        }
-        checkForUserStatus();     
-    },[])
-  
+    
     const handleSubmit = async()=>{
         // write a code to check if the value in the password state and reEnteredPassword state are equal or not
         if (password === confirmPassword) {
@@ -87,7 +78,7 @@ const newPassword = () => {
     );
 };
 
-export default newPassword;
+export default NewPassword;
 
 
 
