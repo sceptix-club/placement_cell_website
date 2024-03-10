@@ -35,10 +35,14 @@ const Header = () => {
         setIsLoggedIn(false);
         console.log("loggedout");
       }
-      console.log(isLoggedIn);
     };
     checkSession();
   }, []);
+
+    //For debugging purposes
+    useEffect(() => {
+      console.log("loggedin?",isLoggedIn);
+    }, [isLoggedIn]);
 
   return (
     <header>
@@ -77,7 +81,7 @@ const Header = () => {
                   </div>
                 )}
               </>
-            ) : PathName === "/" && isLoggedIn ? (
+            ) : isLoggedIn ? (
               <>
                 {isOpen && (
                   <div className="absolute right-0 mt-2 lg:w-44 w-40 lg:h-44  bg-primary-card rounded-md overflow-hidden shadow-xl z-10">
@@ -95,6 +99,19 @@ const Header = () => {
                         width={20}
                         height={24}
                         className="ml-2 dark:inverted h-5"
+                      />
+                    </a>
+                    <a
+                      href="/"
+                      className="flex items-center justify-end pr-4 py-3 lg:text-lg text-l text-role-text hover:bg-card-hover hover:text-white"
+                    >
+                      Home
+                      <Image
+                        src="/home.png"
+                        alt="Logout"
+                        width={20}
+                        height={24}
+                        className="ml-2 dark:invert"
                       />
                     </a>
                     <a
