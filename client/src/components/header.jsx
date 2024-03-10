@@ -39,10 +39,10 @@ const Header = () => {
     checkSession();
   }, []);
 
-    //For debugging purposes
-    useEffect(() => {
-      console.log("loggedin?",isLoggedIn);
-    }, [isLoggedIn]);
+  //For debugging purposes
+  useEffect(() => {
+    console.log("loggedin?", isLoggedIn);
+  }, [isLoggedIn]);
 
   return (
     <header>
@@ -64,7 +64,7 @@ const Header = () => {
             {PathName === "/login" ? (
               <>
                 {isOpen && (
-                  <div className="absolute right-0 mt-2 w-40 h-30  bg-primary-card rounded-md overflow-hidden shadow-xl z-10">
+                  <div className="absolute right-0 mt-2 w-40 h-36  bg-primary-card rounded-md overflow-hidden shadow-xl z-10">
                     <a
                       href="/"
                       className="flex items-center justify-end pr-4 py-3 lg:text-lg text-l text-role-text hover:bg-card-hover hover:text-white"
@@ -84,7 +84,7 @@ const Header = () => {
             ) : isLoggedIn ? (
               <>
                 {isOpen && (
-                  <div className="absolute right-0 mt-2 lg:w-44 w-40 lg:h-44  bg-primary-card rounded-md overflow-hidden shadow-xl z-10">
+                  <div className="absolute right-0 mt-2 lg:w-44 w-40 lg:h-auto  bg-primary-card rounded-md overflow-hidden shadow-xl z-10">
                     <h3 className="text-xl lg:text-2xl text-white  font-bold text-center py-4 ">
                       Hi {UserName}{" "}
                     </h3>
@@ -101,19 +101,21 @@ const Header = () => {
                         className="ml-2 dark:inverted h-5"
                       />
                     </a>
-                    <a
-                      href="/"
-                      className="flex items-center justify-end pr-4 py-3 lg:text-lg text-l text-role-text hover:bg-card-hover hover:text-white"
-                    >
-                      Home
-                      <Image
-                        src="/home.png"
-                        alt="Logout"
-                        width={20}
-                        height={24}
-                        className="ml-2 dark:invert"
-                      />
-                    </a>
+                    {PathName !== "/" && (
+                      <a
+                        href="/"
+                        className="flex items-center justify-end pr-4 py-3 lg:text-lg text-l text-role-text hover:bg-card-hover hover:text-white"
+                      >
+                        Home
+                        <Image
+                          src="/home.png"
+                          alt="Logout"
+                          width={20}
+                          height={24}
+                          className="ml-2 dark:invert"
+                        />
+                      </a>
+                    )}
                     <a
                       onClick={async () => {
                         const { error } = await supabase.auth.signOut();
