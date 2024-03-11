@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation";
 import supabase from "@/data/supabase";
 import { useContext } from "react";
 import { LoginContext } from "@/context";
+import dynamic from "next/dynamic";
 
 const UserName = "Vyasa";
 //To check for loggedin/logged out for testing purposes
@@ -64,7 +65,7 @@ const Header = () => {
             {PathName === "/login" ? (
               <>
                 {isOpen && (
-                  <div className="absolute right-0 mt-2 w-40 h-36  bg-primary-card rounded-md overflow-hidden shadow-xl z-10">
+                  <div className="absolute right-0 mt-2 w-40 h-auto  bg-primary-card rounded-md overflow-hidden shadow-xl z-10">
                     <a
                       href="/"
                       className="flex items-center justify-end pr-4 py-3 lg:text-lg text-l text-role-text hover:bg-card-hover hover:text-white"
@@ -169,4 +170,4 @@ const Header = () => {
   );
 };
 
-export default Header;
+export default dynamic (() => Promise.resolve(Header), {ssr: false})

@@ -95,7 +95,7 @@ const candidates = () => {
 
     if (searchTerm) {
       newFilteredData = newFilteredData.filter((candidate) =>
-        candidate.name.toLowerCase().includes(searchTerm.toLowerCase())
+        candidate.usn.toLowerCase().includes(searchTerm.toLowerCase())
       );
     }
 
@@ -165,11 +165,13 @@ const candidates = () => {
             <div className="bg-primary-card h-full rounded-lg overflow-auto">
               <div className="flex text-left rounded-2xl">
                 <table className="w-full rounded-2xl">
-                  <tr>
-                    <th className="bg-search-bar py-2 pl-4">USN</th>
-                    <th className="bg-search-bar py-2 pl-4">Name</th>
-                    <th className="bg-search-bar py-2 pl-4">Branch</th>
-                  </tr>
+                  <thead>
+                    <tr>
+                      <th className="bg-search-bar py-2 pl-4">USN</th>
+                      <th className="bg-search-bar py-2 pl-4">Name</th>
+                      <th className="bg-search-bar py-2 pl-4">Branch</th>
+                    </tr>
+                  </thead>
                   {filteredData.map((candidate, index) => (
                     <tr
                       className="border-b border-divider-color overflow-auto "
