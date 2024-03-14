@@ -34,7 +34,20 @@ body {
   display: flex;
   flex-direction: column;
 }
+input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(1) brightness(80%);
+}
 
 input[type="date"]::-webkit-calendar-picker-indicator {
   filter: invert(1) brightness(80%);
+}
+
+/* Below css is for scrollbar for filters in  */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }

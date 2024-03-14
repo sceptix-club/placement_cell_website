@@ -31,6 +31,8 @@ module.exports = {
         "divider-color": "#D9D9D9",
         "card-hover": "#6E6E6E",
         "logo-bg": "#60CE72",
+        "search-bar":"#2e2e2e",
+        "divider-color": "#868686"
       },
       spacing: {
         lg: "44rem",
