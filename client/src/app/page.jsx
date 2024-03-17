@@ -1,9 +1,13 @@
 // page.jsx
+"use client";
 import React from "react";
 import DriveCard from "@/components/driveCard";
 import Data from "../../public/data";
+import { useContext } from "react";
+import { LoginContext } from "@/context";
 
 const Home = () => {
+  const { isLoggedIn, setIsLoggedIn } = useContext(LoginContext);
   return (
     <>
       <div className="lg:flex w-full justify-center items-center flex-col bg-background-clr overflow-y-auto sm: flex   justify-center items-center flex-col l">
@@ -24,6 +28,16 @@ const Home = () => {
           <h1 className="text-3xl font-bold text-white mb-4"></h1>
         </div>
       </div>
+
+      {isLoggedIn ? (
+        <a
+          href="/Role"
+          title="Create Role"
+          class="fixed z-90 bottom-10 right-8 bg-zinc-700 w-20 h-20 rounded-full drop-shadow-lg flex justify-center items-center text-white text-4xl hover:bg-zinc-800 hover:drop-shadow-2xl  duration-300 m-auto"
+        >
+          +
+        </a>
+      ) : null}
     </>
   );
 };
