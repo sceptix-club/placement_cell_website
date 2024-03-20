@@ -1,19 +1,17 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, use } from "react";
 import { usePathname } from "next/navigation";
 import profileData from "../../public/profile_data";
 import { useCookies } from "react-cookie";
 import { useRouter } from "next/navigation";
+import supabase from "@/data/supabase";
 
 const ProfileComponent = ({ routePrefix, isMenteeVerify }) => {
-    const router =  useRouter()
+    const router = useRouter();
     const pathName = usePathname();
     const pathNo = pathName.slice(`/${routePrefix}/`.length);
     const pathWithoutPrefix = pathName.slice(1);
-
     // Initialize state for profile data, edit mode, new skill, and adding skill flag
-    const [cookies, setCookie, removeCookie] = useCookies(["token"]);
-    const [verified , setVerified] = useState(true)
-    
+    const [verified, setVerified] = useState(true);
 
     const [dataAll, setDataAll] = useState({
         id: "server Error",
@@ -23,42 +21,42 @@ const ProfileComponent = ({ routePrefix, isMenteeVerify }) => {
         year: "server Error",
         email: "server Error",
         cgpa: "server Error",
-        phone:"Server Error",
+        phone: "Server Error",
         activeBacklogs: "server Error",
-        skills: ["server", "Error"],
-        aadhaarUpload: "aadhaar.pdf",
-        resumeUpload: "resume.pdf",
+        skills: ["",""],
+       
     });
-   
+    
+
     useEffect(() => {
         if (routePrefix == "profile") {
-            // temporary comment
-            // if (cookies['token'] == undefined) {
-            //     router.push("/login")
-            // }
-            const fetchData = async () => {
-                try {
-                    const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER}/student/${pathNo}`, {
-                        method: "GET",
-                        headers: {
-                            authorization: `bearer ${cookies["token"]}`,
-                            usn: sessionStorage.getItem("usn"),
-                        },
-                    });
-                    const data = await response.json();
-                    setDataAll(data.userDetails);
-                    setVerified(data.isPageSame)
-
-                    // Process the data here
-                } catch (error) {
-                    console.error("Error fetching data:", error);
+            const checkUserStatus = async () => {
+                const { data, error } = await supabase.auth.getSession();
+                if (data.session !== null) {
+                    const { user } = data.session;
+                    router.push("/profile/" + user.id);
+                    const getDetails = async () => {
+                        const { data, error } = await supabase.from("student_table").select().eq("uuid",user.id);
+                        setDataAll(data[0]);
+                    };
+                    await getDetails();
+                } else {
+                    router.push("/login");
                 }
             };
-
-            fetchData();
+            checkUserStatus();
         }
+        return () => {
+            // Cleanup function
+            // Reset data and cancel changes
+            const cleanUp = () => {
+                
+            }
+
+
+        };
     }, []);
-    
+
     const [editMode, setEditMode] = useState(false);
     const [newSkill, setNewSkill] = useState("");
     const [addingSkill, setAddingSkill] = useState(false);
@@ -96,7 +94,7 @@ const ProfileComponent = ({ routePrefix, isMenteeVerify }) => {
         }));
         setAddingSkill(false); // Clear addingSkill state when removing a skill
     };
-    
+
     // Handle saving a new skill
     const handleSaveNewSkill = () => {
         if (newSkill.trim() !== "") {
@@ -108,7 +106,7 @@ const ProfileComponent = ({ routePrefix, isMenteeVerify }) => {
             setAddingSkill(false);
         }
     };
-    
+
     // Handle file upload for Resume
     const handleResumeUpload = (event) => {
         const file = event.target.files[0];
@@ -135,9 +133,11 @@ const ProfileComponent = ({ routePrefix, isMenteeVerify }) => {
         // You can perform additional actions after verification is complete
     };
 
-    // put 404 page here 
-     {verified ? console.log("Logged in" ) : console.log("404 page not found")}
-    
+    // put 404 page here
+    {
+        verified ? console.log("Logged in") : console.log("404 page not found");
+    }
+
     return (
         <div className="bg-background-clr text-primary-text ">
             <div className="flex flex-col md:flex-row justify-center items-center mt-10 mb-16 mx-4">
@@ -186,6 +186,7 @@ const ProfileComponent = ({ routePrefix, isMenteeVerify }) => {
                             <div className="w-2/3">
                                 {editMode ? (
                                     <input
+                                        
                                         type="text"
                                         className="text-white bg-secondary-card rounded-md w-full p-2 text-center h-8"
                                         defaultValue={dataAll?.activeBacklogs}
@@ -274,6 +275,7 @@ const ProfileComponent = ({ routePrefix, isMenteeVerify }) => {
                                 {editMode ? (
                                     <div className="flex items-center">
                                         <input
+                                            
                                             type="file"
                                             onChange={handleResumeUpload}
                                             accept=".pdf,.doc,.docx" // Set accepted file types
@@ -288,10 +290,11 @@ const ProfileComponent = ({ routePrefix, isMenteeVerify }) => {
                                         </label>
                                     </div>
                                 ) : (
-                                    <input
+                                        <input
+                                            placeholder="Upload your Resume"
                                         type="text"
-                                        className="text-white bg-secondary-card rounded-md w-full p-2 text-center h-8"
-                                        defaultValue={dataAll?.resumeUpload}
+                                        className="text-white bg-secondary-card rounded-md w-full p-2 text-center h-8 placeholder:text-white"
+                                        // defaultValue={dataAll?.resumeUpload}
                                         readOnly
                                     />
                                 )}
@@ -307,6 +310,7 @@ const ProfileComponent = ({ routePrefix, isMenteeVerify }) => {
                                 {editMode ? (
                                     <div className="flex items-center">
                                         <input
+                                            placeholder="Upload your Aadhaar"
                                             type="file"
                                             onChange={handleAadhaarUpload}
                                             accept=".pdf,.jpg,.jpeg,.png" // Set accepted file types
@@ -321,10 +325,12 @@ const ProfileComponent = ({ routePrefix, isMenteeVerify }) => {
                                         </label>
                                     </div>
                                 ) : (
-                                    <input
+                                        <input
+                                            placeholder="Upload your Aadhaar"
                                         type="text"
-                                        className="text-white bg-secondary-card rounded-md w-full p-2 text-center h-8"
-                                        defaultValue={dataAll?.aadhaarUpload}
+                                        className="text-white bg-secondary-card rounded-md w-full p-2 text-center h-8 placeholder:text-white"
+                                            // defaultValue={dataAll?.aadhaarUpload}
+                                            
                                         readOnly
                                     />
                                 )}
