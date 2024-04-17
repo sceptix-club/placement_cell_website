@@ -1,48 +1,84 @@
 "use client";
-
+import { useEffect, useState } from "react";
 import RolesCard from "@/components/RolesCard";
-import Data from "../../../../public/data";
+// import Data from "../../../../public/data";
 import { usePathname } from "next/navigation";
 import { notFound } from "next/navigation";
+import supabase from "@/data/supabase";
 
 const driveinfo = () => {
+  const [placements, setPlacements] = useState([]);
+  const [role, setRole] = useState([]);
+
   const pathName = usePathname();
   const pathNo = pathName.slice("/drive/".length);
-  const dataAll = Data.find((item) => item.id === Number(pathNo));
+  // const dataAll = Data.find((item) => item.id === Number(pathNo));
 
-  if (!dataAll) {
-    return notFound();
-  }
+  useEffect(() => {
+    const fetchPlacement = async () => {
+      const { data, error } = await supabase
+        .schema("placements")
+        .from("drive")
+        .select("*")
+        .eq("id", pathNo)
+        .single();
+      if (!error) {
+        setPlacements(data);
+        console.log("data");
+        console.log(data);
+      }
+    };
+
+    const fetchRoles = async () => {
+      const { data, error } = await supabase
+        .schema("placements")
+        .from("role")
+        .select("*")
+        .eq("drive_id", pathNo);
+      if (!error) {
+        setRole(data);
+        console.log("data1");
+        console.log(data);
+      }
+    };
+
+    fetchPlacement();
+    fetchRoles();
+  }, []);
+
+  // if (!dataAll) {
+  //   return notFound();
+  // }
 
   return (
     <div className="flex items-center justify-center py-10 mb-10 h-auto bg-background-clr font-inter font-normal">
       <section className="flex flex-col p-5 sm:p-8 lg:p-16  w-11/12 sm:w-10/12 md:w-2/3 lg:w-3/5 border-white h-auto rounded-md bg-primary-card">
         <h2 className="text-lg lg:text-2xl text-role-text font-semibold">
-          {dataAll.placementName}
+          {placements.name}
         </h2>
         <h2 className="text-2xl lg:text-4xl mb-1 font-semibold">
-          {dataAll.companyName}
+          {placements.company}
         </h2>
         <div className="text-md lg:text-xl py-2 leading-tight lg:leading-tight font-medium">
-          <p>{dataAll.description}</p>
+          <p>{placements.description}</p>
         </div>
         <div className="flex flex-row item-center mt-4 lg:mt-5">
           <h3 className="text-sm lg:text-lg font-medium">Roles:&nbsp;</h3>
-          {dataAll.roles.map((role) => {
+          {role.map((role) => {
             return (
               <p
-                key={role.subID}
+                key={role.id}
                 className="bg-secondary-card text-role-text-2 rounded-md px-2 ml-2 text-sm lg:text-lg font-medium"
               >
-                {role.role}
+                {role.name}
               </p>
             );
           })}
         </div>
         <hr className=" border-divider-color mt-5" />
 
-        {dataAll.roles.map((innerRole) => {
-          return <RolesCard key={innerRole.subID} props={innerRole} />;
+        {role.map((innerRole) => {
+          return <RolesCard key={innerRole.id} props={innerRole} />;
         })}
       </section>
     </div>
