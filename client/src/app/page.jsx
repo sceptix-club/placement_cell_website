@@ -10,7 +10,10 @@ const Home = () => {
 
   React.useEffect(() => {
     const fetchPlacement = async () => {
-      const { data, error } = await supabase.from("drive").select();
+      const { data, error } = await supabase
+        .schema("placements")
+        .from("drive")
+        .select();
       if (!error) {
         setPlacements(data);
         console.log("data");
