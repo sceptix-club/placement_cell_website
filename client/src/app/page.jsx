@@ -6,7 +6,7 @@ import Data from "../../public/data";
 const Home = () => {
   return (
     <>
-      <div className="lg:flex w-full justify-center items-center flex-col bg-background-clr overflow-y-auto sm: flex   justify-center items-center flex-col l">
+      <div className="lg:flex w-full justify-center items-center flex-col bg-background-clr overflow-y-auto sm: flex l">
         <section className="lg:w-2/3 sm: w-3/4">
           <h1 className="text-3xl font-bold text-white mb-6">Ongoing</h1>
           {Data.map((placement, index) => (
