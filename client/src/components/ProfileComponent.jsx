@@ -5,7 +5,7 @@ import { useCookies } from "react-cookie";
 import { useRouter } from "next/navigation";
 import supabase from "@/data/supabase";
 
-const ProfileComponent = ({ routePrefix, isMenteeVerify }) => {
+const ProfileComponent = ({ routePrefix, isVerify }) => {
   const router = useRouter();
   const pathName = usePathname();
   const pathNo = pathName.slice(`/${routePrefix}/`.length);
@@ -352,12 +352,12 @@ const ProfileComponent = ({ routePrefix, isMenteeVerify }) => {
                   Cancel
                 </button>
               )}
-              {isMenteeVerify ? (
+              {isVerify ? (
                 <button
                   className="bg-logo-bg text-black font-bold px-10 py-0 rounded-md"
                   onClick={handleVerifyClick}
                 >
-                  {isMenteeVerify ? "Verify" : "Edit"}
+                  {isVerify ? "Verify" : "Edit"}
                 </button>
               ) : (
                 <button
