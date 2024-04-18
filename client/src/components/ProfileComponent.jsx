@@ -26,41 +26,6 @@ const ProfileComponent = ({ routePrefix, isVerify }) => {
     skills: ["", ""],
   });
 
-  useEffect(() => {
-    if (routePrefix == "profile") {
-      const checkUserStatus = async () => {
-        const { data, error } = await supabase.auth.getSession();
-        if (data.session !== null) {
-          const { user } = data.session;
-          router.push("/profile/" + user.id);
-          const getDetails = async () => {
-            const { data, error } = await supabase
-              .from("student_table")
-              .select()
-              .eq("uuid", user.id);
-            setDataAll(data[0]);
-          };
-          await getDetails();
-        } else {
-          router.push("/login");
-        }
-      };
-      checkUserStatus();
-    }
-    return () => {
-      // Cleanup function
-      // Reset data and cancel changes
-      const cleanUp = () => {};
-    };
-  }, []);
-
-
-
-
-
-
-
-
 useEffect(() => {
     const checkUserStatus = async () => {
       try {
