@@ -1,12 +1,12 @@
-import React from "react"
+import React from "react";
 
 const RolesCard = ({ props }) => {
   return (
     <section className="flex flex-col mt-8 text-sm lg:text-base">
-      <h2 className="text-xl lg:text-2xl font-medium">{props.role}</h2>
+      <h2 className="text-xl lg:text-2xl font-medium">{props.name}</h2>
       <div className="bg-secondary-card rounded-md px-3 py-4 sm:p-6 lg:p-6 font-medium">
         {/* this is the description */}
-        <p className="mb-8 lg:mb-5 sm:leading-tight">{props.roleDescription}</p>
+        <p className="mb-8 lg:mb-5 sm:leading-tight">{props.description}</p>
 
         <div className="lg:mt-3 mt-5 flex flex-row">
           <h3>Qualifications:&nbsp;</h3>
@@ -34,7 +34,7 @@ const RolesCard = ({ props }) => {
         </div>
       </div>
     </section>
-  )
-}
+  );
+};
 
-export default RolesCard
+export default RolesCard;

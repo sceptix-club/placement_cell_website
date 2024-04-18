@@ -14,14 +14,15 @@ const NotFound = () => {
 
     const timer = setInterval(toggleAnimation, 2000);
 
-
     return () => clearInterval(timer);
   }, []);
 
   useEffect(() => {
     // Programmatically update the style of the animated elements
     if (animationRef.current) {
-      animationRef.current.style.transform = isUp ? "translateY(-15px)" : "translateY(0px)";
+      animationRef.current.style.transform = isUp
+        ? "translateY(-15px)"
+        : "translateY(0px)";
     }
   }, [isUp]);
 
@@ -41,10 +42,7 @@ const NotFound = () => {
         >
           404
         </div>
-        <div
-          className="absolute text-[36vh] text-white text-center font-bold"
-          
-        >
+        <div className="absolute text-[36vh] text-white text-center font-bold">
           404
         </div>
       </div>
