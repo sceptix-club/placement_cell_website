@@ -1,13 +1,13 @@
 const mentees = [
     {
-        name: "John Doe",
+        name: "John Doe very vey very very long name",
         usn: "1BM18CS001",
         year: 3,
         branch: "AIML",
         email: "john.doe@example.com"
     },
     {
-        name: "Jane Smith",
+        name: "Jane Smith long name",
         usn: "1BM18EC002",
         year: 2,
         branch: "CSDS",
