@@ -28,16 +28,59 @@ const Home = () => {
       <div className="lg:flex w-full justify-center items-center flex-col bg-background-clr overflow-y-auto sm: flex l">
         <section className="lg:w-2/3 sm: w-3/4">
           <h1 className="text-3xl font-bold text-white mb-6">Ongoing</h1>
-          {placements.map((placement, index) => (
-            <DriveCard key={placement.id} placement={placement} />
-          ))}
+          {placements.map((placement, index) => {
+            const currentDate = new Date();
+            const placementDate = new Date(placement.date);
+            const timeDifference =
+              placementDate.getTime() - currentDate.getTime();
+            const daysDifference = Math.ceil(
+              timeDifference / (1000 * 3600 * 24)
+            );
+
+            if (daysDifference >= -1 && daysDifference <=3) {
+              return <DriveCard key={placement.id} placement={placement} />;
+            } else {
+              return null;
+            }
+          })}
         </section>
         <hr className="w-2/3 border-white my-6" />
         <section className="lg:w-2/3 sm: w-3/4">
           <h1 className="text-3xl font-bold text-white mb-6">Upcoming</h1>
-          {/* {Data.map((placement, index) => (
-            <DriveCard key={placement.id} placement={placement} />
-          ))} */}
+          {placements.map((placement, index) => {
+            const currentDate = new Date();
+            const placementDate = new Date(placement.date);
+            const timeDifference =
+              placementDate.getTime() - currentDate.getTime();
+            const daysDifference = Math.ceil(
+              timeDifference / (1000 * 3600 * 24)
+            );
+            if (daysDifference >= 3) {
+              return <DriveCard key={placement.id} placement={placement} />;
+            } else {
+              return null;
+            }
+          })}
+        </section>
+        <hr className="w-2/3 border-white my-6" />
+        <section className="lg:w-2/3 sm: w-3/4">
+          <h1 className="text-3xl font-bold text-white mb-6">
+            Past Placements
+          </h1>
+          {placements.map((placement, index) => {
+            const currentDate = new Date();
+            const placementDate = new Date(placement.date);
+            const timeDifference =
+              placementDate.getTime() - currentDate.getTime();
+            const daysDifference = Math.ceil(
+              timeDifference / (1000 * 3600 * 24)
+            );
+            if (daysDifference <= -1) {
+              return <DriveCard key={placement.id} placement={placement} />;
+            } else {
+              return null;
+            }
+          })}
         </section>
         <div className="w-2/3 mb-6">
           <h1 className="text-3xl font-bold text-white mb-4"></h1>
