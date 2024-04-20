@@ -1,13 +1,16 @@
 "use client"
 
 import React, { useState } from "react"
+import supabase from "@/data/supabase";
 
 const create = () => {
   const [submitData, setSubmitData] = useState({
-    placementName: "",
-    companyName: "",
-    companyDesc: "",
+    name: "",
+    company: "",
+    description: "",
     date: "",
+
+
   })
 
   const handleInputChange = (e) => {
@@ -17,12 +20,53 @@ const create = () => {
       [name]: value,
     }))
   }
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    setSubmitData((prev) => ({
+      ...prev,
+      pdfFile: file,
+    }));
+  };
 
-  function handleSubmit(e) {
-    e.preventDefault()
-    console.log("Submitted")
-    console.table(submitData)
-  }
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    // console.log("Data to be submitted:", submitData);
+
+    try {
+      const { data, error } = await supabase
+        .schema("placements")
+        .from("drive")
+        .insert([
+          {
+            name: submitData.name,
+            company: submitData.company,
+            description: submitData.description,
+            date: submitData.date,
+
+
+
+
+          },
+        ]);
+
+      if (error) {
+        console.error('Error saving placement:', error.message);
+        return;
+      }
+
+      console.log('Placement saved successfully:', data);
+      setSubmitData({
+        name: "",
+        company: "",
+        description: "",
+        date: "",
+        pdfFile: "",
+      });
+
+    } catch (error) {
+      console.error('Error saving placement:', error.message);
+    }
+  };
 
   return (
     <div className="flex justify-center items-center h-auto py-10 mb-10">
@@ -33,51 +77,51 @@ const create = () => {
         <form onSubmit={handleSubmit} className="flex flex-col">
           <label
             className="font-inter text-lg sm:text-xl md:text-2xl font-medium text-divider-color"
-            htmlFor="placementName"
+            htmlFor="name"
           >
             Placement Name
           </label>
           <input
             className="bg-secondary-card rounded-md px-5
-            py-2 mb-5 placeholder-plcholder-text text-divider-color"
+            py-2 mb-5 placeholder-plcholder-text text-white"
             type="text"
-            id="placementName"
-            name="placementName"
+            id="name"
+            name="name"
             placeholder="Enter Placement Name"
-            defaultValue={submitData.placementName}
+            value={submitData.name}
             onChange={handleInputChange}
           />
           <label
             className="font-inter text-lg sm:text-xl md:text-2xl font-medium text-divider-color"
-            htmlFor="companyName"
+            htmlFor="company"
           >
             Company Name
           </label>
           <input
             className="bg-secondary-card rounded-md px-5
-            py-2 mb-5 placeholder-plcholder-text text-divider-color"
+            py-2 mb-5 placeholder-plcholder-text text-white"
             type="text"
-            id="companyName"
-            name="companyName"
+            id="company"
+            name="company"
             placeholder="Enter Company Name"
-            defaultValue={submitData.companyName}
+            value={submitData.company}
             onChange={handleInputChange}
           />
           <label
             className="font-inter text-lg sm:text-xl md:text-2xl font-medium text-divider-color"
-            htmlFor="companyDesc"
+            htmlFor="description"
           >
             Company Description
           </label>
           <textarea
             className="bg-secondary-card rounded-md px-5
-            py-2 mb-5 placeholder-plcholder-text text-divider-color resize-none"
+            py-2 mb-5 placeholder-plcholder-text text-white resize-none"
             rows={6}
             type="text"
-            id="companyDesc"
-            name="companyDesc"
+            id="description"
+            name="description"
             placeholder="Enter Company Description"
-            defaultValue={submitData.companyDesc}
+            value={submitData.description}
             onChange={handleInputChange}
           />
           <label
@@ -88,15 +132,33 @@ const create = () => {
           </label>
           <input
             className="bg-secondary-card rounded-md px-5
-            py-2 mb-5 text-divider-color"
+            py-2 mb-5 text-white"
             type="date"
             id="date"
             name="date"
-            defaultValue={submitData.date}
+            value={submitData.date}
             onChange={handleInputChange}
+          />
+          <label
+            className="font-inter text-lg sm:text-xl md:text-2xl font-medium text-divider-color"
+            htmlFor="pdfFile"
+          >
+            Upload PDF
+          </label>
+          <input
+
+            className="mb-5 rounded-md"
+            type="file"
+            id="pdfFile"
+            name="pdfFile"
+            accept=".pdf"
+            onChange={handleFileChange}
           />
           <div className="flex justify-center w-32 h-10">
             <button
+
+
+
               className="font-medium bg-logo-bg w-32 h-10 rounded-md "
               type="submit"
             >
