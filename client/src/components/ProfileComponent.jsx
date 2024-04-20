@@ -26,14 +26,14 @@ const ProfileComponent = ({ routePrefix, isVerify }) => {
     skills: ["", ""],
   });
 
-useEffect(() => {
+  useEffect(() => {
     const checkUserStatus = async () => {
       try {
         const { data, error } = await supabase.auth.getSession();
         if (error) {
           throw error;
         }
-        if (!data) {
+        if (data.session == null) {
           router.push("/login");
           return;
         }
@@ -49,7 +49,7 @@ useEffect(() => {
         }
         const userId = userData[0].user_id;
         const uid = userData[0].id;
-        console.log("is",uid);
+        console.log("is", uid);
 
         // Fetch data from the student table using user_id
         const { data: studentData, error: studentError } = await supabase
