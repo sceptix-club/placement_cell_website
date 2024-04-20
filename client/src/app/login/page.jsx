@@ -47,10 +47,10 @@ const login = () => {
             email: email,
             password: password,
           });
-          //   if (data.session !== null) {
-          //     setIsLoggedIn(true);
-          //     router.push("/profile");
-          //   }
+          if (data.session !== null) {
+            setIsLoggedIn(true);
+            router.push("/profile");
+          }
         } catch (err) {
           console.log(err);
         }
