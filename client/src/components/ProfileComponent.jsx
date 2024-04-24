@@ -5,7 +5,8 @@ import { useCookies } from "react-cookie";
 import { useRouter } from "next/navigation";
 import supabase from "@/data/supabase";
 
-const ProfileComponent = ({ routePrefix, isVerify }) => {
+
+const ProfileComponent = ({ routePrefix, isVerify, onUidChange }) => {
   const router = useRouter();
   const pathName = usePathname();
   const pathNo = pathName.slice(`/${routePrefix}/`.length);
@@ -47,7 +48,6 @@ const ProfileComponent = ({ routePrefix, isVerify }) => {
         if (userError) {
           throw userError;
         }
-        const userId = userData[0].user_id;
         const uid = userData[0].id;
         console.log("is", uid);
 
@@ -59,9 +59,11 @@ const ProfileComponent = ({ routePrefix, isVerify }) => {
         if (studentError) {
           throw studentError;
         }
+        const sid = studentData[0].id;
         console.log("Student data:", studentData[0]);
         setDataAll(studentData[0]);
         setVerified(true); // Assuming user is verified if data is successfully fetched
+        onUidChange(sid);
       } catch (error) {
         console.error("Error fetching data:", error.message);
         // Handle error state or show appropriate message to the user
