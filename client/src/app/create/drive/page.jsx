@@ -9,17 +9,24 @@ const create = () => {
     company: "",
     description: "",
     date: "",
+    que1: "",
+    que2: "",
+    que3: "",
+    que4: "",
 
 
-  })
+  });
+
+  const [questionInputs, setQuestionInputs] = useState(Array(4).fill(""));
+  const [numberOfQuestions, setNumberOfQuestions] = useState(4);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target
     setSubmitData((prev) => ({
       ...prev,
       [name]: value,
-    }))
-  }
+    }));
+  };
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     setSubmitData((prev) => ({
@@ -27,6 +34,16 @@ const create = () => {
       pdfFile: file,
     }));
   };
+  const handleQuestionInputChange = (index, value) => {
+    const newQuestionInputs = [...questionInputs];
+    newQuestionInputs[index] = value;
+    setQuestionInputs(newQuestionInputs);
+    setSubmitData((prev) => ({
+      ...prev,
+      [`que${index + 1}`]: value,
+    }));
+  }
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -36,18 +53,7 @@ const create = () => {
       const { data, error } = await supabase
         .schema("placements")
         .from("drive")
-        .insert([
-          {
-            name: submitData.name,
-            company: submitData.company,
-            description: submitData.description,
-            date: submitData.date,
-
-
-
-
-          },
-        ]);
+        .insert([submitData]);
 
       if (error) {
         console.error('Error saving placement:', error.message);
@@ -61,12 +67,19 @@ const create = () => {
         description: "",
         date: "",
         pdfFile: "",
+        que1: "",
+        que2: "",
+        que3: "",
+        que4: "",
       });
+      setQuestions([]);
 
     } catch (error) {
       console.error('Error saving placement:', error.message);
     }
   };
+
+  const isQuestionInputDisabled = Object.values(submitData).filter(val => val.startsWith('que')).length >= numberOfQuestions;
 
   return (
     <div className="flex justify-center items-center h-auto py-10 mb-10">
@@ -154,6 +167,39 @@ const create = () => {
             accept=".pdf"
             onChange={handleFileChange}
           />
+          <label
+            className="font-inter text-lg sm:text-xl md:text-2xl font-medium text-divider-color"
+            htmlFor="pdfFile"
+          >
+            Ask Questions
+          </label>
+          <label>Select Number of Questions:</label>
+          <select
+            value={numberOfQuestions}
+            onChange={(e) => {
+              const num = parseInt(e.target.value);
+              setNumberOfQuestions(num);
+              setQuestionInputs(Array(num).fill(""));
+            }}
+            className="bg-secondary-card rounded-md px-5 py-2 mb-5 text-white"
+          >
+            {[1, 2, 3, 4].map((number) => (
+              <option key={number} value={number}>
+                {number}
+              </option>
+            ))}
+          </select>
+          {questionInputs.map((questionInput, index) => (
+            <div key={index}>
+              <label>Question {index + 1}</label>
+              <input
+                type="text"
+                value={questionInput}
+                onChange={(e) => handleQuestionInputChange(index, e.target.value)}
+                className="bg-secondary-card rounded-md px-5 py-2 ml-5 mb-5 text-white"
+              />
+            </div>
+          ))}
           <div className="flex justify-center w-32 h-10">
             <button
 
@@ -161,6 +207,7 @@ const create = () => {
 
               className="font-medium bg-logo-bg w-32 h-10 rounded-md "
               type="submit"
+              disabled={isQuestionInputDisabled}
             >
               Save
             </button>

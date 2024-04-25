@@ -1,18 +1,28 @@
 'use client'
 import React, { useState, useRef, useEffect } from 'react';
+import supabase from '@/data/supabase';
+import { useRouter } from 'next/navigation'
+
 
 
 
 const Role = () => {
+
+
+
+
     const [jobInfo, setJobInfo] = useState({
-        roleName: '',
+        name: '',
         description: '',
         qualification: '',
-        Cutoff: '',
+        cutoff: '',
         ctc: '',
         stipend: '',
         location: '',
         serviceAgreement: '',
+
+
+
     });
     const textAreaRef = useRef(null);
 
@@ -23,6 +33,42 @@ const Role = () => {
             [name]: value,
         });
     };
+    const saveRole = async () => {
+        try {
+
+            console.log('Drive ID:', driveIdInt);
+
+
+
+
+            const { data, error } = await supabase
+                .schema("placements")
+                .from("role")
+                .insert([{ ...jobInfo, drive_id: 4 }]);
+            if (error) {
+                console.error("Error saving role:", error.message);
+            } else {
+                console.log("Role saved successfully:", jobInfo);
+
+
+
+
+            }
+            setJobInfo({
+                name: '',
+                description: '',
+                qualification: '',
+                cutoff: '',
+                ctc: '',
+                stipend: '',
+                location: '',
+                serviceAgreement: '',
+                drive_id: driveIdInt,
+            });
+        } catch (error) {
+            console.error("Error saving role:", error.message);
+        }
+    }
     useEffect(() => {
         textAreaRef.current.style.height = "auto";
 
@@ -43,11 +89,11 @@ const Role = () => {
                     <label className="block text-lg font-semibold mt-1 sm:text-xl md:text-2xl   text-divider-color mb-2">Name of the Role</label>
                     <input
                         type="text"
-                        name="roleName"
-                        value={jobInfo.roleName}
+                        name="name"
+                        value={jobInfo.name}
                         onChange={handleChange}
 
-                        className="  rounded-md px-3 py-3 md:px-3 md:py-3    text-sm bg-secondary-card placeholder-plcholder-text text-divider-color "
+                        className="  rounded-md px-3 py-3 md:px-3 md:py-3    text-sm bg-secondary-card placeholder-plcholder-text text-white "
                         placeholder="Enter the role"
                     />
 
@@ -55,7 +101,7 @@ const Role = () => {
 
                     <label className="block text-lg font-semibold mt-5 sm:text-xl md:text-2xl   text-divider-color mb-2">Description</label>
                     <textarea
-                        className="pb-10 pt-1  px-3 text-sm bg-secondary-card placeholder-plcholder-text text-divider-color rounded-md resize-none overflow-hidden "
+                        className="pb-10 pt-1  px-3 text-sm bg-secondary-card placeholder-plcholder-text text-white rounded-md resize-none overflow-hidden "
 
                         name="description"
 
@@ -74,10 +120,10 @@ const Role = () => {
                     <label className="block text-lg font-semibold mt-5 sm:text-xl md:text-2xl  text-divider-color mb-2">Qualification</label>
                     <input
                         type="text"
-                        name="qualificationCutoff"
-                        value={jobInfo.qualificationCutoff}
+                        name="qualification"
+                        value={jobInfo.qualification}
                         onChange={handleChange}
-                        className=" rounded-md px-3 py-3 text-sm bg-secondary-card placeholder-plcholder-text text-divider-color  "
+                        className=" rounded-md px-3 py-3 text-sm bg-secondary-card placeholder-plcholder-text text-white  "
                         placeholder="Enter the Qualification"
                     />
 
@@ -86,10 +132,10 @@ const Role = () => {
                     <label className="block text-lg font-semibold mt-5 sm:text-xl md:text-2xl  text-divider-color mb-2">Cutoff</label>
                     <input
                         type="text"
-                        name="Cutoff"
-                        value={jobInfo.Cutoff}
+                        name="cutoff"
+                        value={jobInfo.cutoff}
                         onChange={handleChange}
-                        className="  rounded-md px-3 py-3 text-sm bg-secondary-card placeholder-plcholder-text text-divider-color  "
+                        className="  rounded-md px-3 py-3 text-sm bg-secondary-card placeholder-plcholder-text text-white  "
                         placeholder="Enter the Cutoff"
                     />
 
@@ -103,7 +149,7 @@ const Role = () => {
                                 name="ctc"
                                 value={jobInfo.ctc}
                                 onChange={handleChange}
-                                className="w-full mt-1 rounded-md px-3 py-3 text-sm bg-secondary-card placeholder-plcholder-text text-divider-color"
+                                className="w-full mt-1 rounded-md px-3 py-3 text-sm bg-secondary-card placeholder-plcholder-text text-white"
                                 placeholder="Enter the CTC"
                             />
                         </div>
@@ -115,7 +161,7 @@ const Role = () => {
                                 name="stipend"
                                 value={jobInfo.stipend}
                                 onChange={handleChange}
-                                className="w-full mt-1 rounded-md px-3 py-3 text-sm bg-secondary-card placeholder-plcholder-text text-divider-color"
+                                className="w-full mt-1 rounded-md px-3 py-3 text-sm bg-secondary-card placeholder-plcholder-text text-white"
                                 placeholder="Enter the Stipend"
                             />
                         </div>
@@ -128,7 +174,7 @@ const Role = () => {
                         name="location"
                         value={jobInfo.location}
                         onChange={handleChange}
-                        className="  rounded-md px-3 py-3 text-sm bg-secondary-card placeholder-plcholder-text text-divider-color  "
+                        className="  rounded-md px-3 py-3 text-sm bg-secondary-card placeholder-plcholder-text text-white  "
                         placeholder="Enter the Location"
                     />
 
@@ -140,14 +186,16 @@ const Role = () => {
                         name="serviceAgreement"
                         value={jobInfo.serviceAgreement}
                         onChange={handleChange}
-                        className="rounded-md px-3 py-3 text-sm bg-secondary-card placeholder-plcholder-text text-divider-color  "
+                        className="rounded-md px-3 py-3 text-sm bg-secondary-card placeholder-plcholder-text text-white  "
                         placeholder="Enter the Service Agreement"
                     />
                     <div className="flex justify-center w-32 h-10">
 
                         <button
+                            onClick={saveRole}
                             className="  text-lg bg-logo-bg w-32 h-10 rounded-md mt-5"
-                            type="submit"
+                            type="button"
+
                         >
                             Save
                         </button>
@@ -157,5 +205,7 @@ const Role = () => {
         </div >
     );
 };
+
+
 
 export default Role;

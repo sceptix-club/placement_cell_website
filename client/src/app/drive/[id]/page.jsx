@@ -1,12 +1,21 @@
 "use client";
 import { useEffect, useState } from "react";
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+
+
 import RolesCard from "@/components/RolesCard";
 // import Data from "../../../../public/data";
 import { usePathname } from "next/navigation";
 import { notFound } from "next/navigation";
 import supabase from "@/data/supabase";
 
+
 const driveinfo = () => {
+  const router = useRouter();
+
+
+
   const [placements, setPlacements] = useState([]);
   const [role, setRole] = useState([]);
 
@@ -15,6 +24,7 @@ const driveinfo = () => {
   // const dataAll = Data.find((item) => item.id === Number(pathNo));
 
   useEffect(() => {
+
     const fetchPlacement = async () => {
       const { data, error } = await supabase
         .schema("placements")
@@ -44,12 +54,17 @@ const driveinfo = () => {
 
     fetchPlacement();
     fetchRoles();
+
   }, []);
+
 
   // if (!dataAll) {
   //   return notFound();
   // }
+  const handleAddRole = () => {
 
+    router.push(`/create/role/${pathNo}`);
+  };
   return (
     <div className="flex items-center justify-center py-10 mb-10 h-auto bg-background-clr font-inter font-normal">
       <section className="flex flex-col p-5 sm:p-8 lg:p-16  w-11/12 sm:w-10/12 md:w-2/3 lg:w-3/5 border-white h-auto rounded-md bg-primary-card">
@@ -72,15 +87,27 @@ const driveinfo = () => {
               >
                 {role.name}
               </p>
+
             );
           })}
+
         </div>
+
         <hr className=" border-divider-color mt-5" />
+        <button
+
+          onClick={handleAddRole}
+          className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 mt-10 rounded"
+        >
+          Add Role
+        </button>
+
 
         {role.map((innerRole) => {
           return <RolesCard key={innerRole.id} props={innerRole} />;
         })}
       </section>
+
     </div>
   );
 };
