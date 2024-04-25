@@ -5,7 +5,6 @@ import RolesCard from "@/components/RolesCard";
 import { usePathname } from "next/navigation";
 import { notFound } from "next/navigation";
 import PlacementAPI   from '@/app/api/PlacementAPI';
-import Button from '@/components/Registerbutton';
 
 
 import supabase from "@/data/supabase";
@@ -47,7 +46,7 @@ const driveinfo = () => {
             );
           })}
         </div>
-        <Button/>
+        {/* <Button/> */}
         <hr className=" border-divider-color mt-5" />
 
         {role.map((innerRole) => {

@@ -1,3 +1,4 @@
+// Import statements remain the same
 'use client'
 
 import { useRouter } from 'next/navigation'
@@ -5,13 +6,13 @@ import { useState, useEffect } from 'react';
 import supabase from "@/data/supabase";
 import { usePathname } from "next/navigation";
 import FetchUidComponent from '@/app/api/fetchUid';
+import RolesCard from "@/components/RolesCard";
 
 export default function Page() {
   const router = useRouter();
   const [registered, setRegistered] = useState(false);
   const [uid, setUid] = useState(null);
   const [roleIds, setRoleIds] = useState([]);
-
   const [placements, setPlacements] = useState([]);
   const [roles, setRoles] = useState([]);
   const pathName = usePathname();
@@ -96,22 +97,26 @@ export default function Page() {
     alert('You have been successfully registered for this role.');
   };
 
+  // Select the first role from the roles array
+  const selectedRole = roles.length > 0 ? roles[0] : null;
+
   return (
     <div>
       <FetchUidComponent setUid={setUid} />
       <section className="flex flex-wrap">
-        {roles.map((roleItem) => (
-          <div key={roleItem.id} className="flex items-center ">
-            {/* <h3>{roleItem.name}</h3> */}
+        {/* Render the selected role and register button */}
+        {selectedRole && (
+          <div key={selectedRole.id} className="flex items-center">
+            <h3>{selectedRole.name}</h3>
             <button
-              className="bg-logo-bg text-black font-bold  px-1 py-1 rounded-md mb-1 ml-14 mt-2 -m-3 text-sm" // Added text-sm class to reduce button size
+              className="bg-logo-bg text-black font-bold  px-1 py-1 rounded-md mb-1 ml-14 mt-2 -m-3 text-sm"
               type="button"
-              onClick={() => handleRegistration(roleItem.id)}
+              onClick={() => handleRegistration(selectedRole.id)}
             >
               REGISTER
             </button>
           </div>
-        ))}
+        )}
       </section>
     </div>
   );
