@@ -107,9 +107,9 @@ export default function Page() {
         {/* Render the selected role and register button */}
         {selectedRole && (
           <div key={selectedRole.id} className="flex items-center">
-            <h3>{selectedRole.name}</h3>
+            {/* <h3>{selectedRole.name}</h3> */}
             <button
-              className="bg-logo-bg text-black font-bold  px-1 py-1 rounded-md mb-1 ml-14 mt-2 -m-3 text-sm"
+              className="bg-logo-bg text-black font-bold  px-1 py-1 rounded-md mb-1 ml-1 mt-2 -m-3 text-sm"
               type="button"
               onClick={() => handleRegistration(selectedRole.id)}
             >
