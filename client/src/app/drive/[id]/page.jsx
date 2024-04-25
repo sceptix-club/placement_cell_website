@@ -35,7 +35,6 @@ const driveinfo = () => {
         </div>
         <div className="flex flex-row item-center mt-4 lg:mt-5">
           <h3 className="text-sm lg:text-lg font-medium">Roles:&nbsp;</h3>
-          <Button/>
           
           {role.map((role) => {
             return (
@@ -48,6 +47,7 @@ const driveinfo = () => {
             );
           })}
         </div>
+        <Button/>
         <hr className=" border-divider-color mt-5" />
 
         {role.map((innerRole) => {

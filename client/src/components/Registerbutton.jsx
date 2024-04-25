@@ -99,18 +99,20 @@ export default function Page() {
   return (
     <div>
       <FetchUidComponent setUid={setUid} />
-      {roles.map((roleItem) => (
-        <div key={roleItem.id} style={{ display: 'flex', alignItems: 'center' }}>
-          {/* <h3>{roleItem.name}</h3> */}
-          <button
-            className="bg-logo-bg text-black font-bold px-2 py-1 rounded-md ml-2"
-            type="button"
-            onClick={() => handleRegistration(roleItem.id)}
-          >
-            REGISTER
-          </button>
-        </div>
-      ))}
+      <section className="flex flex-wrap">
+        {roles.map((roleItem) => (
+          <div key={roleItem.id} className="flex items-center ">
+            {/* <h3>{roleItem.name}</h3> */}
+            <button
+              className="bg-logo-bg text-black font-bold  px-1 py-1 rounded-md mb-1 ml-14 mt-2 -m-3 text-sm" // Added text-sm class to reduce button size
+              type="button"
+              onClick={() => handleRegistration(roleItem.id)}
+            >
+              REGISTER
+            </button>
+          </div>
+        ))}
+      </section>
     </div>
   );
 }
