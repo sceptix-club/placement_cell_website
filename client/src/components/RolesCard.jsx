@@ -1,5 +1,6 @@
 import React from "react";
 import RegisterButton from '@/components/Registerbutton';
+import ManagerView from "@/components/ManagerView";
 
 const RolesCard = ({ props }) => {
   return (
@@ -34,6 +35,8 @@ const RolesCard = ({ props }) => {
           <p className="text-role-text-2">{props.location}</p>
         </div>
         <RegisterButton/>
+        <ManagerView/>
+        
       </div>
     </section>
   );

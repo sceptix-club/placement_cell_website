@@ -55,7 +55,6 @@ export default function Page() {
   // Handle registration for a specific role
   const handleRegistration = async (roleId) => {
     const student_id = uid;
-    console.log("heeey", student_id);
 
     // Fetch student data
     const { data: studentData, error: studentError } = await supabase
