@@ -4,9 +4,13 @@ import React from "react";
 import DriveCard from "@/components/driveCard";
 // import Data from "../../public/data";
 import supabase from "@/data/supabase";
+import ManagerCreateDrive from "@/components/ManagerCreateDriveButton";
+import { useRoleContext } from "@/context/RoleContext";
 
 const Home = () => {
   const [placements, setPlacements] = React.useState([]);
+
+  const { userRole } = useRoleContext();
 
   React.useEffect(() => {
     const fetchPlacement = async () => {
@@ -20,6 +24,7 @@ const Home = () => {
         console.log(data);
       }
     };
+
     fetchPlacement();
   }, []);
 
@@ -27,6 +32,7 @@ const Home = () => {
     <>
       <div className="lg:flex w-full justify-center items-center flex-col bg-background-clr overflow-y-auto sm: flex l">
         <section className="lg:w-2/3 sm: w-3/4">
+          {userRole === 3 && <ManagerCreateDrive />}
           <h1 className="text-3xl font-bold text-white mb-6">Ongoing</h1>
           {placements.map((placement, index) => {
             const currentDate = new Date();
@@ -37,7 +43,7 @@ const Home = () => {
               timeDifference / (1000 * 3600 * 24)
             );
 
-            if (daysDifference >= -1 && daysDifference <=3) {
+            if (daysDifference >= -1 && daysDifference <= 3) {
               return <DriveCard key={placement.id} placement={placement} />;
             } else {
               return null;
