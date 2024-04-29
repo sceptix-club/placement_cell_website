@@ -10,6 +10,7 @@ export default function ManagerView() {
     const [uid, setUid] = useState(null);
     const [roleIds, setRoleIds] = useState([]);
     const [roles, setRoles] = useState([]);
+    const [questions, setquestions] = useState([]);
     const [registrations, setRegistrations] = useState([]);
     const [showRegistrations, setShowRegistrations] = useState(false);
     const [students, setStudent] = useState([]);
@@ -42,13 +43,24 @@ export default function ManagerView() {
             setShowRegistrations(false);
             setRegistrations([]);
         } else {
+            //Fetch questions from drive table of plaacements schema
+                const { data:questionsData, error:questionsError } = await supabase
+                  .schema('placements')
+                  .from('drive')
+                  .select('*')
+                  .eq('id', pathNo)
+
+                if (!questionsError) {
+                  setquestions(questionsData);
+                }
+
             // Fetch registrations for the specific role and drive
             const { data: registrationData, error: registrationError } = await supabase
                 .schema('placements')
                 .from('stat')
                 .select('*')
                 .eq('drive_id', pathNo)
-                .in('role_id', roleIds);
+                .in('role_id', roleIds);    
 
             if (!registrationError) {
                 setRegistrations(registrationData);
@@ -74,14 +86,17 @@ export default function ManagerView() {
             <table className="border-collapse border border-gray-300">
                 {registrations.length > 0 && (
                 <thead>
-                    <tr>
+                    {questions.map(questions => (
+                    <tr key = {questions.id}>
                         <th className="border border-gray-300 px-4 py-2">Student ID</th>
                         <th className="border border-gray-300 px-4 py-2">Name</th>
-                        <th className="border border-gray-300 px-4 py-2">QUES1</th>
-                        <th className="border border-gray-300 px-4 py-2">QUES2</th>
-                        <th className="border border-gray-300 px-4 py-2">QUES3</th>
+                        <th className="border border-gray-300 px-4 py-2">{questions.que1}</th>
+                        <th className="border border-gray-300 px-4 py-2">{questions.que2}</th>
+                        <th className="border border-gray-300 px-4 py-2">{questions.que3}</th>
+                        <th className="border border-gray-300 px-4 py-2">{questions.que4}</th>
                         {/* Add more table headers as needed */}
                     </tr>
+                    ))}
                 </thead>
                 )}
                 <tbody>
