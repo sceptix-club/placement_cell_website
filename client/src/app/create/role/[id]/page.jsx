@@ -1,7 +1,6 @@
 'use client'
 import React, { useState, useRef, useEffect } from 'react';
 import supabase from '@/data/supabase';
-import { useRouter } from 'next/navigation'
 import { usePathname } from "next/navigation";
 
 
@@ -10,8 +9,6 @@ import { usePathname } from "next/navigation";
 const Role = () => {
     const pathName = usePathname();
     const pathNo = pathName.slice("/create/role/".length);
-    const [roleId, setRoleId] = useState(null);
-
 
 
 
@@ -37,10 +34,15 @@ const Role = () => {
             [name]: value,
         });
     };
+    const handleKeyPress = (e) => {
+        if (e.key === "Enter") {
+            saveRole();
+        }
+    };
     const saveRole = async () => {
         try {
 
-            // console.log('Drive ID:', driveIdInt);
+
 
 
 
@@ -49,7 +51,7 @@ const Role = () => {
                 .schema("placements")
                 .from("role")
                 .insert([{ ...jobInfo, drive_id: pathNo }]);
-            console.log("hi");
+
             if (error) {
                 console.error("Error saving role:", error);
             } else {
@@ -198,6 +200,8 @@ const Role = () => {
                     <div className="flex justify-center w-32 h-10">
 
                         <button
+                            onKeyPress={handleKeyPress}
+
                             onClick={saveRole}
                             className="  text-lg bg-logo-bg w-32 h-10 rounded-md mt-5"
                             type="button"

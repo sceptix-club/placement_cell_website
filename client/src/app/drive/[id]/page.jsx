@@ -83,14 +83,23 @@ const driveinfo = () => {
           })}
 
         </div>
-        <RegisterButton />
+        {/* <RegisterButton /> */}
+
         <hr className=" border-divider-color mt-5" />
+        <button
+          onClick={handleAddRole}
+          className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 mt-4 rounded"
+        >
+          Add Role
+        </button>
+
 
         {role.map((innerRole) => {
           return <RolesCard key={innerRole.id} props={innerRole} />;
         })}
         {/* {show && <ManagerDriveButtons />} */}
       </section>
+
 
     </div>
   );
