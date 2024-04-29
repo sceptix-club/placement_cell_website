@@ -107,6 +107,7 @@ export default function ManagerView() {
                             <td className="border border-gray-300 px-4 py-2">{registration.ans1}</td>
                             <td className="border border-gray-300 px-4 py-2">{registration.ans2}</td>
                             <td className="border border-gray-300 px-4 py-2">{registration.ans3}</td>
+                            <td className="border border-gray-300 px-4 py-2">{registration.ans4}</td>
                         </tr>
                     ))}
                 </tbody>
