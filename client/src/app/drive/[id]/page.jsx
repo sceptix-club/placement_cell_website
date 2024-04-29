@@ -5,7 +5,7 @@ import RolesCard from "@/components/RolesCard";
 import { usePathname } from "next/navigation";
 import { notFound } from "next/navigation";
 import PlacementAPI from "@/app/api/PlacementAPI";
-import RegisterButton from "@/components/Registerbutton";
+// import RegisterButton from "@/components/Registerbutton";
 import { useRoleContext } from "@/context/RoleContext";
 // import ManagerDriveButtons from "@/components/ManagerDriveButtons";
 
@@ -65,8 +65,8 @@ const driveinfo = () => {
             );
           })}
         </div>
-        <RegisterButton />
-        <hr className=" border-divider-color mt-5" />
+        {/* <RegisterButton />
+        <hr className=" border-divider-color mt-5" /> */}
 
         {role.map((innerRole) => {
           return <RolesCard key={innerRole.id} props={innerRole} />;

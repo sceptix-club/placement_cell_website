@@ -1,4 +1,5 @@
 import React from "react";
+import RegisterButton from '@/components/Registerbutton';
 
 const RolesCard = ({ props }) => {
   return (
@@ -32,6 +33,7 @@ const RolesCard = ({ props }) => {
           <h3>Location:&nbsp;</h3>
           <p className="text-role-text-2">{props.location}</p>
         </div>
+        <RegisterButton/>
       </div>
     </section>
   );
