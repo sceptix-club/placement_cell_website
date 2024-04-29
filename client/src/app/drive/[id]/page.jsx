@@ -49,6 +49,7 @@ const driveinfo = () => {
   const handleAddRole = () => {
     router.push(`/create/role/${pathNo}`);
   };
+
   return (
     <div className="flex items-center justify-center py-10 mb-10 h-auto bg-background-clr font-inter font-normal">
       <section className="flex flex-col p-5 sm:p-8 lg:p-16  w-11/12 sm:w-10/12 md:w-2/3 lg:w-3/5 border-white h-auto rounded-md bg-primary-card">

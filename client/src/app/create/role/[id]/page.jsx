@@ -96,6 +96,7 @@ const Role = () => {
                 <form className=" flex flex-col mb-4  ">
                     <label className="block text-lg font-semibold mt-1 sm:text-xl md:text-2xl   text-divider-color mb-2">Name of the Role</label>
                     <input
+                        onKeyPress={handleKeyPress}
                         type="text"
                         name="name"
                         value={jobInfo.name}
@@ -109,6 +110,7 @@ const Role = () => {
 
                     <label className="block text-lg font-semibold mt-5 sm:text-xl md:text-2xl   text-divider-color mb-2">Description</label>
                     <textarea
+                        onKeyPress={handleKeyPress}
                         className="pb-10 pt-1  px-3 text-sm bg-secondary-card placeholder-plcholder-text text-white rounded-md resize-none overflow-hidden "
 
                         name="description"
@@ -127,6 +129,7 @@ const Role = () => {
 
                     <label className="block text-lg font-semibold mt-5 sm:text-xl md:text-2xl  text-divider-color mb-2">Qualification</label>
                     <input
+                        onKeyPress={handleKeyPress}
                         type="text"
                         name="qualification"
                         value={jobInfo.qualification}
@@ -139,6 +142,7 @@ const Role = () => {
 
                     <label className="block text-lg font-semibold mt-5 sm:text-xl md:text-2xl  text-divider-color mb-2">Cutoff</label>
                     <input
+                        onKeyPress={handleKeyPress}
                         type="text"
                         name="cutoff"
                         value={jobInfo.cutoff}
@@ -153,6 +157,7 @@ const Role = () => {
                         <div className="flex-1 pr-2">
                             <label className="block text-lg font-semibold mt-5 sm:text-xl md:text-2xl  text-divider-color mb-2">CTC</label>
                             <input
+                                onKeyPress={handleKeyPress}
                                 type="text"
                                 name="ctc"
                                 value={jobInfo.ctc}
@@ -165,6 +170,7 @@ const Role = () => {
                         <div className="flex-1 pl-2">
                             <label className="block text-lg font-semibold mt-5 sm:text-xl md:text-2xl  text-divider-color mb-2">Stipend</label>
                             <input
+                                onKeyPress={handleKeyPress}
                                 type="text"
                                 name="stipend"
                                 value={jobInfo.stipend}
@@ -178,6 +184,7 @@ const Role = () => {
 
                     <label className="block text-lg font-semibold mt-5 sm:text-xl md:text-2xl  text-divider-color mb-2">Location</label>
                     <input
+                        onKeyPress={handleKeyPress}
                         type="text"
                         name="location"
                         value={jobInfo.location}
@@ -190,6 +197,7 @@ const Role = () => {
 
                     <label className="block text-lg font-semibold mt-5 sm:text-xl md:text-2xl  text-divider-color mb-2">Service Agreement</label>
                     <input
+                        onKeyPress={handleKeyPress}
                         type="text"
                         name="serviceAgreement"
                         value={jobInfo.serviceAgreement}
@@ -200,7 +208,7 @@ const Role = () => {
                     <div className="flex justify-center w-32 h-10">
 
                         <button
-                            onKeyPress={handleKeyPress}
+
 
                             onClick={saveRole}
                             className="  text-lg bg-logo-bg w-32 h-10 rounded-md mt-5"

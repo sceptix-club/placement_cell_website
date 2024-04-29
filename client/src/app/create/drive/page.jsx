@@ -72,10 +72,16 @@ const create = () => {
         que3: "",
         que4: "",
       });
-      setQuestions([]);
+      setQuestionInputs(Array(numberOfQuestions).fill(""));
 
     } catch (error) {
       console.error('Error saving placement:', error.message);
+    }
+  };
+  const handleKeyPress = (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      handleSubmit(e);
     }
   };
 
@@ -95,6 +101,7 @@ const create = () => {
             Placement Name
           </label>
           <input
+            onKeyPress={handleKeyPress}
             className="bg-secondary-card rounded-md px-5
             py-2 mb-5 placeholder-plcholder-text text-white"
             type="text"
@@ -111,6 +118,7 @@ const create = () => {
             Company Name
           </label>
           <input
+            onKeyPress={handleKeyPress}
             className="bg-secondary-card rounded-md px-5
             py-2 mb-5 placeholder-plcholder-text text-white"
             type="text"
@@ -127,6 +135,7 @@ const create = () => {
             Company Description
           </label>
           <textarea
+            onKeyPress={handleKeyPress}
             className="bg-secondary-card rounded-md px-5
             py-2 mb-5 placeholder-plcholder-text text-white resize-none"
             rows={6}
@@ -144,6 +153,7 @@ const create = () => {
             Date
           </label>
           <input
+            onKeyPress={handleKeyPress}
             className="bg-secondary-card rounded-md px-5
             py-2 mb-5 text-white"
             type="date"
@@ -159,6 +169,7 @@ const create = () => {
             Upload PDF
           </label>
           <input
+            onKeyPress={handleKeyPress}
 
             className="mb-5 rounded-md"
             type="file"
@@ -193,6 +204,7 @@ const create = () => {
             <div key={index}>
               <label>Question {index + 1}</label>
               <input
+                onKeyPress={handleKeyPress}
                 type="text"
                 value={questionInput}
                 onChange={(e) => handleQuestionInputChange(index, e.target.value)}
