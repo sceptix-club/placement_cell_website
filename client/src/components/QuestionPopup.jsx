@@ -4,24 +4,51 @@ import supabase from "@/data/supabase";
 const QuestionPopup = ({ driveId, roleId, uid, onClose, onRegister }) => {
   const [questions, setQuestions] = useState([]);
   const [answers, setAnswers] = useState({});
+  const [roleName, setRoleName] = useState("");
+  const [driveName, setDriveName] = useState("");
+  const [driveDate, setDriveDate] = useState("");
 
   useEffect(() => {
-    const fetchQuestions = async () => {
-      const { data, error } = await supabase
+    const fetchData = async () => {
+      // Fetch drive name and date
+      const { data: driveData, error: driveError } = await supabase
+        .schema('placements')
+        .from('drive')
+        .select('name, date')
+        .eq('id', driveId);
+
+      if (!driveError && driveData && driveData.length > 0) {
+        setDriveName(driveData[0].name);
+        setDriveDate(driveData[0].date);
+      }
+
+      // Fetch role name
+      const { data: roleData, error: roleError } = await supabase
+        .schema('placements')
+        .from('role')
+        .select('name')
+        .eq('id', roleId);
+
+      if (!roleError && roleData && roleData.length > 0) {
+        setRoleName(roleData[0].name);
+      }
+
+      // Fetch questions
+      const { data: questionsData, error: questionsError } = await supabase
         .schema('placements')
         .from('drive')
         .select('que1, que2, que3, que4')
         .eq('id', driveId);
 
-      if (!error && data) {
-        const questionKeys = Object.keys(data[0]);
-        const fetchedQuestions = questionKeys.map(key => data[0][key]);
+      if (!questionsError && questionsData && questionsData.length > 0) {
+        const questionKeys = Object.keys(questionsData[0]);
+        const fetchedQuestions = questionKeys.map(key => questionsData[0][key]).filter(question => question !== null);
         setQuestions(fetchedQuestions);
       }
     };
 
-    fetchQuestions();
-  }, [driveId]);
+    fetchData();
+  }, [driveId, roleId]);
 
   const handleAnswerChange = (index, value) => {
     setAnswers(prevAnswers => ({
@@ -36,10 +63,27 @@ const QuestionPopup = ({ driveId, roleId, uid, onClose, onRegister }) => {
     onClose();
   };
 
+  const handleCancel = () => {
+    onClose();
+  };
+
+  const handleKeyDown = (e) => {
+    if (e.key === 'Escape') {
+      onClose();
+    }
+  };
+
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50" onKeyDown={handleKeyDown}>
       <div className="bg-black rounded-lg p-6 max-w-md w-full">
         <span className="absolute top-2 right-2 text-gray-600 cursor-pointer" onClick={onClose}>&times;</span>
+        <h1 className="text-lg font-semibold mb-4">You are registering for 
+  <span className="text-green-500"> {roleName} </span> 
+   in the drive 
+  <span className="text-green-500"> {driveName} </span> 
+   which is going to be held on 
+  <span className="text-green-500"> {driveDate} </span>
+</h1>
         <h2 className="text-lg font-semibold mb-4">Answer the questions:</h2>
         <form onSubmit={handleSubmit}>
           {questions.map((question, index) => (
@@ -50,11 +94,14 @@ const QuestionPopup = ({ driveId, roleId, uid, onClose, onRegister }) => {
                 type="text"
                 value={answers[`ans${index + 1}`] || ''}
                 onChange={(e) => handleAnswerChange(index, e.target.value)}
-                className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm text-black border-gray-300 rounded-md"
               />
             </div>
           ))}
-          <button type="submit" className="bg-indigo-500 text-white px-4 py-2 rounded-md hover:bg-indigo-600 focus:outline-none focus:bg-indigo-600">Submit</button>
+          <div className="flex justify-between">
+            <button type="button" onClick={handleCancel} className="bg-gray-300 text-black px-4 py-2 rounded-md hover:bg-gray-400 focus:outline-none focus:bg-gray-400">Cancel</button>
+            <button type="submit" className="bg-logo-bg text-black font-bold px-4 py-2 rounded-md hover:bg-indigo-600 focus:outline-none focus:bg-indigo-600">Submit</button>
+          </div>
         </form>
       </div>
     </div>
