@@ -12,11 +12,6 @@ export default function ManagerDriveButtons(props) {
   const prop = props.props;
   const [showPublish, setShowPublish] = React.useState(true);
 
-  console.log("prop", props);
-  console.log("props", props.props);
-  console.log("prop2", prop);
-  console.log("showPublish", showPublish);
-
   const publishDrive = async () => {
     const { data, error } = await supabase
       .schema("placements")
