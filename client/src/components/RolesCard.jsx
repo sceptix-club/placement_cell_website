@@ -1,7 +1,11 @@
 import React from "react";
-import RegisterButton from '@/components/Registerbutton';
+import RegisterButton from "@/components/Registerbutton";
+import ManagerView from "@/components/ManagerView";
+import { useRoleContext } from "@/context/RoleContext";
 
 const RolesCard = ({ props }) => {
+  const { userRole } = useRoleContext();
+
   return (
     <section className="flex flex-col mt-8 text-sm lg:text-base">
       <h2 className="text-xl lg:text-2xl font-medium">{props.name}</h2>
@@ -33,7 +37,7 @@ const RolesCard = ({ props }) => {
           <h3>Location:&nbsp;</h3>
           <p className="text-role-text-2">{props.location}</p>
         </div>
-        <RegisterButton/>
+        {userRole === 1 ? <RegisterButton /> : <ManagerView />}
       </div>
     </section>
   );

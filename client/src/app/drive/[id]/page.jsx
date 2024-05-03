@@ -1,25 +1,18 @@
 "use client";
 import { useEffect, useState } from "react";
-import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-
-
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 import RolesCard from "@/components/RolesCard";
-// import Data from "../../../../public/data";
 import { usePathname } from "next/navigation";
 import { notFound } from "next/navigation";
 import PlacementAPI from "@/app/api/PlacementAPI";
-// import RegisterButton from "@/components/Registerbutton";
 import { useRoleContext } from "@/context/RoleContext";
-// import ManagerDriveButtons from "@/components/ManagerDriveButtons";
+import ManagerDriveButtons from "@/components/ManagerDriveButtons";
 
 import supabase from "@/data/supabase";
 
-
 const driveinfo = () => {
   const router = useRouter();
-
-
 
   const [placements, setPlacements] = useState([]);
   const [role, setRole] = useState([]);
@@ -45,10 +38,6 @@ const driveinfo = () => {
   // if (!dataAll) {
   //   return notFound();
   // }
-
-  const handleAddRole = () => {
-    router.push(`/create/role/${pathNo}`);
-  };
 
   return (
     <div className="flex items-center justify-center py-10 mb-10 h-auto bg-background-clr font-inter font-normal">
@@ -79,32 +68,21 @@ const driveinfo = () => {
               >
                 {role.name}
               </p>
-
             );
           })}
-
         </div>
         {/* <RegisterButton /> */}
 
         <hr className=" border-divider-color mt-5" />
-        <button
-          onClick={handleAddRole}
-          className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 mt-4 rounded"
-        >
-          Add Role
-        </button>
 
+        {show && <ManagerDriveButtons props={placements.is_draft} />}
 
         {role.map((innerRole) => {
           return <RolesCard key={innerRole.id} props={innerRole} />;
         })}
-        {/* {show && <ManagerDriveButtons />} */}
       </section>
-
-
     </div>
   );
 };
-
 
 export default driveinfo;

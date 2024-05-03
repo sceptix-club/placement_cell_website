@@ -31,8 +31,33 @@ const Home = () => {
   return (
     <>
       <div className="lg:flex w-full justify-center items-center flex-col bg-background-clr overflow-y-auto sm: flex l">
+        {userRole === 3 && (
+          // <div className="lg:w-2/3 sm: w-3/4">
+          <section className="lg:w-2/3 sm: w-3/4">
+            <ManagerCreateDrive />
+            <h1 className="text-3xl font-bold text-white mb-6">Drafts</h1>
+            {placements.map((placement, index) => {
+              const currentDate = new Date();
+              const placementDate = new Date(placement.date);
+              const timeDifference =
+                placementDate.getTime() - currentDate.getTime();
+              const daysDifference = Math.ceil(
+                timeDifference / (1000 * 3600 * 24)
+              );
+              if (placement.is_draft === true) {
+                return <DriveCard key={placement.id} placement={placement} />;
+              } else if (placement.id === null) {
+                return "No Drafts Available!";
+              } else {
+                return null;
+              }
+            })}
+          </section>
+          // </div>
+        )}
+        <hr className="w-2/3 border-white my-6" />
+
         <section className="lg:w-2/3 sm: w-3/4">
-          {userRole === 3 && <ManagerCreateDrive />}
           <h1 className="text-3xl font-bold text-white mb-6">Ongoing</h1>
           {placements.map((placement, index) => {
             const currentDate = new Date();
@@ -43,7 +68,11 @@ const Home = () => {
               timeDifference / (1000 * 3600 * 24)
             );
 
-            if (daysDifference >= -1 && daysDifference <= 3) {
+            if (
+              daysDifference >= -1 &&
+              daysDifference <= 3 &&
+              placement.is_draft === false
+            ) {
               return <DriveCard key={placement.id} placement={placement} />;
             } else {
               return null;
@@ -61,7 +90,7 @@ const Home = () => {
             const daysDifference = Math.ceil(
               timeDifference / (1000 * 3600 * 24)
             );
-            if (daysDifference >= 3) {
+            if (daysDifference >= 3 && placement.is_draft === false) {
               return <DriveCard key={placement.id} placement={placement} />;
             } else {
               return null;
@@ -81,7 +110,7 @@ const Home = () => {
             const daysDifference = Math.ceil(
               timeDifference / (1000 * 3600 * 24)
             );
-            if (daysDifference <= -1) {
+            if (daysDifference <= -1 && placement.is_draft === false) {
               return <DriveCard key={placement.id} placement={placement} />;
             } else {
               return null;
