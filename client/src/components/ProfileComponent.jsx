@@ -153,6 +153,9 @@ const ProfileComponent = ({ routePrefix, isVerify, onUidChange }) => {
     verified ? console.log("Logged in") : console.log("404 page not found");
   }
 
+  const [resumeLink, setResumeLink] = useState(""); // State variable and function for Resume link
+  const [aadhaarLink, setAadhaarLink] = useState(""); // State variable and function for Aadhaar link
+
   return (
     <div className="bg-background-clr text-primary-text ">
       <div className="flex flex-col md:flex-row justify-center items-center mt-10 mb-16 mx-4">
@@ -296,28 +299,20 @@ const ProfileComponent = ({ routePrefix, isVerify, onUidChange }) => {
               </div>
               <div className="w-2/3">
                 {editMode ? (
-                  <div className="flex items-center">
-                    <input
-                      type="file"
-                      onChange={handleResumeUpload}
-                      accept=".pdf,.doc,.docx" // Set accepted file types
-                      className="hidden" // Hide the original input
-                      id="resumeInput" // Add an ID for the label association
-                    />
-                    <label
-                      htmlFor="resumeInput"
-                      className="text-white bg-secondary-card rounded-md w-full p-2 text-center h-8 cursor-pointer"
-                    >
-                      Choose File
-                    </label>
-                  </div>
+                  <input
+                    type="text"
+                    placeholder="Paste the link to your resume here"
+                    className="text-white bg-secondary-card rounded-md w-full p-2 h-8"
+                    value={resumeLink}
+                    onChange={(e) => setResumeLink(e.target.value)}
+                  />
                 ) : (
                   <input
-                    placeholder="Upload your Resume"
+                    placeholder="Enter the link to your Resume"
                     type="text"
                     className="text-white bg-secondary-card rounded-md w-full p-2 text-center h-8 placeholder:text-white"
-                    // defaultValue={dataAll?.resumeUpload}
                     readOnly
+                    value={resumeLink}
                   />
                 )}
               </div>
@@ -332,34 +327,25 @@ const ProfileComponent = ({ routePrefix, isVerify, onUidChange }) => {
               </div>
               <div className="w-2/3">
                 {editMode ? (
-                  <div className="flex items-center">
-                    <input
-                      placeholder="Upload your Aadhaar"
-                      type="file"
-                      onChange={handleAadhaarUpload}
-                      accept=".pdf,.jpg,.jpeg,.png" // Set accepted file types
-                      className="hidden" // Hide the original input
-                      id="aadhaarInput" // Add an ID for the label association
-                    />
-                    <label
-                      htmlFor="aadhaarInput"
-                      className="text-white bg-secondary-card rounded-md w-full p-2 text-center h-8 cursor-pointer"
-                    >
-                      Choose File
-                    </label>
-                  </div>
+                  <input
+                    type="text"
+                    placeholder="Paste the link to your Aadhaar here"
+                    className="text-white bg-secondary-card rounded-md w-full p-2 h-8"
+                    value={aadhaarLink}
+                    onChange={(e) => setAadhaarLink(e.target.value)}
+                  />
                 ) : (
                   <input
-                    placeholder="Upload your Aadhaar"
+                    placeholder="Enter the link to your Aadhaar"
                     type="text"
                     className="text-white bg-secondary-card rounded-md w-full p-2 text-center h-8 placeholder:text-white"
-                    // defaultValue={dataAll?.aadhaarUpload}
-
                     readOnly
+                    value={aadhaarLink}
                   />
                 )}
               </div>
             </div>
+
 
             <div className="mb-4 flex flex-col md:flex-row justify-center items-center">
               {editMode && (
