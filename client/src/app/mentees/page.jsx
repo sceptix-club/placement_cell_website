@@ -1,5 +1,5 @@
 'use client'
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import MenteeCard from "@/components/MenteeCard.jsx";
 import mentees from "../../../public/MenteeTestData.js"
 import supabase from "@/data/supabase";
@@ -7,7 +7,9 @@ import supabase from "@/data/supabase";
 export default function page() {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [newMentorUSN, setNewMentorUSN] = useState('');
-  const [errorMessage, setErrorMessage] = useState('');
+  const [currentUser, setCurrentUser] = useState(null);
+
+
   const handleAddMentor = () => {
     setIsDialogOpen(true);
   };
@@ -18,21 +20,29 @@ export default function page() {
 
   const handleAddUSN = async () => {
     try {
-      const { data, error } = await supabase
-        .from('student')
-        .select('user_id')
-        .eq('usn', newMentorUSN)
-        .single();
 
-      if (error) {
-        throw error;
+      const { data: studentData, error: studentError } = await supabase
+
+        .from("student")
+        .select("id")
+        .eq("usn", newMentorUSN)
+        .single()
+
+
+
+      if (studentError) {
+        throw studentError;
       }
 
-      const studentId = data.user_id;
-      const mentorId = 1;
-      const { insertError } = await supabase
+      const studentUserId = studentData.id;
+      const currentUser = supabase.auth.user();
+      const mentorId = currentUser.id;
+
+      const { error: insertError } = await supabase
+
+
         .from('student_mentor')
-        .insert([{ student_id: studentId, mentor_id: mentorId }]);
+        .insert([{ student_id: studentUserId, mentor_id: mentorId }]);
 
       if (insertError) {
         throw insertError;
@@ -41,7 +51,7 @@ export default function page() {
       setIsDialogOpen(false);
       setNewMentorUSN('');
     } catch (error) {
-      setErrorMessage('Error adding mentee: ' + error.message);
+      console.log('Error adding mentee: ' + error.message);
     }
   };
   return (
