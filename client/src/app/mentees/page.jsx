@@ -8,6 +8,7 @@ export default function page() {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [newMentorUSN, setNewMentorUSN] = useState('');
   const [currentUser, setCurrentUser] = useState(null);
+  const [mentees, setMentees] = useState([]);
 
 
   const handleAddMentor = () => {
@@ -16,7 +17,8 @@ export default function page() {
 
   const handleDialogClose = () => {
     setIsDialogOpen(false);
-  };
+    setNewMentorUSN('');
+  }
 
 
   const handleAddUSN = async () => {
@@ -35,20 +37,13 @@ export default function page() {
         .select("id")
         .eq("user_id", user.id);
 
-
-
       if (studentError) {
         throw studentError;
       }
 
       const studentUserId = studentData.id;
       const uid = currentUser[0].id;
-
-
-
-
       const { error: insertError } = await supabase
-
 
         .from('student_mentor')
         .insert([{ student_id: studentUserId, mentor_id: uid }]);
@@ -56,6 +51,7 @@ export default function page() {
       if (insertError) {
         throw insertError;
       }
+      setMentees([...mentees, studentData])
 
       setIsDialogOpen(false);
       setNewMentorUSN('');
@@ -63,6 +59,25 @@ export default function page() {
       console.log('Error adding mentee: ' + error.message);
     }
   };
+  useEffect(() => {
+    async function fetchMentees() {
+      try {
+        const { data: menteeData, error } = await supabase
+          .from("student")
+          .select("*");
+
+        if (error) {
+          throw error;
+        }
+
+        setMentees(menteeData);
+      } catch (error) {
+        console.log('Error fetching mentees: ' + error.message);
+      }
+    }
+
+    fetchMentees();
+  }, []);
   return (
     <div className="py-10" >
       <button className="px-4 py-2 bg-logo-bg ml-20 text-white rounded shadow hover:bg-green-600" onClick={handleAddMentor}>
@@ -91,9 +106,9 @@ export default function page() {
       )}
       <p className="px-20 py-4 text-3xl font-medium">Your Mentees</p>
       <div className="flex flex-wrap justify-center mx-1 py-5 gap-4">
-        {mentees.map((user, index) => (
+        {mentees.map((mentee, index) => (
           <div key={index} className="w-64 mt-3">
-            <MenteeCard {...user} />
+            <MenteeCard {...mentee} />
           </div>
         ))}
       </div>
