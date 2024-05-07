@@ -2,10 +2,12 @@
 import { useState } from 'react';
 import MenteeCard from "@/components/MenteeCard.jsx";
 import mentees from "../../../public/MenteeTestData.js"
+import supabase from "@/data/supabase";
 
 export default function page() {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [newMentorUSN, setNewMentorUSN] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
   const handleAddMentor = () => {
     setIsDialogOpen(true);
   };
@@ -14,10 +16,33 @@ export default function page() {
     setIsDialogOpen(false);
   };
 
-  const handleAddUSN = () => {
+  const handleAddUSN = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('student')
+        .select('user_id')
+        .eq('usn', newMentorUSN)
+        .single();
 
-    setIsDialogOpen(false);
-    setNewMentorUSN('');
+      if (error) {
+        throw error;
+      }
+
+      const studentId = data.user_id;
+      const mentorId = 1;
+      const { insertError } = await supabase
+        .from('student_mentor')
+        .insert([{ student_id: studentId, mentor_id: mentorId }]);
+
+      if (insertError) {
+        throw insertError;
+      }
+
+      setIsDialogOpen(false);
+      setNewMentorUSN('');
+    } catch (error) {
+      setErrorMessage('Error adding mentee: ' + error.message);
+    }
   };
   return (
     <div className="py-10" >
