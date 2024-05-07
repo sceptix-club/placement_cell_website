@@ -16,6 +16,7 @@ const create = () => {
 
 
   });
+  const [pdfFile, setPdfFile] = useState(null);
 
   const [questionInputs, setQuestionInputs] = useState(Array(4).fill(""));
   const [numberOfQuestions, setNumberOfQuestions] = useState(4);
@@ -29,11 +30,9 @@ const create = () => {
   };
   const handleFileChange = (e) => {
     const file = e.target.files[0];
-    setSubmitData((prev) => ({
-      ...prev,
-      pdfFile: file,
-    }));
+    setPdfFile(file);
   };
+
   const handleQuestionInputChange = (index, value) => {
     const newQuestionInputs = [...questionInputs];
     newQuestionInputs[index] = value;
@@ -47,18 +46,51 @@ const create = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // console.log("Data to be submitted:", submitData);
 
+    // Upload PDF file to Supabase Storage
+    let fileURL = null;
+    if (pdfFile) {
+      const { data: uploadedFile, error: uploadError } = await supabase.storage
+        .from("Drive_Doc") // Replace "your-bucket-name" with your actual bucket name
+        .upload(`/${pdfFile.name}`, pdfFile, {
+          cacheControl: '3600',
+        });
+
+      if (uploadError) {
+        console.error('Error uploading PDF file:', uploadError.message);
+        return;
+      }
+
+      console.log('PDF file uploaded successfully:', uploadedFile);
+      fileURL = uploadedFile.url;
+    }
+
+    // Prepare data to be saved
+    const dataToSave = {
+      ...submitData,
+      // pdfFileURL: fileURL,
+    };
+
+    // Save data to Supabase database
     try {
       const { data, error } = await supabase
         .schema("placements")
         .from("drive")
         .insert([submitData]);
-
+      
       if (error) {
-        console.error('Error saving placement:', error.message);
-        return;
-      }
+          console.error('Error saving placement:', error.message);
+          return;
+      }  
+
+      //   const { pdfdata, pdferror } = await supabase
+      //   .from("drive")
+      //   .insert([dataToSave]);
+
+      // if (error) {
+      //   console.error('Error saving pdf:', pdferror.message);
+      //   return;
+      // }
 
       console.log('Placement saved successfully:', data);
       setSubmitData({
@@ -66,21 +98,20 @@ const create = () => {
         company: "",
         description: "",
         date: "",
-        pdfFile: "",
         que1: "",
         que2: "",
         que3: "",
         que4: "",
       });
-      setQuestionInputs(Array(numberOfQuestions).fill(""));
+      setPdfFile(null);
 
     } catch (error) {
       console.error('Error saving placement:', error.message);
     }
   };
 
+  const isQuestionInputDisabled = Object.values(submitData).filter(val => typeof val === 'string' && val.startsWith('que')).length >= numberOfQuestions;
 
-  const isQuestionInputDisabled = Object.values(submitData).filter(val => val.startsWith('que')).length >= numberOfQuestions;
 
   return (
     <div className="flex justify-center items-center h-auto py-10 mb-10">
@@ -164,14 +195,12 @@ const create = () => {
             Upload PDF
           </label>
           <input
-
-
-            className="mb-5 rounded-md"
-            type="file"
-            id="pdfFile"
-            name="pdfFile"
-            accept=".pdf"
-            onChange={handleFileChange}
+          className="mb-5 rounded-md"
+          type="file"
+          id="pdfFile"
+          name="pdfFile"
+          accept=".pdf"
+          onChange={handleFileChange}
           />
           <label
             className="font-inter text-lg sm:text-xl md:text-2xl font-medium text-divider-color"
@@ -225,4 +254,4 @@ const create = () => {
   )
 }
 
-export default create
+export default create;
