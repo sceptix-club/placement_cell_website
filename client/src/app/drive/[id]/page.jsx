@@ -24,6 +24,7 @@ const driveinfo = () => {
   const pathNo = pathName.slice("/drive/".length);
   const [roleId, setRoleId] = useState(null); // Define roleId state
 
+  const placementDate = placements.date;
   // const dataAll = Data.find((item) => item.id === Number(pathNo));
 
   useEffect(() => {
@@ -78,7 +79,13 @@ const driveinfo = () => {
         {show && <ManagerDriveButtons props={placements.is_draft} />}
 
         {role.map((innerRole) => {
-          return <RolesCard key={innerRole.id} props={innerRole} />;
+          return (
+            <RolesCard
+              key={innerRole.id}
+              props={innerRole}
+              prop2={placementDate}
+            />
+          );
         })}
       </section>
     </div>
