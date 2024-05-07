@@ -18,6 +18,7 @@ export default function page() {
     setIsDialogOpen(false);
   };
 
+
   const handleAddUSN = async () => {
     try {
 
@@ -27,6 +28,12 @@ export default function page() {
         .select("id")
         .eq("usn", newMentorUSN)
         .single()
+      const { data, error } = await supabase.auth.getSession();
+      const { user } = data.session;
+      const { data: currentUser, error: userError } = await supabase
+        .from("user")
+        .select("id")
+        .eq("user_id", user.id);
 
 
 
@@ -35,14 +42,16 @@ export default function page() {
       }
 
       const studentUserId = studentData.id;
-      const currentUser = supabase.auth.user();
-      const mentorId = currentUser.id;
+      const uid = currentUser[0].id;
+
+
+
 
       const { error: insertError } = await supabase
 
 
         .from('student_mentor')
-        .insert([{ student_id: studentUserId, mentor_id: mentorId }]);
+        .insert([{ student_id: studentUserId, mentor_id: uid }]);
 
       if (insertError) {
         throw insertError;
