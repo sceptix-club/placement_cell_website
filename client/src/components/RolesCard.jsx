@@ -3,8 +3,16 @@ import RegisterButton from "@/components/Registerbutton";
 import ManagerView from "@/components/ManagerView";
 import { useRoleContext } from "@/context/RoleContext";
 
-const RolesCard = ({ props }) => {
+const RolesCard = ({ props, prop2 }) => {
   const { userRole } = useRoleContext();
+
+  console.log(props);
+  console.log("prop2", prop2);
+
+  const currentDate = new Date();
+  const placementDate = new Date(prop2);
+  const timeDifference = placementDate.getTime() - currentDate.getTime();
+  const daysDifference = Math.ceil(timeDifference / (1000 * 3600 * 24));
 
   return (
     <section className="flex flex-col mt-8 text-sm lg:text-base">
@@ -37,7 +45,12 @@ const RolesCard = ({ props }) => {
           <h3>Location:&nbsp;</h3>
           <p className="text-role-text-2">{props.location}</p>
         </div>
-        {userRole === 1 ? <RegisterButton /> : <ManagerView />}
+        {userRole === 1 && daysDifference > 0 ? (
+          <RegisterButton />
+        ) : (
+          "Registrations Closed"
+        )}
+        {userRole === 3 && <ManagerView />}
       </div>
     </section>
   );

@@ -1,11 +1,10 @@
+"use client";
 
-'use client'
-
-import { useRouter } from 'next/navigation'
-import { useState, useEffect } from 'react'; 
+import { useRouter } from "next/navigation";
+import { useState, useEffect } from "react";
 import supabase from "@/data/supabase";
 import { usePathname } from "next/navigation";
-import FetchUidComponent from '@/app/api/fetchUid';
+import FetchUidComponent from "@/app/api/fetchUid";
 import RolesCard from "@/components/RolesCard";
 
 import QuestionPopup from "@/components/QuestionPopup";
@@ -25,10 +24,10 @@ export default function Page() {
     // Fetch placement data for the specific drive
     const fetchPlacement = async () => {
       const { data, error } = await supabase
-        .schema('placements')
-        .from('drive')
-        .select('*')
-        .eq('id', pathNo)
+        .schema("placements")
+        .from("drive")
+        .select("*")
+        .eq("id", pathNo)
         .single();
       if (!error) {
         setPlacements(data);
@@ -38,14 +37,14 @@ export default function Page() {
     // Fetch roles for the specific drive
     const fetchRoles = async () => {
       const { data: roleData, error: roleError } = await supabase
-        .schema('placements')
-        .from('role')
-        .select('*')
-        .eq('drive_id', pathNo);
+        .schema("placements")
+        .from("role")
+        .select("*")
+        .eq("drive_id", pathNo);
       if (!roleError) {
         setRoles(roleData);
         if (roleData && roleData.length > 0) {
-          const roleIds = roleData.map(role => role.id);
+          const roleIds = roleData.map((role) => role.id);
           setRoleIds(roleIds);
         }
       }
@@ -61,15 +60,15 @@ export default function Page() {
 
     // Check if the student is already registered for this role
     const { data: existingStats, error: statsError } = await supabase
-      .schema('placements')
-      .from('stat')
+      .schema("placements")
+      .from("stat")
       .select()
-      .eq('drive_id', pathNo)
-      .eq('role_id', roleId)
-      .eq('student_id', student_id);
+      .eq("drive_id", pathNo)
+      .eq("role_id", roleId)
+      .eq("student_id", student_id);
 
     if (existingStats && existingStats.length > 0) {
-      alert('You are already registered for this role in this drive.');
+      alert("You are already registered for this role in this drive.");
       return;
     }
 
@@ -84,18 +83,18 @@ export default function Page() {
 
     // Insert the student_id, roleId, and drive_id into the stat table along with answers
     const { error: insertError } = await supabase
-      .schema('placements')
-      .from('stat')
+      .schema("placements")
+      .from("stat")
       .insert([{ student_id, role_id: roleId, drive_id: pathNo, ...answers }]);
 
     if (insertError) {
-      console.error('Error inserting data:', insertError.message);
+      console.error("Error inserting data:", insertError.message);
       return;
     }
 
     // Set registered state to true and show success message
     setRegistered(true);
-    alert('You have been successfully registered for this role.');
+    alert("You have been successfully registered for this role.");
 
     setShowQuestionPopup(false);
   };
@@ -114,7 +113,7 @@ export default function Page() {
               className="bg-logo-bg text-black font-bold  px-1 py-1 rounded-md mb-1 ml-1 mt-2 -m-3 text-sm"
               type="button"
               onClick={() => handleRegistration(selectedRole.id)}
-              disabled={registered} 
+              disabled={registered}
             >
               REGISTER
             </button>
