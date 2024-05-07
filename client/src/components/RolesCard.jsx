@@ -6,9 +6,6 @@ import { useRoleContext } from "@/context/RoleContext";
 const RolesCard = ({ props, prop2 }) => {
   const { userRole } = useRoleContext();
 
-  console.log(props);
-  console.log("prop2", prop2);
-
   const currentDate = new Date();
   const placementDate = new Date(prop2);
   const timeDifference = placementDate.getTime() - currentDate.getTime();
