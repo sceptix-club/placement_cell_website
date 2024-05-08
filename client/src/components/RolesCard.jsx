@@ -1,10 +1,10 @@
 import React from "react";
 import RegisterButton from "@/components/Registerbutton";
 import ManagerView from "@/components/ManagerView";
-import { useRoleContext } from "@/context/RoleContext";
+// import { useRoleContext } from "@/context/RoleContext";
 
 const RolesCard = ({ props, prop2 }) => {
-  const { userRole } = useRoleContext();
+  // const { userRole } = useRoleContext();
 
   const currentDate = new Date();
   const placementDate = new Date(prop2);
@@ -42,12 +42,12 @@ const RolesCard = ({ props, prop2 }) => {
           <h3>Location:&nbsp;</h3>
           <p className="text-role-text-2">{props.location}</p>
         </div>
-        {userRole === 1 && daysDifference > 0 ? (
+        {/* {userRole === 1 && daysDifference > 0 ? (
           <RegisterButton />
         ) : (
           "Registrations Closed"
-        )}
-        {userRole === 3 && <ManagerView />}
+        )} */}
+        {/* {userRole === 3 && <ManagerView />} */}
       </div>
     </section>
   );
