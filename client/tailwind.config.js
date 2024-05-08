@@ -10,7 +10,7 @@ module.exports = {
     extend: {
       fontFamily: {
         inter: ["Inter", "sans-serif"],
-        gabarito: ["Gabarito","sans-serif"],
+        gabarito: ["Gabarito", "sans-serif"],
       },
 
       backgroundImage: {
@@ -31,9 +31,9 @@ module.exports = {
         "divider-color": "#D9D9D9",
         "card-hover": "#6E6E6E",
         "logo-bg": "#60CE72",
-        "search-bar":"#2e2e2e",
+        "search-bar": "#2e2e2e",
         "divider-color": "#868686",
-        "btn-color-green": "#60CE72"
+        "btn-color-green": "#60CE72",
       },
       spacing: {
         lg: "44rem",
@@ -42,5 +42,5 @@ module.exports = {
       },
     },
   },
-  plugins: [],
-}
+  plugins: [require("daisyui")],
+};
