@@ -1,14 +1,14 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import RolesCard from "@/components/RolesCard";
 import { usePathname } from "next/navigation";
 import { notFound } from "next/navigation";
 import PlacementAPI from "@/app/api/PlacementAPI";
-import { useRoleContext } from "@/context/RoleContext";
+// import { useRoleContext } from "@/context/RoleContext";
 import ManagerDriveButtons from "@/components/ManagerDriveButtons";
-
+import { LoginContext } from "@/context";
 import supabase from "@/data/supabase";
 
 const driveinfo = () => {
@@ -16,10 +16,8 @@ const driveinfo = () => {
 
   const [placements, setPlacements] = useState([]);
   const [role, setRole] = useState([]);
-
-  const { userRole } = useRoleContext();
+  const { userRole, setUserRole } = useContext(LoginContext);
   const [show, setShow] = useState(false);
-
   const pathName = usePathname();
   const pathNo = pathName.slice("/drive/".length);
   const [roleId, setRoleId] = useState(null); // Define roleId state
@@ -28,14 +26,27 @@ const driveinfo = () => {
   // const dataAll = Data.find((item) => item.id === Number(pathNo));
 
   useEffect(() => {
-    const checkUserRole = () => {
-      if (userRole === 3) {
-        setShow(true);
+    const checkUserRole = async () => {
+      console.log("Checking user role");
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+      if (user) {
+        const { data, error } = await supabase
+          .from("user")
+          .select()
+          .eq("user_id", user.id);
+        setUserRole(data[0].role);
       }
     };
-    checkUserRole();
+    if (userRole == null) {
+      console.log("null");
+      checkUserRole();
+    }
+    if (userRole === 3) {
+      setShow(true);
+    }
   }, [userRole]);
-
   // if (!dataAll) {
   //   return notFound();
   // }
