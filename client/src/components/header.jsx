@@ -20,6 +20,7 @@ const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [cookies, setCookie, removeCookie] = useCookies(["token"]);
   const { isLoggedIn, setIsLoggedIn } = useContext(LoginContext);
+  const { setUserRole } = useContext(LoginContext);
 
   const PathName = usePathname();
   console.log(PathName);
@@ -122,6 +123,7 @@ const Header = () => {
                         const { error } = await supabase.auth.signOut();
                         if (!error) {
                           setIsLoggedIn(false);
+                          setUserRole(null);
                           router.push("/");
                         }
                       }}
@@ -170,4 +172,4 @@ const Header = () => {
   );
 };
 
-export default dynamic (() => Promise.resolve(Header), {ssr: false})
+export default dynamic(() => Promise.resolve(Header), { ssr: false });
