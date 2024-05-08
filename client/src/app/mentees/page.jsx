@@ -47,11 +47,16 @@ export default function page() {
 
         .from('student_mentor')
         .insert([{ student_id: studentUserId, mentor_id: uid }]);
+      const { data: studentDetails, error: studentDetailsError } = await supabase
+        .from("student")
+        .select("*")
+        .eq("id", studentUserId)
+        .single();
 
       if (insertError) {
         throw insertError;
       }
-      setMentees([...mentees, studentData])
+      setMentees([...mentees, studentDetails])
 
       setIsDialogOpen(false);
       setNewMentorUSN('');
@@ -63,14 +68,25 @@ export default function page() {
     async function fetchMentees() {
       try {
         const { data: menteeData, error } = await supabase
-          .from("student")
+          .from("student_mentor")
           .select("*");
 
         if (error) {
           throw error;
         }
 
-        setMentees(menteeData);
+        const mentorMenteesIds = menteeData.map(entry => entry.student_id);
+
+        const { data: menteesDetails, error: menteesDetailsError } = await supabase
+          .from("student")
+          .select("*")
+          .in("id", mentorMenteesIds);
+
+        if (menteesDetailsError) {
+          throw menteesDetailsError;
+        }
+
+        setMentees(menteesDetails);
       } catch (error) {
         console.log('Error fetching mentees: ' + error.message);
       }
@@ -78,6 +94,7 @@ export default function page() {
 
     fetchMentees();
   }, []);
+
   return (
     <div className="py-10" >
       <button className="px-4 py-2 bg-logo-bg ml-20 text-white rounded shadow hover:bg-green-600" onClick={handleAddMentor}>
