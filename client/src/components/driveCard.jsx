@@ -15,14 +15,14 @@ const DriveCard = ({ placement }) => {
             <p className="text-xl text-white ">{placement.date}</p>
           </div>
           <div className="lg:md:flex flex-wrap justify-end  ">
-            {/* {placement.roles.map((role, index) => (
+            {placement.role.map((role, index) => (
               <button
                 key={index}
                 className="bg-secondary-card text-white text-sm px-4 py-2 mb-2 rounded mr-2"
               >
-                {role.role}
+                {role.name}
               </button>
-            ))} */}
+            ))}
           </div>
         </div>
       </div>
