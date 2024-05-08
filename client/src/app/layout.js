@@ -3,7 +3,7 @@ import "./globals.css";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
 import LoginProvider from "@/provider";
-import { RoleProvider } from "@/context/RoleContext";
+// import { RoleProvider } from "@/context/RoleContext";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -16,15 +16,15 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <LoginProvider>
-      <RoleProvider>
-        <html lang="en">
-          <body className={inter.className}>
-            <Header />
-            <div className="  bg-background-clr">{children}</div>
-            <Footer />
-          </body>
-        </html>
-      </RoleProvider>
+      {/* <RoleProvider> */}
+      <html lang="en">
+        <body className={inter.className}>
+          <Header />
+          <div className="  bg-background-clr">{children}</div>
+          <Footer />
+        </body>
+      </html>
+      {/* </RoleProvider> */}
     </LoginProvider>
   );
 }
