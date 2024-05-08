@@ -103,12 +103,12 @@ export default function page() {
       {isDialogOpen && (
         <div className="fixed top-0 left-0 w-full h-full bg-gray-900 bg-opacity-50 flex justify-center items-center">
           <div className="bg-white p-8 rounded shadow-lg">
-            <p className="text-lg text-black font-medium mb-4">Enter Mentee USN:</p>
+            <p className="text-lg text-black  font-medium mb-4">Enter Mentee USN:</p>
             <input
               type="text"
               value={newMentorUSN}
               onChange={(e) => setNewMentorUSN(e.target.value)}
-              className="border text-black border-gray-300 rounded px-3 py-2 w-full mb-4"
+              className="border text-black bg-gray-300 border-gray-300 rounded px-3 py-2 w-full mb-4"
             />
             <div className="flex justify-end">
               <button className="px-4 py-2 bg-gray-300 text-gray-800 rounded shadow mr-2 hover:bg-gray-400" onClick={handleDialogClose}>
