@@ -7,7 +7,6 @@ import supabase from "@/data/supabase";
 export default function page() {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [newMentorUSN, setNewMentorUSN] = useState('');
-  const [currentUser, setCurrentUser] = useState(null);
   const [mentees, setMentees] = useState([]);
 
 
@@ -95,9 +94,11 @@ export default function page() {
     fetchMentees();
   }, []);
 
+
+
   return (
     <div className="py-10" >
-      <button className="px-4 py-2 bg-logo-bg ml-20 text-white rounded shadow hover:bg-green-600" onClick={handleAddMentor}>
+      <button className="px-4 py-2 bg-green-600 ml-20 text-white rounded shadow hover:bg-logo-bg" onClick={handleAddMentor}>
         Add Your Mentee
       </button>
       {isDialogOpen && (
@@ -114,7 +115,7 @@ export default function page() {
               <button className="px-4 py-2 bg-gray-300 text-gray-800 rounded shadow mr-2 hover:bg-gray-400" onClick={handleDialogClose}>
                 Cancel
               </button>
-              <button className="px-4 py-2 bg-logo-bg text-white rounded shadow hover:bg-green-600" onClick={handleAddUSN}>
+              <button className="px-4 py-2 bg-green-600 text-white rounded shadow hover:bg-logo-bg" onClick={handleAddUSN}>
                 Add Mentee
               </button>
             </div>
