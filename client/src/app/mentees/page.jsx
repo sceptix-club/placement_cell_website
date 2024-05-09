@@ -8,13 +8,30 @@ export default function page() {
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   const [newMentorUSN, setNewMentorUSN] = useState('')
   const [mentees, setMentees] = useState([])
+  const [loggedInMentorID, setLoggedInMentorID] = useState(null)
 
   console.log('mentees', mentees)
 
   useEffect(() => {
     const fetchMentees = async () => {
       try {
-        const { data: menteesDetails, error } = await supabase.from(
+        const { data, error } = await supabase.auth.getSession()
+        if (error) {
+          throw error
+        }
+        const { user } = data.session
+        const { data: currentUser, error: userError } = await supabase
+          .from('user')
+          .select('id')
+          .eq('user_id', user.id)
+
+        if (userError) {
+          throw userError
+        }
+
+        const mentorID = currentUser[0].id
+        setLoggedInMentorID(mentorID)
+        const { data: menteesDetails, error: fetchError } = await supabase.from(
           'student_mentor'
         ).select(`
     student_id,
@@ -22,10 +39,11 @@ export default function page() {
       *
     )
   `)
+          .eq('mentor_id', mentorID)
         console.log(menteesDetails)
 
         if (error) {
-          throw error
+          throw fetchError
         }
 
         setMentees(menteesDetails)
@@ -37,7 +55,7 @@ export default function page() {
 
     fetchMentees()
     console.log('mentees', mentees)
-  }, [])
+  }, [loggedInMentorID])
 
   const handleAddMentor = () => {
     setIsDialogOpen(true)
@@ -81,6 +99,7 @@ export default function page() {
       *
     )
   `)
+          .eq('mentor_id', uid)
 
       if (!error) {
         setMentees(studentDetails)
