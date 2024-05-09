@@ -1,4 +1,4 @@
-function MenteeCard({ profileImage, name, usn, branch, year, email }) {
+function MenteeCard({ props }) {
   return (
     <>
       <div className="w-64 bg-primary-card p-2 space-y-1 rounded-xl">
@@ -9,11 +9,11 @@ function MenteeCard({ profileImage, name, usn, branch, year, email }) {
             className="w-24 h-24 rounded-lg mb-2"
           />
           <div className="space-y-3">
-            <h5 className="text-xl mb-2 text-center">{name}</h5>
-            <p className="text-sm mb-1 text-left">USN: {usn}</p>
-            <p className="text-sm mb-1 text-left">Branch: {branch}</p>
-            <p className="text-sm mb-1 text-left">Year: {year}</p>
-            <p className="text-sm mb-4 text-left">{email}</p>
+            <h5 className="text-xl mb-2 text-center">{props.student.name}</h5>
+            <p className="text-sm mb-1 text-left">USN: {props.student.usn}</p>
+            <p className="text-sm mb-1 text-left">Branch: {props.student.branch}</p>
+            <p className="text-sm mb-1 text-left">Year: {props.student.year}</p>
+            <p className="text-sm mb-4 text-left">{props.student.email}</p>
           </div>
         </div>
         <button className="w-full bg-btn-color-green text-white px-4 py-2 rounded-lg hover:bg-white hover:text-btn-color-green transition-colors duration-200">
