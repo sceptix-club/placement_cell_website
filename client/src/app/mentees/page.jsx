@@ -1,7 +1,7 @@
 'use client'
 import { useState, useEffect } from 'react'
 import MenteeCard from '@/components/MenteeCard.jsx'
-import mentees from '../../../public/MenteeTestData.js'
+// import mentees from '../../../public/MenteeTestData.js'
 import supabase from '@/data/supabase'
 
 export default function page() {
@@ -9,8 +9,6 @@ export default function page() {
   const [newMentorUSN, setNewMentorUSN] = useState('')
   const [mentees, setMentees] = useState([])
   const [loggedInMentorID, setLoggedInMentorID] = useState(null)
-
-  console.log('mentees', mentees)
 
   useEffect(() => {
     const fetchMentees = async () => {
@@ -40,21 +38,20 @@ export default function page() {
     )
   `)
           .eq('mentor_id', mentorID)
-        console.log(menteesDetails)
 
         if (error) {
           throw fetchError
         }
 
         setMentees(menteesDetails)
-        console.log('mentees', mentees)
+
       } catch (error) {
         console.log('Error fetching mentees: ' + error.message)
       }
     }
 
     fetchMentees()
-    console.log('mentees', mentees)
+
   }, [loggedInMentorID])
 
   const handleAddMentor = () => {
