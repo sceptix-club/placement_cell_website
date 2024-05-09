@@ -31,7 +31,7 @@ const Home = () => {
       const { data, error } = await supabase
         .schema("placements")
         .from("drive")
-        .select();
+        .select("*, role(*)");
       if (!error) {
         setPlacements(data);
       }
