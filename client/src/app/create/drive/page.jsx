@@ -31,6 +31,12 @@ const create = () => {
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     setPdfFile(file);
+  
+    // Store the full filename with extension in state
+    setSubmitData((prev) => ({
+      ...prev,
+      pdfFileName: file ? file.name : "", // Store the full filename or an empty string if no file is selected
+    }));
   };
 
   const handleQuestionInputChange = (index, value) => {
@@ -51,8 +57,8 @@ const create = () => {
     let fileURL = null;
     if (pdfFile) {
       const { data: uploadedFile, error: uploadError } = await supabase.storage
-        .from("Drive_Doc") // Replace "your-bucket-name" with your actual bucket name
-        .upload(`/${pdfFile.name}`, pdfFile, {
+        .from("Drive_Doc")
+        .upload(`public/${pdfFile.name}`, pdfFile, {
           cacheControl: '3600',
         });
 
@@ -61,38 +67,42 @@ const create = () => {
         return;
       }
 
-      console.log('PDF file uploaded successfully:', uploadedFile);
-      fileURL = uploadedFile.url;
+      // Generate URL for the uploaded file
+      const fileName = submitData.pdfFileName;
+      const { data: urlData, error: urlError } = await supabase.storage
+        .from('Drive_Doc')
+        .getPublicUrl(`public/${fileName}`);
+
+      if (urlError) {
+        console.error('Error generating URL for uploaded file:', urlError.message);
+        return;
+      }
+
+      const timestamp = new Date().toISOString();
+      fileURL = `${urlData.publicUrl}?t=${encodeURIComponent(timestamp)}`;
+      console.log('PDF file uploaded successfully:', fileURL);
     }
 
     // Prepare data to be saved
     const dataToSave = {
       ...submitData,
-      // pdfFileURL: fileURL,
+      pdfFileURL: fileURL,
     };
 
     // Save data to Supabase database
     try {
-      const { data, error } = await supabase
+      const { data: insertedData, error: insertError } = await supabase
         .schema("placements")
         .from("drive")
-        .insert([submitData]);
-      
-      if (error) {
-          console.error('Error saving placement:', error.message);
-          return;
-      }  
+        .insert([dataToSave]);
 
-      //   const { pdfdata, pdferror } = await supabase
-      //   .from("drive")
-      //   .insert([dataToSave]);
+      if (insertError) {
+        console.error('Error saving placement:', insertError.message);
+        return;
+      }
+      alert('New drive successfully created!');
 
-      // if (error) {
-      //   console.error('Error saving pdf:', pdferror.message);
-      //   return;
-      // }
-
-      console.log('Placement saved successfully:', data);
+      console.log('Placement saved successfully:', insertedData);
       setSubmitData({
         name: "",
         company: "",
@@ -104,12 +114,13 @@ const create = () => {
         que4: "",
       });
       setPdfFile(null);
+      setQuestionInputs(Array(4).fill("")); 
 
     } catch (error) {
       console.error('Error saving placement:', error.message);
     }
   };
-
+  
   const isQuestionInputDisabled = Object.values(submitData).filter(val => typeof val === 'string' && val.startsWith('que')).length >= numberOfQuestions;
 
 
