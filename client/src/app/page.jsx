@@ -5,25 +5,38 @@ import DriveCard from "@/components/driveCard";
 // import Data from "../../public/data";
 import supabase from "@/data/supabase";
 import ManagerCreateDrive from "@/components/ManagerCreateDriveButton";
-import { useRoleContext } from "@/context/RoleContext";
+// import { useRoleContext } from "@/context/RoleContext";
+import { useContext } from "react";
+import { LoginContext } from "@/context";
 
 const Home = () => {
   const [placements, setPlacements] = React.useState([]);
-
-  const { userRole } = useRoleContext();
+  const { userRole, setUserRole } = useContext(LoginContext);
+  // const { userRole } = useRoleContext();
 
   React.useEffect(() => {
+    const checkUserRole = async () => {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+      if (user) {
+        const { data, error } = await supabase
+          .from("user")
+          .select()
+          .eq("user_id", user.id);
+        setUserRole(data[0].role);
+      }
+    };
     const fetchPlacement = async () => {
       const { data, error } = await supabase
         .schema("placements")
         .from("drive")
-        .select();
+        .select("*, role(*)");
       if (!error) {
         setPlacements(data);
-        console.log("data");
-        console.log(data);
       }
     };
+    userRole === null ? checkUserRole() : "";
 
     fetchPlacement();
   }, []);
