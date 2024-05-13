@@ -70,6 +70,12 @@ export default function ManagerDriveButtons(props) {
         </button>
         {/* )} */}
 
+        <Link href={`/drive/${pathNo}/registrations`}>
+          <button className="bg-logo-bg text-black font-bold  p-2  rounded-md m-3 text-sm">
+            Registrations
+          </button>
+        </Link>
+
         <button className="bg-logo-bg text-black font-bold  p-2 rounded-md m-3 text-sm">
           Delete Drive
         </button>
