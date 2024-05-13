@@ -1,10 +1,8 @@
-import React, { useState, useEffect, use } from "react";
+import React, { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
-import profileData from "../../public/profile_data";
 import { useCookies } from "react-cookie";
 import { useRouter } from "next/navigation";
 import supabase from "@/data/supabase";
-
 
 const ProfileComponent = ({ routePrefix, isVerify, onUidChange }) => {
   const router = useRouter();
@@ -75,6 +73,8 @@ const ProfileComponent = ({ routePrefix, isVerify, onUidChange }) => {
   const [editMode, setEditMode] = useState(false);
   const [newSkill, setNewSkill] = useState("");
   const [addingSkill, setAddingSkill] = useState(false);
+  const [resumeLink, setResumeLink] = useState("");
+  const [aadhaarLink, setAadhaarLink] = useState("");
 
   // Handle click on Edit button
   const handleEditClick = () => {
@@ -82,10 +82,29 @@ const ProfileComponent = ({ routePrefix, isVerify, onUidChange }) => {
   };
 
   // Handle click on Save button
-  const handleSaveClick = () => {
-    setEditMode(false);
-    setAddingSkill(false); // Clear addingSkill state when saving changes
-    // Update the state or make API calls to save changes
+  const handleSaveClick = async () => {
+    try {
+      // Make an API call to update the data in the Supabase database
+      const { data, error } = await supabase
+        .from("student")
+        .update({
+          ...dataAll,
+          resume_link: resumeLink,
+          aadhaar_link: aadhaarLink,
+        })
+        .eq("id", dataAll.id);
+
+      if (error) {
+        throw error;
+      }
+
+      console.log("Data updated successfully:", data);
+      setEditMode(false);
+      setAddingSkill(false);
+    } catch (error) {
+      console.error("Error updating data:", error.message);
+      // Handle error state or show appropriate message to the user
+    }
   };
 
   const handleCancelClick = () => {
@@ -122,26 +141,6 @@ const ProfileComponent = ({ routePrefix, isVerify, onUidChange }) => {
     }
   };
 
-  // Handle file upload for Resume
-  const handleResumeUpload = (event) => {
-    const file = event.target.files[0];
-    // You can perform additional checks or operations with the file
-    setDataAll((prevData) => ({
-      ...prevData,
-      resumeUpload: file.name, // Assuming you want to display the file name
-    }));
-  };
-
-  // Handle file upload for Aadhaar
-  const handleAadhaarUpload = (event) => {
-    const file = event.target.files[0];
-    // You can perform additional checks or operations with the file
-    setDataAll((prevData) => ({
-      ...prevData,
-      aadhaarUpload: file.name, // Assuming you want to display the file name
-    }));
-  };
-
   const handleVerifyClick = () => {
     // Display an alert when the "Verify" button is clicked
     window.alert("Verification Successful!");
@@ -152,9 +151,6 @@ const ProfileComponent = ({ routePrefix, isVerify, onUidChange }) => {
   {
     verified ? console.log("Logged in") : console.log("404 page not found");
   }
-
-  const [resumeLink, setResumeLink] = useState(""); // State variable and function for Resume link
-  const [aadhaarLink, setAadhaarLink] = useState(""); // State variable and function for Aadhaar link
 
   return (
     <div className="bg-background-clr text-primary-text ">
@@ -345,7 +341,6 @@ const ProfileComponent = ({ routePrefix, isVerify, onUidChange }) => {
                 )}
               </div>
             </div>
-
 
             <div className="mb-4 flex flex-col md:flex-row justify-center items-center">
               {editMode && (
