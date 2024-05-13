@@ -4,7 +4,6 @@ import React from "react";
 import DriveCard from "@/components/driveCard";
 // import Data from "../../public/data";
 import supabase from "@/data/supabase";
-import ManagerCreateDrive from "@/components/ManagerCreateDriveButton";
 // import { useRoleContext } from "@/context/RoleContext";
 import { useContext } from "react";
 import { LoginContext } from "@/context";
@@ -47,7 +46,6 @@ const Home = () => {
         {userRole === 3 && (
           // <div className="lg:w-2/3 sm: w-3/4">
           <section className="lg:w-2/3 sm: w-3/4">
-            <ManagerCreateDrive />
             <h1 className="text-3xl font-bold text-white mb-6">Drafts</h1>
             {placements.map((placement, index) => {
               const currentDate = new Date();
