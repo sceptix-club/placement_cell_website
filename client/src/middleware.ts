@@ -1,12 +1,17 @@
 import { NextRequest, NextResponse } from "next/server";
-import supabase from "../src/data/supabase";
 import { getUserRole } from "./helper/get-user-role";
 export async function middleware(request: NextRequest) {
-  const path  = request.nextUrl.pathname;
+  const path = request.nextUrl.pathname;
   const driveID = path.split("/")[2];
-  const isManagerOnlyPage :boolean = path === "/dashboard" || path === `/drive/${driveID}/registrations`
+  // const isManagerOnlyPage :boolean = path === "/dashboard" || path === `/drive/${driveID}/registrations` || path === '/create/drive' || path === "/candidates"
+  const isManagerOnlyPage = [
+    "/dashboard",
+    `/drive/${driveID}/registrations`,
+    "/create/drive",
+    "/candidates",
+  ].includes(path);
   const accessToken: string = request.cookies.get("accessToken")?.value || "";
-  if(!isManagerOnlyPage){
+  if (!isManagerOnlyPage) {
     return NextResponse.next();
   }
   if (isManagerOnlyPage && accessToken) {
@@ -29,5 +34,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/dashboard","/drive/(.*)"]
+  matcher: ["/dashboard", "/drive/(.*)", "/create/drive", "/candidates"],
 };
