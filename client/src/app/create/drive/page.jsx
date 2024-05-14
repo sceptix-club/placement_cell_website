@@ -1,6 +1,6 @@
-"use client"
+"use client";
 
-import React, { useState } from "react"
+import React, { useState } from "react";
 import supabase from "@/data/supabase";
 
 const create = () => {
@@ -13,8 +13,6 @@ const create = () => {
     que2: "",
     que3: "",
     que4: "",
-
-
   });
   const [pdfFile, setPdfFile] = useState(null);
 
@@ -22,7 +20,7 @@ const create = () => {
   const [numberOfQuestions, setNumberOfQuestions] = useState(4);
 
   const handleInputChange = (e) => {
-    const { name, value } = e.target
+    const { name, value } = e.target;
     setSubmitData((prev) => ({
       ...prev,
       [name]: value,
@@ -31,7 +29,7 @@ const create = () => {
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     setPdfFile(file);
-  
+
     // Store the full filename with extension in state
     setSubmitData((prev) => ({
       ...prev,
@@ -47,8 +45,7 @@ const create = () => {
       ...prev,
       [`que${index + 1}`]: value,
     }));
-  }
-
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -59,28 +56,31 @@ const create = () => {
       const { data: uploadedFile, error: uploadError } = await supabase.storage
         .from("Drive_Doc")
         .upload(`public/${pdfFile.name}`, pdfFile, {
-          cacheControl: '3600',
+          cacheControl: "3600",
         });
 
       if (uploadError) {
-        console.error('Error uploading PDF file:', uploadError.message);
+        console.error("Error uploading PDF file:", uploadError.message);
         return;
       }
 
       // Generate URL for the uploaded file
       const fileName = submitData.pdfFileName;
       const { data: urlData, error: urlError } = await supabase.storage
-        .from('Drive_Doc')
+        .from("Drive_Doc")
         .getPublicUrl(`public/${fileName}`);
 
       if (urlError) {
-        console.error('Error generating URL for uploaded file:', urlError.message);
+        console.error(
+          "Error generating URL for uploaded file:",
+          urlError.message
+        );
         return;
       }
 
       const timestamp = new Date().toISOString();
       fileURL = `${urlData.publicUrl}?t=${encodeURIComponent(timestamp)}`;
-      console.log('PDF file uploaded successfully:', fileURL);
+      console.log("PDF file uploaded successfully:", fileURL);
     }
 
     // Prepare data to be saved
@@ -97,12 +97,12 @@ const create = () => {
         .insert([dataToSave]);
 
       if (insertError) {
-        console.error('Error saving placement:', insertError.message);
+        console.error("Error saving placement:", insertError.message);
         return;
       }
-      alert('New drive successfully created!');
+      alert("New drive successfully created!");
 
-      console.log('Placement saved successfully:', insertedData);
+      console.log("Placement saved successfully:", insertedData);
       setSubmitData({
         name: "",
         company: "",
@@ -114,15 +114,16 @@ const create = () => {
         que4: "",
       });
       setPdfFile(null);
-      setQuestionInputs(Array(4).fill("")); 
-
+      setQuestionInputs(Array(4).fill(""));
     } catch (error) {
-      console.error('Error saving placement:', error.message);
+      console.error("Error saving placement:", error.message);
     }
   };
-  
-  const isQuestionInputDisabled = Object.values(submitData).filter(val => typeof val === 'string' && val.startsWith('que')).length >= numberOfQuestions;
 
+  const isQuestionInputDisabled =
+    Object.values(submitData).filter(
+      (val) => typeof val === "string" && val.startsWith("que")
+    ).length >= numberOfQuestions;
 
   return (
     <div className="flex justify-center items-center h-auto py-10 mb-10">
@@ -138,7 +139,6 @@ const create = () => {
             Placement Name
           </label>
           <input
-
             className="bg-secondary-card rounded-md px-5
             py-2 mb-5 placeholder-plcholder-text text-white"
             type="text"
@@ -155,7 +155,6 @@ const create = () => {
             Company Name
           </label>
           <input
-
             className="bg-secondary-card rounded-md px-5
             py-2 mb-5 placeholder-plcholder-text text-white"
             type="text"
@@ -172,7 +171,6 @@ const create = () => {
             Company Description
           </label>
           <textarea
-
             className="bg-secondary-card rounded-md px-5
             py-2 mb-5 placeholder-plcholder-text text-white resize-none"
             rows={6}
@@ -190,7 +188,6 @@ const create = () => {
             Date
           </label>
           <input
-
             className="bg-secondary-card rounded-md px-5
             py-2 mb-5 text-white"
             type="date"
@@ -205,13 +202,21 @@ const create = () => {
           >
             Upload PDF
           </label>
+          {/* <input
+            className="mb-5 rounded-md"
+            type="file"
+            id="pdfFile"
+            name="pdfFile"
+            accept=".pdf"
+            onChange={handleFileChange}
+          /> */}
           <input
-          className="mb-5 rounded-md"
-          type="file"
-          id="pdfFile"
-          name="pdfFile"
-          accept=".pdf"
-          onChange={handleFileChange}
+            className="file-input file-input-success w-full max-w-xs mb-2"
+            type="file"
+            id="pdfFile"
+            name="pdfFile"
+            accept=".pdf"
+            onChange={handleFileChange}
           />
           <label
             className="font-inter text-lg sm:text-xl md:text-2xl font-medium text-divider-color"
@@ -239,19 +244,17 @@ const create = () => {
             <div key={index}>
               <label>Question {index + 1}</label>
               <input
-
                 type="text"
                 value={questionInput}
-                onChange={(e) => handleQuestionInputChange(index, e.target.value)}
+                onChange={(e) =>
+                  handleQuestionInputChange(index, e.target.value)
+                }
                 className="bg-secondary-card rounded-md px-5 py-2 ml-5 mb-5 text-white"
               />
             </div>
           ))}
           <div className="flex justify-center w-32 h-10">
             <button
-
-
-
               className="font-medium bg-logo-bg w-32 h-10 rounded-md "
               type="submit"
               disabled={isQuestionInputDisabled}
@@ -262,7 +265,7 @@ const create = () => {
         </form>
       </section>
     </div>
-  )
-}
+  );
+};
 
 export default create;
