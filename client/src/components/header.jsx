@@ -122,6 +122,7 @@ const Header = () => {
                       onClick={async () => {
                         const { error } = await supabase.auth.signOut();
                         if (!error) {
+                          removeCookie("accessToken" , "refreshToken")
                           setIsLoggedIn(false);
                           setUserRole(null);
                           router.push("/");
