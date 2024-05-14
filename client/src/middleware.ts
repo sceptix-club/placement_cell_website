@@ -7,9 +7,8 @@ export async function middleware(request: NextRequest) {
   const isManagerOnlyPage = [
     "/dashboard",
     `/drive/${driveID}/registrations`,
-    "/create/drive",
     "/candidates",
-  ].includes(path);
+  ].includes(path) || path.startsWith("/create");
   const accessToken: string = request.cookies.get("accessToken")?.value || "";
   if (!isManagerOnlyPage) {
     return NextResponse.next();
@@ -34,5 +33,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/dashboard", "/drive/(.*)", "/create/drive", "/candidates"],
+  matcher: ["/dashboard", "/drive/(.*)", "/create/(.*)", "/candidates"],
 };
