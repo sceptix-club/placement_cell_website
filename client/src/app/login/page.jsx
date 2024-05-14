@@ -20,7 +20,8 @@ const login = () => {
     const checkUserStatus = async () => {
       const { data, error } = await supabase.auth.getSession();
       if (data.session !== null) {
-        const { user } = data.session;
+        document.cookie = `accessToken=${data.session.access_token}; path=/`;
+        document.cookie = `refreshToken=${data.session.refresh_token}; path=/`;
         router.push("/profile");
         setIsLoggedIn(true);
       }
@@ -48,6 +49,8 @@ const login = () => {
             password: password,
           });
           if (data.session !== null) {
+            document.cookie = `accessToken=${data.session.access_token}; path=/`;
+            document.cookie = `refreshToken=${data.session.refresh_token}; path=/`;
             setIsLoggedIn(true);
             router.push("/profile");
           }

@@ -1,10 +1,8 @@
-import React, { useState, useEffect, use } from "react";
+import React, { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
-import profileData from "../../public/profile_data";
 import { useCookies } from "react-cookie";
 import { useRouter } from "next/navigation";
 import supabase from "@/data/supabase";
-
 
 const ProfileComponent = ({ routePrefix, isVerify, onUidChange }) => {
   const router = useRouter();
@@ -75,6 +73,8 @@ const ProfileComponent = ({ routePrefix, isVerify, onUidChange }) => {
   const [editMode, setEditMode] = useState(false);
   const [newSkill, setNewSkill] = useState("");
   const [addingSkill, setAddingSkill] = useState(false);
+  const [resumeLink, setResumeLink] = useState("");
+  const [aadhaarLink, setAadhaarLink] = useState("");
 
   // Handle click on Edit button
   const handleEditClick = () => {
@@ -82,10 +82,29 @@ const ProfileComponent = ({ routePrefix, isVerify, onUidChange }) => {
   };
 
   // Handle click on Save button
-  const handleSaveClick = () => {
-    setEditMode(false);
-    setAddingSkill(false); // Clear addingSkill state when saving changes
-    // Update the state or make API calls to save changes
+  const handleSaveClick = async () => {
+    try {
+      // Make an API call to update the data in the Supabase database
+      const { data, error } = await supabase
+        .from("student")
+        .update({
+          ...dataAll,
+          resume_link: resumeLink,
+          aadhaar_link: aadhaarLink,
+        })
+        .eq("id", dataAll.id);
+
+      if (error) {
+        throw error;
+      }
+
+      console.log("Data updated successfully:", data);
+      setEditMode(false);
+      setAddingSkill(false);
+    } catch (error) {
+      console.error("Error updating data:", error.message);
+      // Handle error state or show appropriate message to the user
+    }
   };
 
   const handleCancelClick = () => {
@@ -120,26 +139,6 @@ const ProfileComponent = ({ routePrefix, isVerify, onUidChange }) => {
       setNewSkill("");
       setAddingSkill(false);
     }
-  };
-
-  // Handle file upload for Resume
-  const handleResumeUpload = (event) => {
-    const file = event.target.files[0];
-    // You can perform additional checks or operations with the file
-    setDataAll((prevData) => ({
-      ...prevData,
-      resumeUpload: file.name, // Assuming you want to display the file name
-    }));
-  };
-
-  // Handle file upload for Aadhaar
-  const handleAadhaarUpload = (event) => {
-    const file = event.target.files[0];
-    // You can perform additional checks or operations with the file
-    setDataAll((prevData) => ({
-      ...prevData,
-      aadhaarUpload: file.name, // Assuming you want to display the file name
-    }));
   };
 
   const handleVerifyClick = () => {
@@ -296,28 +295,20 @@ const ProfileComponent = ({ routePrefix, isVerify, onUidChange }) => {
               </div>
               <div className="w-2/3">
                 {editMode ? (
-                  <div className="flex items-center">
-                    <input
-                      type="file"
-                      onChange={handleResumeUpload}
-                      accept=".pdf,.doc,.docx" // Set accepted file types
-                      className="hidden" // Hide the original input
-                      id="resumeInput" // Add an ID for the label association
-                    />
-                    <label
-                      htmlFor="resumeInput"
-                      className="text-white bg-secondary-card rounded-md w-full p-2 text-center h-8 cursor-pointer"
-                    >
-                      Choose File
-                    </label>
-                  </div>
+                  <input
+                    type="text"
+                    placeholder="Paste the link to your resume here"
+                    className="text-white bg-secondary-card rounded-md w-full p-2 h-8"
+                    value={resumeLink}
+                    onChange={(e) => setResumeLink(e.target.value)}
+                  />
                 ) : (
                   <input
-                    placeholder="Upload your Resume"
+                    placeholder="Enter the link to your Resume"
                     type="text"
                     className="text-white bg-secondary-card rounded-md w-full p-2 text-center h-8 placeholder:text-white"
-                    // defaultValue={dataAll?.resumeUpload}
                     readOnly
+                    value={resumeLink}
                   />
                 )}
               </div>
@@ -332,30 +323,20 @@ const ProfileComponent = ({ routePrefix, isVerify, onUidChange }) => {
               </div>
               <div className="w-2/3">
                 {editMode ? (
-                  <div className="flex items-center">
-                    <input
-                      placeholder="Upload your Aadhaar"
-                      type="file"
-                      onChange={handleAadhaarUpload}
-                      accept=".pdf,.jpg,.jpeg,.png" // Set accepted file types
-                      className="hidden" // Hide the original input
-                      id="aadhaarInput" // Add an ID for the label association
-                    />
-                    <label
-                      htmlFor="aadhaarInput"
-                      className="text-white bg-secondary-card rounded-md w-full p-2 text-center h-8 cursor-pointer"
-                    >
-                      Choose File
-                    </label>
-                  </div>
+                  <input
+                    type="text"
+                    placeholder="Paste the link to your Aadhaar here"
+                    className="text-white bg-secondary-card rounded-md w-full p-2 h-8"
+                    value={aadhaarLink}
+                    onChange={(e) => setAadhaarLink(e.target.value)}
+                  />
                 ) : (
                   <input
-                    placeholder="Upload your Aadhaar"
+                    placeholder="Enter the link to your Aadhaar"
                     type="text"
                     className="text-white bg-secondary-card rounded-md w-full p-2 text-center h-8 placeholder:text-white"
-                    // defaultValue={dataAll?.aadhaarUpload}
-
                     readOnly
+                    value={aadhaarLink}
                   />
                 )}
               </div>
