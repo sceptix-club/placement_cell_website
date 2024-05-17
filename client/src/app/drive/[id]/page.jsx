@@ -47,6 +47,12 @@ const driveinfo = () => {
       setShow(true);
     }
   }, [userRole]);
+
+  const handleViewPDF = () => {
+    if (placements.pdfFileURL) {
+      window.open(placements.pdfFileURL, "_blank");
+    }
+  };
   // if (!dataAll) {
   //   return notFound();
   // }
@@ -85,6 +91,15 @@ const driveinfo = () => {
         </div>
         {/* <RegisterButton /> */}
 
+        <hr className=" border-divider-color mt-5" />
+        <div className="flex flex-row items-center justify-between mt-3">
+          <button
+            onClick={handleViewPDF}
+            className="text-sm lg:text-lg font-medium text-blue-500"
+          >
+            View PDF
+          </button>
+        </div>
         <hr className=" border-divider-color mt-5" />
 
         {show && <ManagerDriveButtons props={placements.is_draft} />}
