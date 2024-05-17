@@ -36,55 +36,79 @@ const Header2 = () => {
 
   return (
     <Headroom>
-      <div className="navbar bg-green-500 rounded-xl w-11/12  md:mx-auto my-5">
+      <div className="navbar bg-green-500 rounded-xl w-11/12 mx-auto my-5">
         <div className="navbar-start">
           <div className="dropdown">
-            { isLoggedIn ?(<div tabIndex={0} role="button" className="btn btn-ghost lg:hidden hover:bg-green-500">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-5 w-5"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
+            {isLoggedIn ? (
+              <div
+                tabIndex={0}
+                role="button"
+                className="btn btn-ghost lg:hidden hover:bg-green-500"
               >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M4 6h16M4 12h8m-8 6h16"
-                />
-              </svg>
-            </div>): null}
-            
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-5 w-5"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M4 6h16M4 12h8m-8 6h16"
+                  />
+                </svg>
+              </div>
+            ) : null}
+
             <ul
               tabIndex={0}
               className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-green-500 rounded-lg w-52 "
             >
-              {PathName !== "/" ? (
-              <li>
-                <a className="hover:underline" href="/">Home</a>
-              </li>
-            ) : null}
+              {isLoggedIn ? (
+                <li>
+                  <a className="hover:underline" href="/">
+                    Home
+                  </a>
+                </li>
+              ) : null}
 
-            {isLoggedIn && PathName !== "/profile" && userRole !== 3 ? (
-              <li>
-                <a className="hover:underline" href="/profile">Profile</a>
-              </li>
-            ) : null}
+              {isLoggedIn && userRole !== 3 ? (
+                <li>
+                  <a className="hover:underline" href="/profile">
+                    Profile
+                  </a>
+                </li>
+              ) : null}
 
-            {userRole === 3 && PathName !== "/dashboard" ? (
-              <li>
-                <a className="hover:underline" href="/dashboard">Dashboard</a>
-              </li>
-            ) : null}
+              {userRole === 3 ? (
+                <>
+                  <li>
+                    <a className="hover:underline" href="/">
+                      Existing Drive
+                    </a>
+                  </li>
+                  <li>
+                    <a className="hover:underline" href="/create/drive">
+                      New Drive
+                    </a>
+                  </li>
+                  <li>
+                    <a className="hover:underline" href="/candidates">
+                      Candidates
+                    </a>
+                  </li>
+                </>
+              ) : null}
 
-            {userRole === 2 && PathName !== "/mentees" ? (
-              <li>
-                <a className="hover:underline" href="/mentees">Mentees</a>
-              </li>
-            ) : null}
-
-
+              {userRole === 2 ? (
+                <li>
+                  <a className="hover:underline" href="/mentees">
+                    Mentees
+                  </a>
+                </li>
+              ) : null}
             </ul>
           </div>
           <a
@@ -97,7 +121,7 @@ const Header2 = () => {
 
         <div className="navbar-center hidden lg:flex">
           <ul className="menu menu-horizontal px-1">
-            {PathName !== "/" ? (
+            {isLoggedIn ? (
               <li>
                 <Link className="hover:bg-green-500" href="/">
                   <button className="text-lg text-white border-b-2 border-transparent  hover:border-white transition-colors duration-200">
@@ -107,7 +131,7 @@ const Header2 = () => {
               </li>
             ) : null}
 
-            {isLoggedIn && PathName !== "/profile" && userRole !== 3 ? (
+            {isLoggedIn && userRole !== 3 ? (
               <li>
                 <Link className="hover:bg-green-500" href="/profile">
                   <button className="text-lg text-white border-b-2 border-transparent hover:border-white transition-colors duration-200">
@@ -117,17 +141,33 @@ const Header2 = () => {
               </li>
             ) : null}
 
-            {userRole === 3 && PathName !== "/dashboard" ? (
-              <li>
-                <Link className="hover:bg-green-500" href="/dashboard">
-                  <button className="text-lg text-white border-b-2 border-transparent  hover:border-white transition-colors duration-200">
-                    Dashboard
-                  </button>
-                </Link>
-              </li>
+            {userRole === 3 ? (
+              <>
+                <li>
+                  <Link className="hover:bg-green-500" href="/">
+                    <button className="text-lg text-white border-b-2 border-transparent  hover:border-white transition-colors duration-200">
+                      Existing Drives
+                    </button>
+                  </Link>
+                </li>
+                <li>
+                  <Link className="hover:bg-green-500" href="/create/drive">
+                    <button className="text-lg text-white border-b-2 border-transparent  hover:border-white transition-colors duration-200">
+                      New Drive
+                    </button>
+                  </Link>
+                </li>
+                <li>
+                  <Link className="hover:bg-green-500" href="/candidates">
+                    <button className="text-lg text-white border-b-2 border-transparent  hover:border-white transition-colors duration-200">
+                      Candidates
+                    </button>
+                  </Link>
+                </li>
+              </>
             ) : null}
 
-            {userRole === 2 && PathName !== "/mentees" ? (
+            {userRole === 2 ? (
               <li>
                 <Link className="hover:bg-green-500" href="/mentees">
                   <button className="text-lg text-white border-b-2 border-transparent  hover:border-white transition-colors duration-200">
