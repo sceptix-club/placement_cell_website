@@ -1,6 +1,8 @@
 import { Inter } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/header";
+import Header2 from "@/components/Header2";
+
 import Footer from "@/components/footer";
 import LoginProvider from "@/provider";
 // import { RoleProvider } from "@/context/RoleContext";
@@ -19,7 +21,8 @@ export default function RootLayout({ children }) {
       {/* <RoleProvider> */}
       <html lang="en">
         <body className={inter.className}>
-          <Header />
+          {/* <Header /> */}
+          <Header2 />
           <div className="  bg-background-clr">{children}</div>
           <Footer />
         </body>
