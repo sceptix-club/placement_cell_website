@@ -4,7 +4,7 @@ import { useCookies } from "react-cookie";
 import { useRouter } from "next/navigation";
 import supabase from "@/data/supabase";
 
-const ProfileComponent = ({ routePrefix, isVerify, onUidChange }) => {
+const ProfileComponent = ({ routePrefix, isVerify, onUidChange, props }) => {
   const router = useRouter();
   const pathName = usePathname();
   const pathNo = pathName.slice(`/${routePrefix}/`.length);
@@ -12,16 +12,18 @@ const ProfileComponent = ({ routePrefix, isVerify, onUidChange }) => {
   // Initialize state for profile data, edit mode, new skill, and adding skill flag
   const [verified, setVerified] = useState(true);
 
+
+
   const [dataAll, setDataAll] = useState({
-    id: "server Error",
-    name: " Error",
-    usn: "server Error",
-    branch: "server Error",
-    year: "server Error",
-    email: "server Error",
-    cgpa: "server Error",
-    phone: "Server Error",
-    activeBacklogs: "server Error",
+    id: "",
+    name: "",
+    usn: "",
+    branch: "",
+    year: "",
+    email: "",
+    cgpa: "",
+    phone: "",
+    activeBacklogs: "",
     skills: ["", ""],
   });
 
@@ -75,6 +77,7 @@ const ProfileComponent = ({ routePrefix, isVerify, onUidChange }) => {
   const [addingSkill, setAddingSkill] = useState(false);
   const [resumeLink, setResumeLink] = useState("");
   const [aadhaarLink, setAadhaarLink] = useState("");
+
 
   // Handle click on Edit button
   const handleEditClick = () => {
@@ -141,7 +144,23 @@ const ProfileComponent = ({ routePrefix, isVerify, onUidChange }) => {
     }
   };
 
-  const handleVerifyClick = () => {
+  const handleVerifyClick = async () => {
+    try {
+      const { data, error } = await supabase
+        .from("academics")
+        .update({ verified: 1 })
+        .eq("student_id", data.id);
+
+      if (error) {
+        throw error;
+      }
+
+      console.log("Verification Successful!");
+
+    } catch (error) {
+      console.error("Error verifying:", error.message);
+
+    }
     // Display an alert when the "Verify" button is clicked
     window.alert("Verification Successful!");
     // You can perform additional actions after verification is complete
@@ -165,7 +184,7 @@ const ProfileComponent = ({ routePrefix, isVerify, onUidChange }) => {
               </h2>
             </div>
             <div className="text-left mt-0 text-main-text">
-              <p className="mb-[10px]">USN: {dataAll?.usn}</p>
+              <p className="mb-[10px]">USN: {dataAll?.studentData}</p>
               <p className="mb-[10px]">BRANCH: {dataAll?.branch}</p>
               <p className="mb-[10px]">YEAR: {dataAll?.year}</p>
               <p className="mb-[10px]">Email: {dataAll?.email}</p>
@@ -219,11 +238,10 @@ const ProfileComponent = ({ routePrefix, isVerify, onUidChange }) => {
               {dataAll?.skills?.map((skill, index) => (
                 <div
                   key={index}
-                  className={`w-1/3 px-2 mb-4 text ${
-                    editMode && index === dataAll.skills.length - 1
-                      ? "w-1/4"
-                      : ""
-                  }`}
+                  className={`w-1/3 px-2 mb-4 text ${editMode && index === dataAll.skills.length - 1
+                    ? "w-1/4"
+                    : ""
+                    }`}
                 >
                   {editMode ? (
                     <div className="flex items-center">
