@@ -180,14 +180,14 @@ const ProfileComponent = ({ routePrefix, isVerify, onUidChange, props }) => {
             <div className="p-8 flex flex-col items-center justify-center">
               <div className="bg-role-background p-0 rounded-lg mb-4 w-1/2 mt-0 m-0 h-[150px] overflow-hidden my-0"></div>
               <h2 className="text-2xl mb-0 mt-0 font-bold text-center text-main-text">
-                {dataAll?.name}
+                {props.student.name}
               </h2>
             </div>
             <div className="text-left mt-0 text-main-text">
-              <p className="mb-[10px]">USN: {dataAll?.studentData}</p>
-              <p className="mb-[10px]">BRANCH: {dataAll?.branch}</p>
-              <p className="mb-[10px]">YEAR: {dataAll?.year}</p>
-              <p className="mb-[10px]">Email: {dataAll?.email}</p>
+              <p className="mb-[10px]">USN: {props.student.usn}</p>
+              <p className="mb-[10px]">BRANCH: {props.student.branch}</p>
+              <p className="mb-[10px]">YEAR: {props.student.year}</p>
+              <p className="mb-[10px]">Email: {props.student.email}</p>
               <p className="mb-[10px]">Phone Number: {dataAll?.phone}</p>
             </div>
           </div>
