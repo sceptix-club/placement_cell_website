@@ -1,13 +1,14 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import supabase from "@/data/supabase.js";
 //Data to be displayed in the table
-import CandidateTestData from "../../../public/CandidateTestData.js";
+// import CandidateTestData from "../../../public/CandidateTestData.js";
 import Dropdown from "../../components/DropdownFilter.jsx";
 
 //Filter options
 const CGPA = ["5.0", "6.0", "7.0", "8.0", "9.0", "10.0"];
-const Branch = ["CSE", "CSDS", "ECE", "EEE", "MECH", "CIVIL", "CSBS"];
+const Branch = ["CSE", "CSE - DS", "ECE", "EEE", "MECH", "CIVIL", "CSBS"];
 const Skills = [
   "React",
   "Astro",
@@ -66,9 +67,20 @@ const candidates = () => {
     }
   };
 
+  useEffect(() => {
+    const fetchPlacement = async () => {
+      const { data, error } = await supabase.from("student").select("*");
+      console.log("data", data);
+      if (!error) {
+        setFilteredData(data);
+      }
+    };
+    fetchPlacement();
+  }, []);
+
   //To filter out the data based on the selected options
   useEffect(() => {
-    let newFilteredData = CandidateTestData;
+    let newFilteredData = filteredData;
 
     if (selectedBranchOptions.length > 0) {
       newFilteredData = newFilteredData.filter((candidate) =>
@@ -172,16 +184,18 @@ const candidates = () => {
                       <th className="bg-search-bar py-2 pl-4">Branch</th>
                     </tr>
                   </thead>
-                  {filteredData.map((candidate, index) => (
-                    <tr
-                      className="border-b border-divider-color overflow-auto "
-                      key={index}
-                    >
-                      <td className="py-2 pl-3">{candidate.usn}</td>
-                      <td className="py-2 ">{candidate.name}</td>
-                      <td className="py-2 ">{candidate.branch}</td>
-                    </tr>
-                  ))}
+                  <tbody>
+                    {filteredData.map((candidate, index) => (
+                      <tr
+                        className="border-b border-divider-color overflow-auto "
+                        key={index}
+                      >
+                        <td className="py-2 pl-3">{candidate.usn}</td>
+                        <td className="py-2 ">{candidate.name}</td>
+                        <td className="py-2 ">{candidate.branch}</td>
+                      </tr>
+                    ))}
+                  </tbody>
                 </table>
               </div>
             </div>
