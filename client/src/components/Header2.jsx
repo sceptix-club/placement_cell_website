@@ -28,7 +28,21 @@ const Header2 = () => {
         console.log("loggedout");
       }
     };
+
+    const checkUserRole = async () => {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+      if (user) {
+        const { data, error } = await supabase
+          .from("user")
+          .select()
+          .eq("user_id", user.id);
+        setUserRole(data[0].role);
+      }
+    };
     checkSession();
+    checkUserRole();
   }, []);
 
   const PathName = usePathname();
