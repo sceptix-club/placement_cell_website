@@ -66,7 +66,12 @@ const Home = () => {
           </section>
           // </div>
         )}
-        <hr className="w-2/3 border-white my-6" />
+
+        {userRole === 3 ? (
+          <hr className="w-2/3 border-white my-6" />
+        ) : (
+          <hr className="w-2/3 border-background-clr my-6" />
+        )}
 
         <section className="lg:w-2/3 sm: w-3/4">
           <h1 className="text-3xl font-bold text-white mb-6">Ongoing</h1>
