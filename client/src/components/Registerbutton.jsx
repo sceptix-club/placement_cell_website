@@ -6,7 +6,6 @@ import supabase from "@/data/supabase";
 import { usePathname } from "next/navigation";
 import FetchUidComponent from "@/app/api/fetchUid";
 import RolesCard from "@/components/RolesCard";
-
 import QuestionPopup from "@/components/QuestionPopup";
 
 export default function Page() {
@@ -16,6 +15,7 @@ export default function Page() {
   const [roleIds, setRoleIds] = useState([]);
   const [placements, setPlacements] = useState([]);
   const [roles, setRoles] = useState([]);
+  const [studentSem, setStudentSem] = useState(null);
   const [showQuestionPopup, setShowQuestionPopup] = useState(false); // State to control the visibility of the question popup
   const pathName = usePathname();
   const pathNo = pathName.slice("/drive/".length);
@@ -50,9 +50,24 @@ export default function Page() {
       }
     };
 
+    const fetchStudentDetails = async (studentId) => {
+      const { data, error } = await supabase
+        .from("student")
+        .select("semester")
+        .eq("id", studentId)
+        .single();
+      if (!error) {
+        setStudentSem(data.semester);
+      }
+    };
+
+    if (uid) {
+      fetchStudentDetails(uid);
+    }
+
     fetchPlacement();
     fetchRoles();
-  }, [pathNo]);
+  }, [pathNo, uid]);
 
   // Handle registration for a specific role
   const handleRegistration = async (roleId) => {
@@ -108,12 +123,13 @@ export default function Page() {
       <section className="flex flex-wrap">
         {selectedRole && (
           <div key={selectedRole.id} className="flex items-center">
-            {/* <h3>{selectedRole.name}</h3> */}
             <button
-              className="bg-logo-bg text-black font-bold  px-1 py-1 rounded-md mb-1 ml-1 mt-2 -m-3 text-sm"
+              className={`bg-logo-bg text-black font-bold px-1 py-1 rounded-md mb-1 ml-1 mt-2 -m-3 text-sm ${
+                studentSem < 7 ? "bg-gray-400 cursor-not-allowed" : ""
+              }`}
               type="button"
               onClick={() => handleRegistration(selectedRole.id)}
-              disabled={registered}
+              disabled={registered || studentSem < 7}
             >
               REGISTER
             </button>
