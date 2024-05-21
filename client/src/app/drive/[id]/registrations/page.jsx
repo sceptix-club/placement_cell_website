@@ -19,7 +19,6 @@ const Registrations = () => {
         .eq("drive_id", pathNo);
       if (!error) {
         setRegistrations(data);
-        console.log("datta", data.length);
         if (data.length != 0) {
           setDrive(data[0].role_id.drive_id.name);
         } else {
