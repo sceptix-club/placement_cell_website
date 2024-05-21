@@ -4,7 +4,7 @@ import { useCookies } from "react-cookie";
 import { useRouter } from "next/navigation";
 import supabase from "@/data/supabase";
 
-const ProfileComponent = ({ routePrefix, isVerify, onUidChange, props }) => {
+const ProfileComponent = ({ routePrefix, isVerify, student, onUidChange }) => {
   const router = useRouter();
   const pathName = usePathname();
   const pathNo = pathName.slice(`/${routePrefix}/`.length);
@@ -14,20 +14,11 @@ const ProfileComponent = ({ routePrefix, isVerify, onUidChange, props }) => {
 
 
 
-  const [dataAll, setDataAll] = useState({
-    id: "",
-    name: "",
-    usn: "",
-    branch: "",
-    year: "",
-    email: "",
-    cgpa: "",
-    phone: "",
-    activeBacklogs: "",
-    skills: ["", ""],
-  });
+  const [dataAll, setDataAll] = useState();
 
   useEffect(() => {
+
+
     const checkUserStatus = async () => {
       try {
         const { data, error } = await supabase.auth.getSession();
@@ -116,6 +107,7 @@ const ProfileComponent = ({ routePrefix, isVerify, onUidChange, props }) => {
     setEditMode(false);
     setNewSkill("");
     setAddingSkill(false);
+    setDataAll(student);
   };
 
   // Handle click on Add Skill button
@@ -144,32 +136,32 @@ const ProfileComponent = ({ routePrefix, isVerify, onUidChange, props }) => {
     }
   };
 
-  const handleVerifyClick = async () => {
-    try {
-      const { data, error } = await supabase
-        .from("academics")
-        .update({ verified: 1 })
-        .eq("student_id", data.id);
+  // const handleVerifyClick = async () => {
+  //   try {
+  //     const { data, error } = await supabase
+  //       .from("academics")
+  //       .update({ verified: 1 })
+  //       .eq("student_id", data.id);
 
-      if (error) {
-        throw error;
-      }
+  //     if (error) {
+  //       throw error;
+  //     }
 
-      console.log("Verification Successful!");
+  //     console.log("Verification Successful!");
 
-    } catch (error) {
-      console.error("Error verifying:", error.message);
+  //   } catch (error) {
+  //     console.error("Error verifying:", error.message);
 
-    }
-    // Display an alert when the "Verify" button is clicked
-    window.alert("Verification Successful!");
-    // You can perform additional actions after verification is complete
-  };
+  //   }
+  //   // Display an alert when the "Verify" button is clicked
+  //   window.alert("Verification Successful!");
+  //   // You can perform additional actions after verification is complete
+  // };
 
   // put 404 page here
-  {
-    verified ? console.log("Logged in") : console.log("404 page not found");
-  }
+  // {
+  //   verified ? console.log("Logged in") : console.log("404 page not found");
+  // }
 
   return (
     <div className="bg-background-clr text-primary-text ">
@@ -180,15 +172,15 @@ const ProfileComponent = ({ routePrefix, isVerify, onUidChange, props }) => {
             <div className="p-8 flex flex-col items-center justify-center">
               <div className="bg-role-background p-0 rounded-lg mb-4 w-1/2 mt-0 m-0 h-[150px] overflow-hidden my-0"></div>
               <h2 className="text-2xl mb-0 mt-0 font-bold text-center text-main-text">
-                {props.student.name}
+                {student?.name}
               </h2>
             </div>
             <div className="text-left mt-0 text-main-text">
-              <p className="mb-[10px]">USN: {props.student.usn}</p>
-              <p className="mb-[10px]">BRANCH: {props.student.branch}</p>
-              <p className="mb-[10px]">YEAR: {props.student.year}</p>
-              <p className="mb-[10px]">Email: {props.student.email}</p>
-              <p className="mb-[10px]">Phone Number: {dataAll?.phone}</p>
+              <p className="mb-[10px]">USN: {student?.usn}</p>
+              <p className="mb-[10px]">BRANCH: {student?.branch}</p>
+              <p className="mb-[10px]">YEAR: {student?.year}</p>
+              <p className="mb-[10px]">Email: {student?.email}</p>
+              <p className="mb-[10px]">Phone Number: {student?.phone}</p>
             </div>
           </div>
         </div>
@@ -372,7 +364,7 @@ const ProfileComponent = ({ routePrefix, isVerify, onUidChange, props }) => {
               {isVerify ? (
                 <button
                   className="bg-logo-bg text-black font-bold px-10 py-0 rounded-md"
-                  onClick={handleVerifyClick}
+                // onClick={handleVerifyClick}
                 >
                   {isVerify ? "Verify" : "Edit"}
                 </button>
