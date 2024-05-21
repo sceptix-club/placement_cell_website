@@ -1,8 +1,0 @@
-{
-  "devDependencies": {
-    "daisyui": "^4.11.1"
-  },
-  "dependencies": {
-    "react-headroom": "^3.2.1"
-  }
-}
