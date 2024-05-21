@@ -16,12 +16,11 @@ export default function Page() {
   const [placements, setPlacements] = useState([]);
   const [roles, setRoles] = useState([]);
   const [studentSem, setStudentSem] = useState(null);
-  const [showQuestionPopup, setShowQuestionPopup] = useState(false); // State to control the visibility of the question popup
+  const [showQuestionPopup, setShowQuestionPopup] = useState(false);
   const pathName = usePathname();
   const pathNo = pathName.slice("/drive/".length);
 
   useEffect(() => {
-    // Fetch placement data for the specific drive
     const fetchPlacement = async () => {
       const { data, error } = await supabase
         .schema("placements")
@@ -34,7 +33,6 @@ export default function Page() {
       }
     };
 
-    // Fetch roles for the specific drive
     const fetchRoles = async () => {
       const { data: roleData, error: roleError } = await supabase
         .schema("placements")
@@ -69,11 +67,9 @@ export default function Page() {
     fetchRoles();
   }, [pathNo, uid]);
 
-  // Handle registration for a specific role
   const handleRegistration = async (roleId) => {
     const student_id = uid;
 
-    // Check if the student is already registered for this role
     const { data: existingStats, error: statsError } = await supabase
       .schema("placements")
       .from("stat")
@@ -87,16 +83,13 @@ export default function Page() {
       return;
     }
 
-    // Show the question popup when registering for a role
     setShowQuestionPopup(true);
   };
 
-  // Handle registration with answers
   const handleRegistrationWithAnswers = async (answers) => {
     const student_id = uid;
     const roleId = selectedRole.id;
 
-    // Insert the student_id, roleId, and drive_id into the stat table along with answers
     const { error: insertError } = await supabase
       .schema("placements")
       .from("stat")
@@ -107,15 +100,17 @@ export default function Page() {
       return;
     }
 
-    // Set registered state to true and show success message
     setRegistered(true);
     alert("You have been successfully registered for this role.");
 
     setShowQuestionPopup(false);
   };
 
-  // Select the first role from the roles array
   const selectedRole = roles.length > 0 ? roles[0] : null;
+
+  const handleDisabledRegistrationClick = () => {
+    alert("Registrations are open only for students in the 7th semester or higher.");
+  };
 
   return (
     <div>
@@ -124,15 +119,18 @@ export default function Page() {
         {selectedRole && (
           <div key={selectedRole.id} className="flex items-center">
             <button
-              className={`bg-logo-bg text-black font-bold px-1 py-1 rounded-md mb-1 ml-1 mt-2 -m-3 text-sm ${
-                studentSem < 7 ? "bg-gray-400 cursor-not-allowed" : ""
-              }`}
+              className={` font-bold px-1 py-1 rounded-md mb-1 ml-1 mt-2 -m-3 text-sm ${
+                studentSem < 7 ? "bg-gray-400 text-white cursor-not-allowed" : "bg-logo-bg text-black"
+              }` }
               type="button"
               onClick={() => handleRegistration(selectedRole.id)}
               disabled={registered || studentSem < 7}
             >
               REGISTER
             </button>
+            {studentSem < 7 && (
+              <span className="text-xs text-red-500 ml-5">(Open for 7th semester and above)</span>
+            )}
           </div>
         )}
       </section>

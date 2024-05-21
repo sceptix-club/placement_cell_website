@@ -95,7 +95,7 @@ const driveinfo = () => {
         <div className="flex flex-row items-center justify-between mt-3">
           <button
             onClick={handleViewPDF}
-            className="text-sm lg:text-lg font-medium text-blue-500"
+            className="px-4 py-2 bg-green-600 text-white rounded shadow hover:bg-logo-bg"
           >
             View PDF
           </button>
