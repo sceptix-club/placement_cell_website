@@ -53,7 +53,7 @@ const RolesCard = ({ props, prop2 }) => {
           userRole !== null && <p>Registrations Closed</p>
         )}
 
-        {userRole === 3 && <ManagerView />}
+        {/* {userRole === 3 && <ManagerView />} */}
       </div>
     </section>
   );
