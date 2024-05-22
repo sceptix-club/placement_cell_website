@@ -30,7 +30,7 @@ const Role = () => {
   const saveRole = async () => {
     try {
       const { data, error } = await supabase
-        .schema("placements")
+        // .schema("placements")
         .from("role")
         .insert([{ ...jobInfo, drive_id: pathNo }]);
 
