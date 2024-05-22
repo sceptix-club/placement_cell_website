@@ -28,7 +28,7 @@ const Home = () => {
     };
     const fetchPlacement = async () => {
       const { data, error } = await supabase
-        .schema("placements")
+        // .schema("placements")
         .from("drive")
         .select("*, role(*)");
       if (!error) {

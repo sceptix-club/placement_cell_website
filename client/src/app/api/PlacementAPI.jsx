@@ -5,7 +5,7 @@ const PlacementAPI = ({ pathNo, setPlacements, setRole, setRoleIds }) => {
   useEffect(() => {
     const fetchPlacement = async () => {
       const { data, error } = await supabase
-        .schema("placements")
+        // .schema("placements")
         .from("drive")
         .select("*, role(*)")
         .eq("id", pathNo)
