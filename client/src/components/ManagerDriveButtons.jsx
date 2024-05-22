@@ -14,7 +14,7 @@ export default function ManagerDriveButtons(props) {
 
   const publishDrive = async () => {
     const { data, error } = await supabase
-      .schema("placements")
+      // .schema("placements")
       .from("drive")
       .update({ is_draft: false })
       .eq("id", pathNo)
@@ -25,7 +25,7 @@ export default function ManagerDriveButtons(props) {
 
   const unPublishDrive = async () => {
     const { data, error } = await supabase
-      .schema("placements")
+      // .schema("placements")
       .from("drive")
       .update({ is_draft: true })
       .eq("id", pathNo)

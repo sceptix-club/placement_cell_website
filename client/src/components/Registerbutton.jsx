@@ -23,7 +23,7 @@ export default function Page() {
   useEffect(() => {
     const fetchPlacement = async () => {
       const { data, error } = await supabase
-        .schema("placements")
+        // .schema("placements")
         .from("drive")
         .select("*")
         .eq("id", pathNo)
@@ -35,7 +35,7 @@ export default function Page() {
 
     const fetchRoles = async () => {
       const { data: roleData, error: roleError } = await supabase
-        .schema("placements")
+        // .schema("placements")
         .from("role")
         .select("*")
         .eq("drive_id", pathNo);
@@ -71,7 +71,7 @@ export default function Page() {
     const student_id = uid;
 
     const { data: existingStats, error: statsError } = await supabase
-      .schema("placements")
+      // .schema("placements")
       .from("stat")
       .select()
       .eq("drive_id", pathNo)
@@ -91,7 +91,7 @@ export default function Page() {
     const roleId = selectedRole.id;
 
     const { error: insertError } = await supabase
-      .schema("placements")
+      // .schema("placements")
       .from("stat")
       .insert([{ student_id, role_id: roleId, drive_id: pathNo, ...answers }]);
 

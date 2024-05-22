@@ -92,7 +92,7 @@ const create = () => {
     // Save data to Supabase database
     try {
       const { data: insertedData, error: insertError } = await supabase
-        .schema("placements")
+        // .schema("placements")
         .from("drive")
         .insert([dataToSave]);
 
