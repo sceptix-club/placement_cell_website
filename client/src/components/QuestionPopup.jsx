@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import supabase from "@/data/supabase";
 
 const QuestionPopup = ({ driveId, roleId, uid, onClose, onRegister }) => {
@@ -12,7 +12,6 @@ const QuestionPopup = ({ driveId, roleId, uid, onClose, onRegister }) => {
     const fetchData = async () => {
       // Fetch drive name and date
       const { data: driveData, error: driveError } = await supabase
-        // .schema('placements')
         .from("drive")
         .select("name, date")
         .eq("id", driveId);
@@ -24,7 +23,6 @@ const QuestionPopup = ({ driveId, roleId, uid, onClose, onRegister }) => {
 
       // Fetch role name
       const { data: roleData, error: roleError } = await supabase
-        // .schema('placements')
         .from("role")
         .select("name")
         .eq("id", roleId);
@@ -35,7 +33,6 @@ const QuestionPopup = ({ driveId, roleId, uid, onClose, onRegister }) => {
 
       // Fetch questions
       const { data: questionsData, error: questionsError } = await supabase
-        // .schema("placements")
         .from("drive")
         .select("que1, que2, que3, que4")
         .eq("id", driveId);
@@ -69,18 +66,28 @@ const QuestionPopup = ({ driveId, roleId, uid, onClose, onRegister }) => {
     onClose();
   };
 
-  const handleKeyDown = (e) => {
-    if (e.key === "Escape") {
-      onClose();
-    }
-  };
+  const handleKeyDown = useCallback(
+    (e) => {
+      if (e.key === "Escape") {
+        onClose();
+      }
+    },
+    [onClose]
+  );
+
+  useEffect(() => {
+    document.addEventListener("keydown", handleKeyDown);
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [handleKeyDown]);
 
   return (
     <div
       className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50"
       onKeyDown={handleKeyDown}
     >
-      <div className="bg-black rounded-lg p-6 max-w-md w-full">
+      <div className="bg-black rounded-lg p-6 max-w-md w-full relative">
         <span
           className="absolute top-2 right-2 text-gray-600 cursor-pointer"
           onClick={onClose}
