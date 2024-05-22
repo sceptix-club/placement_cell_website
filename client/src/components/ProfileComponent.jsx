@@ -1,23 +1,46 @@
 import React, { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
-import { useCookies } from "react-cookie";
 import { useRouter } from "next/navigation";
 import supabase from "@/data/supabase";
 
-const ProfileComponent = ({ routePrefix, isVerify, student, onUidChange }) => {
+const ProfileComponent = ({ routePrefix, isVerify, onUidChange, student }) => {
   const router = useRouter();
   const pathName = usePathname();
   const pathNo = pathName.slice(`/${routePrefix}/`.length);
   const pathWithoutPrefix = pathName.slice(1);
-  // Initialize state for profile data, edit mode, new skill, and adding skill flag
   const [verified, setVerified] = useState(true);
 
-
-
-  const [dataAll, setDataAll] = useState();
+  const [dataAll, setDataAll] = useState({
+    id: "server Error",
+    name: " Error",
+    usn: "server Error",
+    branch: "server Error",
+    year: "server Error",
+    email: "server Error",
+    cgpa: "server Error",
+    phone: "Server Error",
+    activeBacklogs: "server Error",
+    skills: ["", ""],
+  });
 
   useEffect(() => {
-
+    const fetchUserData = async (uid) => {
+      try {
+        const { data: studentData, error: studentError } = await supabase
+          .from("student")
+          .select()
+          .eq("user_id", uid);
+        if (studentError) {
+          throw studentError;
+        }
+        const sid = studentData[0].id;
+        setDataAll(studentData[0]);
+        setVerified(true);
+        if (onUidChange) onUidChange(sid);
+      } catch (error) {
+        console.error("Error fetching student data:", error.message);
+      }
+    };
 
     const checkUserStatus = async () => {
       try {
@@ -31,7 +54,6 @@ const ProfileComponent = ({ routePrefix, isVerify, student, onUidChange }) => {
         }
         const { user } = data.session;
 
-        // Fetch the user_id from the user table
         const { data: userData, error: userError } = await supabase
           .from("user")
           .select("id")
@@ -40,28 +62,20 @@ const ProfileComponent = ({ routePrefix, isVerify, student, onUidChange }) => {
           throw userError;
         }
         const uid = userData[0].id;
-        console.log("is", uid);
 
-        // Fetch data from the student table using user_id
-        const { data: studentData, error: studentError } = await supabase
-          .from("student")
-          .select()
-          .eq("user_id", uid);
-        if (studentError) {
-          throw studentError;
-        }
-        const sid = studentData[0].id;
-        console.log("Student data:", studentData[0]);
-        setDataAll(studentData[0]);
-        setVerified(true); // Assuming user is verified if data is successfully fetched
-        onUidChange(sid);
+        fetchUserData(uid);
       } catch (error) {
-        console.error("Error fetching data:", error.message);
-        // Handle error state or show appropriate message to the user
+        console.error("Error fetching user data:", error.message);
       }
     };
-    checkUserStatus();
-  }, []);
+
+    if (!student) {
+      checkUserStatus();
+    } else {
+      setDataAll(student);
+      setVerified(true);
+    }
+  }, [student]);
 
   const [editMode, setEditMode] = useState(false);
   const [newSkill, setNewSkill] = useState("");
@@ -69,16 +83,12 @@ const ProfileComponent = ({ routePrefix, isVerify, student, onUidChange }) => {
   const [resumeLink, setResumeLink] = useState("");
   const [aadhaarLink, setAadhaarLink] = useState("");
 
-
-  // Handle click on Edit button
   const handleEditClick = () => {
     setEditMode(true);
   };
 
-  // Handle click on Save button
   const handleSaveClick = async () => {
     try {
-      // Make an API call to update the data in the Supabase database
       const { data, error } = await supabase
         .from("student")
         .update({
@@ -92,39 +102,31 @@ const ProfileComponent = ({ routePrefix, isVerify, student, onUidChange }) => {
         throw error;
       }
 
-      console.log("Data updated successfully:", data);
       setEditMode(false);
       setAddingSkill(false);
     } catch (error) {
       console.error("Error updating data:", error.message);
-      // Handle error state or show appropriate message to the user
     }
   };
 
   const handleCancelClick = () => {
-    // Reset data and cancel changes
-    // setDataAll(profileData.find((item) => item.id === Number(pathNo)));
     setEditMode(false);
     setNewSkill("");
     setAddingSkill(false);
-    setDataAll(student);
   };
 
-  // Handle click on Add Skill button
   const handleAddSkill = () => {
     setAddingSkill(true);
   };
 
-  // Handle removing a skill by index
   const handleRemoveSkill = (indexToRemove) => {
     setDataAll((prevData) => ({
       ...prevData,
       skills: prevData.skills.filter((_, index) => index !== indexToRemove),
     }));
-    setAddingSkill(false); // Clear addingSkill state when removing a skill
+    setAddingSkill(false);
   };
 
-  // Handle saving a new skill
   const handleSaveNewSkill = () => {
     if (newSkill.trim() !== "") {
       setDataAll((prevData) => ({
@@ -136,32 +138,9 @@ const ProfileComponent = ({ routePrefix, isVerify, student, onUidChange }) => {
     }
   };
 
-  // const handleVerifyClick = async () => {
-  //   try {
-  //     const { data, error } = await supabase
-  //       .from("academics")
-  //       .update({ verified: 1 })
-  //       .eq("student_id", data.id);
-
-  //     if (error) {
-  //       throw error;
-  //     }
-
-  //     console.log("Verification Successful!");
-
-  //   } catch (error) {
-  //     console.error("Error verifying:", error.message);
-
-  //   }
-  //   // Display an alert when the "Verify" button is clicked
-  //   window.alert("Verification Successful!");
-  //   // You can perform additional actions after verification is complete
-  // };
-
-  // put 404 page here
-  // {
-  //   verified ? console.log("Logged in") : console.log("404 page not found");
-  // }
+  const handleVerifyClick = () => {
+    window.alert("Verification Successful!");
+  };
 
   return (
     <div className="bg-background-clr text-primary-text ">
@@ -172,15 +151,15 @@ const ProfileComponent = ({ routePrefix, isVerify, student, onUidChange }) => {
             <div className="p-8 flex flex-col items-center justify-center">
               <div className="bg-role-background p-0 rounded-lg mb-4 w-1/2 mt-0 m-0 h-[150px] overflow-hidden my-0"></div>
               <h2 className="text-2xl mb-0 mt-0 font-bold text-center text-main-text">
-                {student?.name}
+                {dataAll?.name}
               </h2>
             </div>
             <div className="text-left mt-0 text-main-text">
-              <p className="mb-[10px]">USN: {student?.usn}</p>
-              <p className="mb-[10px]">BRANCH: {student?.branch}</p>
-              <p className="mb-[10px]">YEAR: {student?.year}</p>
-              <p className="mb-[10px]">Email: {student?.email}</p>
-              <p className="mb-[10px]">Phone Number: {student?.phone}</p>
+              <p className="mb-[10px]">USN: {dataAll?.usn}</p>
+              <p className="mb-[10px]">BRANCH: {dataAll?.branch}</p>
+              <p className="mb-[10px]">YEAR: {dataAll?.year}</p>
+              <p className="mb-[10px]">Email: {dataAll?.email}</p>
+              <p className="mb-[10px]">Phone Number: {dataAll?.phone}</p>
             </div>
           </div>
         </div>
@@ -385,3 +364,4 @@ const ProfileComponent = ({ routePrefix, isVerify, student, onUidChange }) => {
 };
 
 export default ProfileComponent;
+

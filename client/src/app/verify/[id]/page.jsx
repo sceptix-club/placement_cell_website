@@ -15,7 +15,7 @@ const VerifyPage = () => {
       return;
     }
 
-    console.log('ID from URL:', id);
+
 
     const fetchStudentData = async () => {
       try {
