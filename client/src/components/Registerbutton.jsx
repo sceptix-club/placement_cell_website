@@ -15,27 +15,29 @@ export default function Page() {
   const [roleIds, setRoleIds] = useState([]);
   const [placements, setPlacements] = useState([]);
   const [roles, setRoles] = useState([]);
-  const [studentSem, setStudentSem] = useState(null);
-  const [showQuestionPopup, setShowQuestionPopup] = useState(false);
+  const [studentSem, setStudentSem] = useState(null); // State to store student semester
+  const [showQuestionPopup, setShowQuestionPopup] = useState(false); // State to control the visibility of the question popup
   const pathName = usePathname();
   const pathNo = pathName.slice("/drive/".length);
 
   useEffect(() => {
     const fetchPlacement = async () => {
       const { data, error } = await supabase
-        // .schema("placements")
+        .schema("placements")
         .from("drive")
         .select("*")
         .eq("id", pathNo)
         .single();
       if (!error) {
         setPlacements(data);
+      } else {
+        console.error("Error fetching placements:", error.message);
       }
     };
 
     const fetchRoles = async () => {
       const { data: roleData, error: roleError } = await supabase
-        // .schema("placements")
+        .schema("placements")
         .from("role")
         .select("*")
         .eq("drive_id", pathNo);
@@ -45,17 +47,21 @@ export default function Page() {
           const roleIds = roleData.map((role) => role.id);
           setRoleIds(roleIds);
         }
+      } else {
+        console.error("Error fetching roles:", roleError.message);
       }
     };
 
     const fetchStudentDetails = async (studentId) => {
       const { data, error } = await supabase
         .from("student")
-        .select("semester")
+        .select("sem")
         .eq("id", studentId)
         .single();
       if (!error) {
-        setStudentSem(data.semester);
+        setStudentSem(data.sem);
+      } else {
+        console.error("Error fetching student details:", error.message);
       }
     };
 
@@ -71,7 +77,7 @@ export default function Page() {
     const student_id = uid;
 
     const { data: existingStats, error: statsError } = await supabase
-      // .schema("placements")
+      .schema("placements")
       .from("stat")
       .select()
       .eq("drive_id", pathNo)
@@ -91,7 +97,7 @@ export default function Page() {
     const roleId = selectedRole.id;
 
     const { error: insertError } = await supabase
-      // .schema("placements")
+      .schema("placements")
       .from("stat")
       .insert([{ student_id, role_id: roleId, drive_id: pathNo, ...answers }]);
 
@@ -119,16 +125,20 @@ export default function Page() {
         {selectedRole && (
           <div key={selectedRole.id} className="flex items-center">
             <button
-              className={` font-bold px-1 py-1 rounded-md mb-1 ml-1 mt-2 -m-3 text-sm ${
-                studentSem < 7 ? "bg-gray-400 text-white cursor-not-allowed" : "bg-logo-bg text-black"
-              }` }
+              className={`font-bold px-4 py-2 rounded-md mb-1 ml-1 mt-2 -m-3 text-sm text-white shadow ${
+                studentSem >= 7 ? "bg-green-600 hover:bg-logo-bg" : "bg-gray-400 cursor-not-allowed"
+              }`}
               type="button"
-              onClick={() => handleRegistration(selectedRole.id)}
-              disabled={registered || studentSem < 7}
+              onClick={
+                studentSem >= 7
+                  ? () => handleRegistration(selectedRole.id)
+                  : handleDisabledRegistrationClick
+              }
+              disabled={registered || (studentSem !== null && studentSem < 7)}
             >
               REGISTER
             </button>
-            {studentSem < 7 && (
+            {studentSem < 7 && studentSem !== null && (
               <span className="text-xs text-red-500 ml-5">(Open for 7th semester and above)</span>
             )}
           </div>
