@@ -1,271 +1,172 @@
 "use client";
+import React, { useEffect, useState, useContext } from "react";
+import { FaRegEye, FaEyeSlash } from "react-icons/fa";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import supabase from "../../data/supabase";
+import { LoginContext } from "@/context";
 
-import React, { useState } from "react";
-import supabase from "@/data/supabase";
+const Login = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [initialLoading, setInitialLoading] = useState(true);
+  const { isLoggedIn, setIsLoggedIn } = useContext(LoginContext);
+  const router = useRouter();
 
-const create = () => {
-  const [submitData, setSubmitData] = useState({
-    name: "",
-    company: "",
-    description: "",
-    date: "",
-    que1: "",
-    que2: "",
-    que3: "",
-    que4: "",
-  });
-  const [pdfFile, setPdfFile] = useState(null);
-
-  const [questionInputs, setQuestionInputs] = useState(Array(4).fill(""));
-  const [numberOfQuestions, setNumberOfQuestions] = useState(4);
-
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setSubmitData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
-  const handleFileChange = (e) => {
-    const file = e.target.files[0];
-    setPdfFile(file);
-
-    // Store the full filename with extension in state
-    setSubmitData((prev) => ({
-      ...prev,
-      pdfFileName: file ? file.name : "", // Store the full filename or an empty string if no file is selected
-    }));
-  };
-
-  const handleQuestionInputChange = (index, value) => {
-    const newQuestionInputs = [...questionInputs];
-    newQuestionInputs[index] = value;
-    setQuestionInputs(newQuestionInputs);
-    setSubmitData((prev) => ({
-      ...prev,
-      [`que${index + 1}`]: value,
-    }));
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    // Upload PDF file to Supabase Storage
-    let fileURL = null;
-    if (pdfFile) {
-      const { data: uploadedFile, error: uploadError } = await supabase.storage
-        .from("Drive_Doc")
-        .upload(`public/${pdfFile.name}`, pdfFile, {
-          cacheControl: "3600",
-        });
-
-      if (uploadError) {
-        console.error("Error uploading PDF file:", uploadError.message);
-        return;
+  useEffect(() => {
+    const checkUserStatus = async () => {
+      const { data } = await supabase.auth.getSession();
+      if (data.session !== null) {
+        document.cookie = `accessToken=${data.session.access_token}; path=/`;
+        document.cookie = `refreshToken=${data.session.refresh_token}; path=/`;
+        router.push("/profile");
+        setIsLoggedIn(true);
       }
-
-      // Generate URL for the uploaded file
-      const fileName = submitData.pdfFileName;
-      const { data: urlData, error: urlError } = await supabase.storage
-        .from("Drive_Doc")
-        .getPublicUrl(`public/${fileName}`);
-
-      if (urlError) {
-        console.error(
-          "Error generating URL for uploaded file:",
-          urlError.message
-        );
-        return;
-      }
-
-      const timestamp = new Date().toISOString();
-      fileURL = `${urlData.publicUrl}?t=${encodeURIComponent(timestamp)}`;
-      console.log("PDF file uploaded successfully:", fileURL);
-    }
-
-    // Prepare data to be saved
-    const dataToSave = {
-      ...submitData,
-      pdfFileURL: fileURL,
+      setInitialLoading(false);
     };
 
-    // Save data to Supabase database
-    try {
-      const { data: insertedData, error: insertError } = await supabase
-        .schema("placements")
-        .from("drive")
-        .insert([dataToSave]);
+    setTimeout(() => {
+      checkUserStatus();
+    }, 2000);
+  }, [router, setIsLoggedIn]);
 
-      if (insertError) {
-        console.error("Error saving placement:", insertError.message);
-        return;
-      }
-      alert("New drive successfully created!");
+  const handleLogin = () => {
+    const emailRegex = /@sjec\.ac\.in/;
 
-      console.log("Placement saved successfully:", insertedData);
-      setSubmitData({
-        name: "",
-        company: "",
-        description: "",
-        date: "",
-        que1: "",
-        que2: "",
-        que3: "",
-        que4: "",
-      });
-      setPdfFile(null);
-      setQuestionInputs(Array(4).fill(""));
-    } catch (error) {
-      console.error("Error saving placement:", error.message);
+    if (email.trim() === "" || password.trim() === "") {
+      setErrorMessage("Invalid Credentials: Email and password cannot be empty.");
+    } else if (!emailRegex.test(email)) {
+      setErrorMessage("Invalid Credentials: Entered email is incorrect.");
+    } else {
+      setErrorMessage(""); // Clear error message if login is successful
+      console.log(`Logging in with email: ${email} and password: ${password}`);
+      setLoading(true); // Start loading
+
+      const handlelogin = async () => {
+        try {
+          const { data, error } = await supabase.auth.signInWithPassword({
+            email: email,
+            password: password,
+          });
+          if (data.session !== null) {
+            document.cookie = `accessToken=${data.session.access_token}; path=/`;
+            document.cookie = `refreshToken=${data.session.refresh_token}; path=/`;
+            setIsLoggedIn(true);
+            router.push("/profile");
+          } else if (error) {
+            setErrorMessage("Login failed. Please check your credentials.");
+          }
+        } catch (err) {
+          console.log(err);
+          setErrorMessage("An error occurred. Please try again.");
+        } finally {
+          // Simulate a longer loading duration
+          setTimeout(() => {
+            setLoading(false); // Stop loading
+          }, 2000);
+        }
+      };
+
+      handlelogin();
     }
   };
 
-  const isQuestionInputDisabled =
-    Object.values(submitData).filter(
-      (val) => typeof val === "string" && val.startsWith("que")
-    ).length >= numberOfQuestions;
+  const handleKeyPress = (e) => {
+    if (e.key === "Enter") {
+      handleLogin();
+    }
+  };
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
+  if (initialLoading) {
+    return (
+      <div className="flex items-center justify-center h-screen bg-[#222222]">
+        <span className="loading loading-dots loading-lg"></span>
+      </div>
+    );
+  }
 
   return (
-    <div className="flex justify-center items-center h-auto py-10 mb-10">
-      <section className="w-10/12  sm:w-sm md:w-md lg:w-lg h-auto p-4 sm:p-8 md:p-12 bg-primary-card rounded-md">
-        <h2 className="font-inter text-2xl sm:text-3xl md:text-4xl font-bold text-divider-color mb-8">
-          Create a Draft
-        </h2>
-        <form onSubmit={handleSubmit} className="flex flex-col">
-          <label
-            className="font-inter text-lg sm:text-xl md:text-2xl font-medium text-divider-color"
-            htmlFor="name"
-          >
-            Placement Name
-          </label>
-          <input
-            className="bg-secondary-card rounded-md px-5
-            py-2 mb-5 placeholder-plcholder-text text-white"
-            type="text"
-            id="name"
-            name="name"
-            placeholder="Enter Placement Name"
-            value={submitData.name}
-            onChange={handleInputChange}
-          />
-          <label
-            className="font-inter text-lg sm:text-xl md:text-2xl font-medium text-divider-color"
-            htmlFor="company"
-          >
-            Company Name
-          </label>
-          <input
-            className="bg-secondary-card rounded-md px-5
-            py-2 mb-5 placeholder-plcholder-text text-white"
-            type="text"
-            id="company"
-            name="company"
-            placeholder="Enter Company Name"
-            value={submitData.company}
-            onChange={handleInputChange}
-          />
-          <label
-            className="font-inter text-lg sm:text-xl md:text-2xl font-medium text-divider-color"
-            htmlFor="description"
-          >
-            Company Description
-          </label>
-          <textarea
-            className="bg-secondary-card rounded-md px-5
-            py-2 mb-5 placeholder-plcholder-text text-white resize-none"
-            rows={6}
-            type="text"
-            id="description"
-            name="description"
-            placeholder="Enter Company Description"
-            value={submitData.description}
-            onChange={handleInputChange}
-          />
-          <label
-            className="font-inter text-lg sm:text-xl md:text-2xl font-medium text-divider-color"
-            htmlFor="date"
-          >
-            Date
-          </label>
-          <input
-            className="bg-secondary-card rounded-md px-5
-            py-2 mb-5 text-white"
-            type="date"
-            id="date"
-            name="date"
-            value={submitData.date}
-            onChange={handleInputChange}
-          />
-          <label
-            className="font-inter text-lg sm:text-xl md:text-2xl font-medium text-divider-color"
-            htmlFor="pdfFile"
-          >
-            Upload PDF
-          </label>
-          {/* <input
-            className="mb-5 rounded-md"
-            type="file"
-            id="pdfFile"
-            name="pdfFile"
-            accept=".pdf"
-            onChange={handleFileChange}
-          /> */}
-          <input
-            className="file-input file-input-success w-full max-w-xs mb-2"
-            type="file"
-            id="pdfFile"
-            name="pdfFile"
-            accept=".pdf"
-            onChange={handleFileChange}
-          />
-          <label
-            className="font-inter text-lg sm:text-xl md:text-2xl font-medium text-divider-color"
-            htmlFor="pdfFile"
-          >
-            Ask Questions
-          </label>
-          <label>Select Number of Questions:</label>
-          <select
-            value={numberOfQuestions}
-            onChange={(e) => {
-              const num = parseInt(e.target.value);
-              setNumberOfQuestions(num);
-              setQuestionInputs(Array(num).fill(""));
-            }}
-            className="bg-secondary-card rounded-md px-5 py-2 mb-5 text-white"
-          >
-            {[1, 2, 3, 4].map((number) => (
-              <option key={number} value={number}>
-                {number}
-              </option>
-            ))}
-          </select>
-          {questionInputs.map((questionInput, index) => (
-            <div key={index}>
-              <label>Question {index + 1}</label>
-              <input
-                type="text"
-                value={questionInput}
-                onChange={(e) =>
-                  handleQuestionInputChange(index, e.target.value)
-                }
-                className="bg-secondary-card rounded-md px-5 py-2 ml-5 mb-5 text-white"
-              />
-            </div>
-          ))}
-          <div className="flex justify-center w-32 h-10">
-            <button
-              className="font-medium bg-logo-bg w-32 h-10 rounded-md "
-              type="submit"
-              disabled={isQuestionInputDisabled}
-            >
-              Save
-            </button>
+    <>
+      <div className="flex items-center justify-center h-screen font-sans bg-[#222222]">
+        <div className="bg-white p-10 rounded shadow-md w-96 hover-shadow md:max-w-md lg:max-w-lg xl:max-w-xl">
+          <h2 className="text-2xl font-semibold mb-6 text-black text-center">
+            Login to your account
+          </h2> 
+          <div className="mb-4">
+            <label htmlFor="email" className="block text-gray-600 text-sm font-bold mb-2">
+              Email
+            </label>
+            <input
+              type="email"
+              id="email"
+              className="w-full border-2 border-black rounded py-2 px-3 text-sm text-black"
+              onKeyPress={handleKeyPress}
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="Enter your email"
+            />
           </div>
-        </form>
-      </section>
-    </div>
+
+          <div className="mb-4 relative">
+            <label htmlFor="password" className="block text-gray-600 text-sm font-bold mb-2">
+              Password
+            </label>
+            <input
+              type={showPassword ? "text" : "password"}
+              id="password"
+              className="w-full border-2 border-black rounded py-2 px-3 text-sm text-black"
+              onKeyPress={handleKeyPress}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="Enter your password"
+            />
+            <button
+              type="button"
+              onClick={togglePasswordVisibility}
+              className="absolute top-3/4 right-3 transform -translate-y-1/2"
+            >
+              {showPassword ? (
+                <FaRegEye className="h-6 w-6 text-gray-500" />
+              ) : (
+                <FaEyeSlash className="h-6 w-6 text-gray-500" />
+              )}
+            </button>
+            <Link
+              href="/forgot"
+              className="text-green-500 text-sm absolute top-0 right-0 mt-1 mr-1"
+            >
+              Forgot Password?
+            </Link>
+          </div>
+
+          <button
+            type="submit"
+            className={`text-white py-2 px-4 rounded w-full mb-4 bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-600 focus:ring-opacity-50 ${loading ? 'cursor-not-allowed' : ''}`}
+            onClick={handleLogin}
+            disabled={loading}
+          >
+            {loading ? (
+              <div className="flex justify-center">
+                <span className="loading loading-spinner loading-md"></span>
+              </div>
+            ) : (
+              "Login"
+            )}
+          </button>
+          {errorMessage && (
+            <p className="text-red-500 mb-4 text-center">{errorMessage}</p>
+          )}
+        </div>
+      </div>
+    </>
   );
 };
 
-export default create;
+export default Login;

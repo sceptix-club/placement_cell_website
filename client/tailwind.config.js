@@ -41,6 +41,7 @@ module.exports = {
         sm: "28rem",
       },
     },
+    
   },
   plugins: [require("daisyui")],
 };

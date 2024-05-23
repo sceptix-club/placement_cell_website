@@ -1,17 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
-import { useCookies } from "react-cookie";
 import { useRouter } from "next/navigation";
 import supabase from "@/data/supabase";
 
-const ProfileComponent = ({ routePrefix, isVerify, onUidChange }) => {
+const ProfileComponent = ({ routePrefix, onSave }) => {
   const router = useRouter();
   const pathName = usePathname();
   const pathNo = pathName.slice(`/${routePrefix}/`.length);
   const pathWithoutPrefix = pathName.slice(1);
-  // Initialize state for profile data, edit mode, new skill, and adding skill flag
-  const [verified, setVerified] = useState(true);
 
+  const [verified, setVerified] = useState(true);
   const [dataAll, setDataAll] = useState({
     id: "server Error",
     name: " Error",
@@ -38,7 +36,6 @@ const ProfileComponent = ({ routePrefix, isVerify, onUidChange }) => {
         }
         const { user } = data.session;
 
-        // Fetch the user_id from the user table
         const { data: userData, error: userError } = await supabase
           .from("user")
           .select("id")
@@ -47,9 +44,7 @@ const ProfileComponent = ({ routePrefix, isVerify, onUidChange }) => {
           throw userError;
         }
         const uid = userData[0].id;
-        console.log("is", uid);
 
-        // Fetch data from the student table using user_id
         const { data: studentData, error: studentError } = await supabase
           .from("student")
           .select()
@@ -58,13 +53,10 @@ const ProfileComponent = ({ routePrefix, isVerify, onUidChange }) => {
           throw studentError;
         }
         const sid = studentData[0].id;
-        console.log("Student data:", studentData[0]);
         setDataAll(studentData[0]);
         setVerified(true); // Assuming user is verified if data is successfully fetched
-        onUidChange(sid);
       } catch (error) {
         console.error("Error fetching data:", error.message);
-        // Handle error state or show appropriate message to the user
       }
     };
     checkUserStatus();
@@ -76,15 +68,12 @@ const ProfileComponent = ({ routePrefix, isVerify, onUidChange }) => {
   const [resumeLink, setResumeLink] = useState("");
   const [aadhaarLink, setAadhaarLink] = useState("");
 
-  // Handle click on Edit button
   const handleEditClick = () => {
     setEditMode(true);
   };
 
-  // Handle click on Save button
   const handleSaveClick = async () => {
     try {
-      // Make an API call to update the data in the Supabase database
       const { data, error } = await supabase
         .from("student")
         .update({
@@ -98,38 +87,35 @@ const ProfileComponent = ({ routePrefix, isVerify, onUidChange }) => {
         throw error;
       }
 
-      console.log("Data updated successfully:", data);
       setEditMode(false);
       setAddingSkill(false);
+      onSave(); // Trigger the toast in ProfilePage
+      router.push(`/edit/${pathNo}`); // Redirect to edit page after saving
     } catch (error) {
       console.error("Error updating data:", error.message);
-      // Handle error state or show appropriate message to the user
     }
   };
 
   const handleCancelClick = () => {
-    // Reset data and cancel changes
-    // setDataAll(profileData.find((item) => item.id === Number(pathNo)));
     setEditMode(false);
     setNewSkill("");
     setAddingSkill(false);
   };
 
-  // Handle click on Add Skill button
   const handleAddSkill = () => {
+   
+
     setAddingSkill(true);
   };
 
-  // Handle removing a skill by index
   const handleRemoveSkill = (indexToRemove) => {
     setDataAll((prevData) => ({
       ...prevData,
       skills: prevData.skills.filter((_, index) => index !== indexToRemove),
     }));
-    setAddingSkill(false); // Clear addingSkill state when removing a skill
+    setAddingSkill(false);
   };
 
-  // Handle saving a new skill
   const handleSaveNewSkill = () => {
     if (newSkill.trim() !== "") {
       setDataAll((prevData) => ({
@@ -142,18 +128,11 @@ const ProfileComponent = ({ routePrefix, isVerify, onUidChange }) => {
   };
 
   const handleVerifyClick = () => {
-    // Display an alert when the "Verify" button is clicked
     window.alert("Verification Successful!");
-    // You can perform additional actions after verification is complete
   };
 
-  // put 404 page here
-  {
-    verified ? console.log("Logged in") : console.log("404 page not found");
-  }
-
   return (
-    <div className="bg-background-clr text-primary-text ">
+    <div className="bg-background-clr text-primary-text">
       <div className="flex flex-col md:flex-row justify-center items-center mt-10 mb-16 mx-4">
         <div className="w-full md:w-1/3 mb-4 md:mb-0 md:mr-4">
           <h2 className="text-2xl mb-4">Personal Details</h2>
@@ -187,6 +166,12 @@ const ProfileComponent = ({ routePrefix, isVerify, onUidChange }) => {
                     type="text"
                     className="text-white bg-secondary-card rounded-md w-full p-2 text-center ml-auto h-8"
                     defaultValue={dataAll?.cgpa}
+                    onChange={(e) =>
+                      setDataAll((prevData) => ({
+                        ...prevData,
+                        cgpa: e.target.value,
+                      }))
+                    }
                   />
                 ) : (
                   <div className="text-white bg-secondary-card rounded-md w-full p-2 text-center ml-auto h-8">
@@ -205,6 +190,12 @@ const ProfileComponent = ({ routePrefix, isVerify, onUidChange }) => {
                     type="text"
                     className="text-white bg-secondary-card rounded-md w-full p-2 text-center h-8"
                     defaultValue={dataAll?.activeBacklogs}
+                    onChange={(e) =>
+                      setDataAll((prevData) => ({
+                        ...prevData,
+                        activeBacklogs: e.target.value,
+                      }))
+                    }
                   />
                 ) : (
                   <div className="text-white bg-secondary-card rounded-md w-full p-2 text-center h-8">
@@ -266,7 +257,6 @@ const ProfileComponent = ({ routePrefix, isVerify, onUidChange }) => {
               ))}
             </div>
 
-            {/* Add Skill button */}
             {editMode && addingSkill && (
               <div className="mb-4 flex justify-center items-center">
                 <input
@@ -286,7 +276,6 @@ const ProfileComponent = ({ routePrefix, isVerify, onUidChange }) => {
             )}
 
             <hr className="my-4" />
-            {/* Resume upload */}
             <div className="flex mb-4 items-center">
               <div className="w-1/3">
                 <label className="block text-white ml-8 w-full max-w-[360px] mx-auto">
@@ -314,7 +303,6 @@ const ProfileComponent = ({ routePrefix, isVerify, onUidChange }) => {
               </div>
             </div>
 
-            {/* Aadhaar upload */}
             <div className="flex mb-4 items-center">
               <div className="w-1/3">
                 <label className="block text-white ml-8 w-full max-w-[360px] mx-auto">
@@ -351,21 +339,12 @@ const ProfileComponent = ({ routePrefix, isVerify, onUidChange }) => {
                   Cancel
                 </button>
               )}
-              {isVerify ? (
-                <button
-                  className="bg-logo-bg text-black font-bold px-10 py-0 rounded-md"
-                  onClick={handleVerifyClick}
-                >
-                  {isVerify ? "Verify" : "Edit"}
-                </button>
-              ) : (
-                <button
-                  className="bg-logo-bg text-black font-bold px-4 py-2 rounded-md ml-2"
-                  onClick={editMode ? handleSaveClick : handleEditClick}
-                >
-                  {editMode ? "Save" : "Edit"}
-                </button>
-              )}
+              <button
+                className="bg-logo-bg text-black font-bold px-4 py-2 rounded-md ml-2"
+                onClick={editMode ? handleSaveClick : handleEditClick}
+              >
+                {editMode ? "Save" : "Edit"}
+              </button>
             </div>
           </div>
         </div>
