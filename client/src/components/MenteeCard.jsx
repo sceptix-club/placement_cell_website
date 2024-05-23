@@ -1,4 +1,11 @@
+import { useRouter } from 'next/navigation';
 function MenteeCard({ props }) {
+  const router = useRouter();
+
+  const handleAcademicDetailsClick = () => {
+
+    router.push(`/verify/${props.student.id}`);
+  };
   return (
     <>
       <div className="w-64 bg-primary-card p-2 space-y-1 rounded-xl">
@@ -16,7 +23,7 @@ function MenteeCard({ props }) {
             <p className="text-sm mb-4 text-left">{props.student.email}</p>
           </div>
         </div>
-        <button className="w-full bg-btn-color-green text-white px-4 py-2 rounded-lg hover:bg-white hover:text-btn-color-green transition-colors duration-200">
+        <button className="w-full bg-btn-color-green text-white px-4 py-2 rounded-lg hover:bg-white hover:text-btn-color-green transition-colors duration-200" onClick={handleAcademicDetailsClick}>
           Academic Details
         </button>
       </div>
