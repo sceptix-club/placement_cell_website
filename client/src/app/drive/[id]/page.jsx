@@ -18,11 +18,15 @@ const driveinfo = () => {
   const [role, setRole] = useState([]);
   const { userRole, setUserRole } = useContext(LoginContext);
   const [show, setShow] = useState(false);
+  const [showDate, setShowDate] = useState(false);
+
   const pathName = usePathname();
   const pathNo = pathName.slice("/drive/".length);
   const [roleId, setRoleId] = useState(null); // Define roleId state
-
   const placementDate = placements.date;
+  const date = new Date(placements.date);
+  let driveDate = date.toLocaleDateString();
+
   // const dataAll = Data.find((item) => item.id === Number(pathNo));
 
   useEffect(() => {
@@ -46,6 +50,10 @@ const driveinfo = () => {
     if (userRole === 3) {
       setShow(true);
     }
+
+    const timeDate = setTimeout(() => {
+      setShowDate(true);
+    }, 2000);
   }, [userRole]);
 
   const handleViewPDF = () => {
@@ -72,6 +80,9 @@ const driveinfo = () => {
         <h2 className="text-2xl lg:text-4xl mb-1 font-semibold">
           {placements.company}
         </h2>
+        <div className="text-md lg:text-xl py-2 leading-tight lg:leading-tight font-medium">
+          <p>Date: {showDate && driveDate}</p>
+        </div>
         <div className="text-md lg:text-xl py-2 leading-tight lg:leading-tight font-medium">
           <p>{placements.description}</p>
         </div>
