@@ -3,6 +3,9 @@ import React from "react";
 import Link from "next/link";
 
 const DriveCard = ({ placement }) => {
+  const date = new Date(placement.date);
+  let driveDate = date.toLocaleDateString();
+
   return (
     <Link href={`/drive/${placement.id}`} passHref>
       <div className="m-4 p-6 mb-6 flex flex-col md:flex-row bg-primary-card rounded-lg w-full cursor-pointer">
@@ -12,7 +15,7 @@ const DriveCard = ({ placement }) => {
         </div>
         <div className="md:w-1/2 md:text-right">
           <div className="lg:md:flex justify-end mb-4">
-            <p className="text-xl text-white ">{placement.date}</p>
+            <p className="text-xl text-white ">{driveDate}</p>
           </div>
           <div className="lg:md:flex flex-wrap justify-end  ">
             {placement.role.map((role, index) => (

@@ -53,7 +53,7 @@ const driveinfo = () => {
 
     const timeDate = setTimeout(() => {
       setShowDate(true);
-    }, 2000);
+    }, 1500);
   }, [userRole]);
 
   const handleViewPDF = () => {
