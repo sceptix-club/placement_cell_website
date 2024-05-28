@@ -1,29 +1,38 @@
 import React from "react";
+import Image from "next/image";
 
 const Footer = () => {
   return (
-    <footer className="flex w-full justify-center bg-background-clr absolute  bottom-0">
-      <div className="flex justify-between items-center px-4 bg-primary-card font-inter lg:w-2/3 w-5/6 rounded-t-md">
-        <p className=" text-role-text text-xs">
-          &#169; 2024 All rights reserved.
-        </p>
+    <footer className="p-5 w-full bg-primary-card text-white text-sm flex flex-col md:flex-row justify-between items-center">
+      <Image
+        src="/sjeclogo.avif"
+        alt="Logo"
+        className="logo"
+        width={125}
+        height={150}
+      />
+
+      <div className="flex-grow text-center">
         <a
-          href="https://www.sjec.ac.in/"
+          className="md:text-3xl text-sm mt-2 md:mt-0 "
           target="_blank"
           rel="noopener noreferrer"
-          className="lg:text-2xl text-xl  text-role-text text-center hover:text-white"
+          href="https://www.sjec.ac.in/"
         >
           SJEC
         </a>
-        <p className="lg:pr-4 pl-2 text-role-text text-xs">
+        <p>&copy; {new Date().getFullYear()} - All right reserved</p>
+      </div>
+      <div className="flex-grow-0 text-right">
+        <p>
           Powered by{" "}
           <a
             href="https://sceptix-website.vercel.app/"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-role-text hover:text-white"
+            className="hover:underline"
           >
-            Sceptix
+            The sceptix club
           </a>
         </p>
       </div>
