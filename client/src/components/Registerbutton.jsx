@@ -17,6 +17,7 @@ export default function Page() {
   const [roles, setRoles] = useState([]);
   const [studentSem, setStudentSem] = useState(null); // State to store student semester
   const [showQuestionPopup, setShowQuestionPopup] = useState(false); // State to control the visibility of the question popup
+  const [selectedRole, setSelectedRole] = useState(null); // State to store selected role
   const pathName = usePathname();
   const pathNo = pathName.slice("/drive/".length);
 
@@ -63,13 +64,28 @@ export default function Page() {
       }
     };
 
+    const checkRegistrationStatus = async (studentId, roleIds) => {
+      const { data, error } = await supabase
+        .from("stat")
+        .select()
+        .eq("student_id", studentId)
+        .in("role_id", roleIds);
+
+      if (!error && data.length > 0) {
+        setRegistered(true);
+      } else if (error) {
+        console.error("Error checking registration status:", error.message);
+      }
+    };
+
     if (uid) {
       fetchStudentDetails(uid);
+      checkRegistrationStatus(uid, roleIds);
     }
 
     fetchPlacement();
     fetchRoles();
-  }, [pathNo, uid]);
+  }, [pathNo, uid, roleIds]);
 
   const handleRegistration = async (roleId) => {
     const student_id = uid;
@@ -83,15 +99,17 @@ export default function Page() {
 
     if (existingStats && existingStats.length > 0) {
       alert("You are already registered for this role in this drive.");
+      setRegistered(true);
       return;
     }
 
+    setSelectedRole(roleId);
     setShowQuestionPopup(true);
   };
 
   const handleRegistrationWithAnswers = async (answers) => {
     const student_id = uid;
-    const roleId = selectedRole.id;
+    const roleId = selectedRole;
 
     const { error: insertError } = await supabase
       .from("stat")
@@ -108,43 +126,54 @@ export default function Page() {
     setShowQuestionPopup(false);
   };
 
-  const selectedRole = roles.length > 0 ? roles[0] : null;
-
   const handleDisabledRegistrationClick = () => {
-    alert("Registrations are open only for students in the 7th semester or higher.");
+    if (registered) {
+      alert("You are already registered for this role in this drive.");
+    } else {
+      alert("Registrations are open only for students in the 7th semester or higher.");
+    }
   };
 
   return (
     <div>
       <FetchUidComponent setUid={setUid} />
       <section className="flex flex-wrap">
-        {selectedRole && (
-          <div key={selectedRole.id} className="flex items-center">
+        {roles.map((role) => (
+          <div key={role.id} className="flex items-center mb-2">
             <button
-              className={`font-bold px-4 py-2 rounded-md mb-1 ml-1 mt-2 -m-3 text-sm text-white shadow ${
-                studentSem >= 7 ? "bg-green-600 hover:bg-logo-bg" : "bg-gray-400 cursor-not-allowed"
+              className={`font-bold px-4 py-2 rounded-md text-sm text-white shadow ${
+                (registered || studentSem < 7)
+                  ? "bg-gray-400 cursor-not-allowed"
+                  : "bg-green-600 hover:bg-logo-bg"
               }`}
               type="button"
               onClick={
-                studentSem >= 7
-                  ? () => handleRegistration(selectedRole.id)
-                  : handleDisabledRegistrationClick
+                (registered || studentSem < 7)
+                  ? handleDisabledRegistrationClick
+                  : () => handleRegistration(role.id)
               }
               disabled={registered || (studentSem !== null && studentSem < 7)}
             >
               REGISTER
             </button>
-            {studentSem < 7 && studentSem !== null && (
-              <span className="text-xs text-red-500 ml-5">(Open for 7th semester and above)</span>
+            {registered && (
+              <span className="text-xs text-red-500 ml-5">
+                You have already registered.
+              </span>
+            )}
+            {studentSem < 7 && studentSem !== null && !registered && (
+              <span className="text-xs text-red-500 ml-5">
+                (Open for 7th semester and above)
+              </span>
             )}
           </div>
-        )}
+        ))}
       </section>
 
-      {showQuestionPopup && (
+      {showQuestionPopup && selectedRole && (
         <QuestionPopup
           driveId={pathNo}
-          roleId={selectedRole.id}
+          roleId={selectedRole}
           uid={uid}
           onClose={() => setShowQuestionPopup(false)}
           onRegister={handleRegistrationWithAnswers}

@@ -7,6 +7,7 @@ const QuestionPopup = ({ driveId, roleId, uid, onClose, onRegister }) => {
   const [roleName, setRoleName] = useState("");
   const [driveName, setDriveName] = useState("");
   const [driveDate, setDriveDate] = useState("");
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -58,6 +59,16 @@ const QuestionPopup = ({ driveId, roleId, uid, onClose, onRegister }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    // Check if all questions have been answered
+    const unansweredQuestions = questions.some(
+      (question, index) => !answers[`ans${index + 1}`]
+    );
+
+    if (unansweredQuestions) {
+      setError("Please answer all the questions.");
+      return;
+    }
+
     onRegister(answers);
     onClose();
   };
@@ -103,6 +114,7 @@ const QuestionPopup = ({ driveId, roleId, uid, onClose, onRegister }) => {
           <span className="text-green-500"> {driveDate} </span>
         </h1>
         <h2 className="text-lg font-semibold mb-4">Answer the questions:</h2>
+        {error && <p className="text-red-500 mb-4">{error}</p>}
         <form onSubmit={handleSubmit}>
           {questions.map((question, index) => (
             <div key={index} className="mb-4">
