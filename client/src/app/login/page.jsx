@@ -90,7 +90,7 @@ const login = () => {
             <input
               type="email"
               id="email"
-              className="w-full border-2 border-black rounded py-2 px-3 text-sm text-black "
+              className="w-full border-2 border-black rounded py-2 px-3 text-sm text-black bg-white"
               onKeyPress={handleKeyPress}
               value={email}
               onChange={(e) => setEmail(e.target.value)}
@@ -108,7 +108,7 @@ const login = () => {
             <input
               type={showPassword ? "text" : "password"}
               id="password"
-              className="w-full  border-2 border-black rounded py-2 px-3 text-sm text-black"
+              className="w-full  border-2 border-black rounded py-2 px-3 text-sm text-black bg-white"
               onKeyPress={handleKeyPress}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
