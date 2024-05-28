@@ -6,7 +6,6 @@ import RolesCard from "@/components/RolesCard";
 import { usePathname } from "next/navigation";
 import { notFound } from "next/navigation";
 import PlacementAPI from "@/app/api/PlacementAPI";
-// import { useRoleContext } from "@/context/RoleContext";
 import ManagerDriveButtons from "@/components/ManagerDriveButtons";
 import { LoginContext } from "@/context";
 import supabase from "@/data/supabase";
@@ -22,7 +21,7 @@ const driveinfo = () => {
 
   const pathName = usePathname();
   const pathNo = pathName.slice("/drive/".length);
-  const [roleId, setRoleId] = useState(null); // Define roleId state
+  const [roleId, setRoleId] = useState(null);
   const placementDate = placements.date;
   const date = new Date(placements.date);
   let driveDate = date.toLocaleDateString("en-IN", {
@@ -31,8 +30,6 @@ const driveinfo = () => {
     day: "numeric",
     weekday: "long",
   });
-
-  // const dataAll = Data.find((item) => item.id === Number(pathNo));
 
   useEffect(() => {
     const checkUserRole = async () => {
@@ -66,9 +63,6 @@ const driveinfo = () => {
       window.open(placements.pdfFileURL, "_blank");
     }
   };
-  // if (!dataAll) {
-  //   return notFound();
-  // }
 
   return (
     <div className="flex items-center justify-center py-10 mb-10 h-auto bg-background-clr font-inter font-normal">
@@ -105,16 +99,17 @@ const driveinfo = () => {
             );
           })}
         </div>
-        {/* <RegisterButton /> */}
 
         <hr className=" border-divider-color mt-5" />
         <div className="flex flex-row items-center justify-between mt-3">
-          <button
-            onClick={handleViewPDF}
-            className="px-4 py-2 bg-green-600 text-white rounded shadow hover:bg-logo-bg"
-          >
-            View PDF
-          </button>
+          {placements.pdfFileURL && (
+            <button
+              onClick={handleViewPDF}
+              className="px-4 py-2 bg-green-600 text-white rounded shadow hover:bg-logo-bg"
+            >
+              View PDF
+            </button>
+          )}
         </div>
         <hr className=" border-divider-color mt-5" />
 
