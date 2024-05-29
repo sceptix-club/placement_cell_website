@@ -4,7 +4,12 @@ import Link from "next/link";
 
 const DriveCard = ({ placement }) => {
   const date = new Date(placement.date);
-  let driveDate = date.toLocaleDateString();
+  let driveDate = date.toLocaleDateString("en-IN", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+    weekday: "long",
+  });
 
   return (
     <Link href={`/drive/${placement.id}`} passHref>

@@ -25,7 +25,12 @@ const driveinfo = () => {
   const [roleId, setRoleId] = useState(null); // Define roleId state
   const placementDate = placements.date;
   const date = new Date(placements.date);
-  let driveDate = date.toLocaleDateString();
+  let driveDate = date.toLocaleDateString("en-IN", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+    weekday: "long",
+  });
 
   // const dataAll = Data.find((item) => item.id === Number(pathNo));
 
