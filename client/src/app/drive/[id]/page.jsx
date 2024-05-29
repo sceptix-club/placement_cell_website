@@ -50,7 +50,7 @@ const driveinfo = () => {
   useEffect(() => {
     const timer = setTimeout(() => {
       setLoading(false);
-    }, 2000); // 2 seconds loading time
+    }, 1000); // 2 seconds loading time
     return () => clearTimeout(timer);
   }, []);
 
