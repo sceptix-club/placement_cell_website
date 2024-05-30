@@ -18,6 +18,5 @@ const options = {
 
 }
 
-const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_PROJECT_URL, process.env.NEXT_PUBLIC_SUPABASE_ANON_PUBLIC_KEY, options)
-
+const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_PROJECT_URL, process.env.NEXT_PUBLIC_SUPABASE_ANON_PUBLIC_KEY,options);
 export default supabase;

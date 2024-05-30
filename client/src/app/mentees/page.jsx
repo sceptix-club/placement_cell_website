@@ -1,67 +1,68 @@
-'use client'
-import { useState, useEffect } from 'react'
-import MenteeCard from '@/components/MenteeCard.jsx'
-// import mentees from '../../../public/MenteeTestData.js'
-import supabase from '@/data/supabase'
+'use client';
+import { useState, useEffect } from 'react';
+import MenteeCard from '@/components/MenteeCard.jsx';
+// import mentees from '../../../public/MenteeTestData.js';
+import supabase from '@/data/supabase';
 
 export default function page() {
-  const [isDialogOpen, setIsDialogOpen] = useState(false)
-  const [newMentorUSN, setNewMentorUSN] = useState('')
-  const [mentees, setMentees] = useState([])
-  const [loggedInMentorID, setLoggedInMentorID] = useState(null)
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [newMentorUSN, setNewMentorUSN] = useState('');
+  const [mentees, setMentees] = useState([]);
+  const [loggedInMentorID, setLoggedInMentorID] = useState(null);
+  const [loading, setLoading] = useState(true); // Loading state
 
   useEffect(() => {
     const fetchMentees = async () => {
       try {
-        const { data, error } = await supabase.auth.getSession()
+        const { data, error } = await supabase.auth.getSession();
         if (error) {
-          throw error
+          throw error;
         }
-        const { user } = data.session
+        const { user } = data.session;
         const { data: currentUser, error: userError } = await supabase
           .from('user')
           .select('id')
-          .eq('user_id', user.id)
+          .eq('user_id', user.id);
 
         if (userError) {
-          throw userError
+          throw userError;
         }
 
-        const mentorID = currentUser[0].id
-        setLoggedInMentorID(mentorID)
-        const { data: menteesDetails, error: fetchError } = await supabase.from(
-          'student_mentor'
-        ).select(`
-    student_id,
-    student(
-      *
-    )
-  `)
-          .eq('mentor_id', mentorID)
+        const mentorID = currentUser[0].id;
+        setLoggedInMentorID(mentorID);
+        const { data: menteesDetails, error: fetchError } = await supabase
+          .from('student_mentor')
+          .select(`
+            student_id,
+            student(
+              *
+            )
+          `)
+          .eq('mentor_id', mentorID);
 
-        if (error) {
-          throw fetchError
+        if (fetchError) {
+          throw fetchError;
         }
 
-        setMentees(menteesDetails)
-
+        setMentees(menteesDetails);
       } catch (error) {
-        console.log('Error fetching mentees: ' + error.message)
+        console.log('Error fetching mentees: ' + error.message);
+      } finally {
+        setLoading(false); // Set loading to false after data is fetched
       }
-    }
+    };
 
-    fetchMentees()
-
-  }, [loggedInMentorID])
+    fetchMentees();
+  }, [loggedInMentorID]);
 
   const handleAddMentor = () => {
-    setIsDialogOpen(true)
-  }
+    setIsDialogOpen(true);
+  };
 
   const handleDialogClose = () => {
-    setIsDialogOpen(false)
-    setNewMentorUSN('')
-  }
+    setIsDialogOpen(false);
+    setNewMentorUSN('');
+  };
 
   const handleAddUSN = async () => {
     try {
@@ -69,49 +70,55 @@ export default function page() {
         .from('student')
         .select('id')
         .eq('usn', newMentorUSN)
-        .single()
-      const { data, error } = await supabase.auth.getSession()
-      const { user } = data.session
+        .single();
+      const { data, error } = await supabase.auth.getSession();
+      const { user } = data.session;
       const { data: currentUser, error: userError } = await supabase
         .from('user')
         .select('id')
-        .eq('user_id', user.id)
+        .eq('user_id', user.id);
 
       if (studentError) {
-        throw studentError
+        throw studentError;
       }
 
-      const studentUserId = studentData.id
-      const uid = currentUser[0].id
+      const studentUserId = studentData.id;
+      const uid = currentUser[0].id;
       const { error: insertError } = await supabase
         .from('student_mentor')
-        .insert([{ student_id: studentUserId, mentor_id: uid }])
+        .insert([{ student_id: studentUserId, mentor_id: uid }]);
 
-      const { data: studentDetails, error: studentDetailsError } =
-        await supabase
-
-          .from('student_mentor').select(`
-    student_id,
-    student(
-      *
-    )
-  `)
-          .eq('mentor_id', uid)
+      const { data: studentDetails, error: studentDetailsError } = await supabase
+        .from('student_mentor')
+        .select(`
+          student_id,
+          student(
+            *
+          )
+        `)
+        .eq('mentor_id', uid);
 
       if (!error) {
-        setMentees(studentDetails)
+        setMentees(studentDetails);
       }
 
       if (insertError) {
-        throw insertError
+        throw insertError;
       }
-      // setMentees([...mentees, studentDetails]);
 
-      setIsDialogOpen(false)
-      setNewMentorUSN('')
+      setIsDialogOpen(false);
+      setNewMentorUSN('');
     } catch (error) {
-      console.log('Error adding mentee: ' + error.message)
+      console.log('Error adding mentee: ' + error.message);
     }
+  };
+
+  if (loading) {
+    return (
+      <div className='flex items-center justify-center h-screen'>
+        <span className='loading loading-dots loading-md'></span>
+      </div>
+    );
   }
 
   return (
@@ -125,7 +132,7 @@ export default function page() {
       {isDialogOpen && (
         <div className='fixed top-0 left-0 w-full h-full bg-gray-900 bg-opacity-50 flex justify-center items-center'>
           <div className='bg-white p-8 rounded shadow-lg'>
-            <p className='text-lg text-black  font-medium mb-4'>
+            <p className='text-lg text-black font-medium mb-4'>
               Enter Mentee USN:
             </p>
             <input
@@ -161,5 +168,5 @@ export default function page() {
           ))}
       </div>
     </div>
-  )
+  );
 }

@@ -11,7 +11,7 @@
   "dependencies": {
     "@next/eslint-plugin-next": "^14.1.4",
     "@supabase/ssr": "^0.3.0",
-    "@supabase/supabase-js": "^2.42.4",
+    "@supabase/supabase-js": "^2.43.4",
     "css-loader": "^6.8.1",
     "next": "14.1.1",
     "postcss-loader": "^7.3.4",
