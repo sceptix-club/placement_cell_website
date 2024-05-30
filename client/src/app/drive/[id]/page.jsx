@@ -16,12 +16,21 @@ const driveinfo = () => {
   const [role, setRole] = useState([]);
   const { userRole, setUserRole } = useContext(LoginContext);
   const [show, setShow] = useState(false);
+  const [showDate, setShowDate] = useState(false);
+
   const pathName = usePathname();
   const pathNo = pathName.slice("/drive/".length);
   const [roleId, setRoleId] = useState(null); // Define roleId state
   const [loading, setLoading] = useState(true); // Define loading state
-
   const placementDate = placements.date;
+  const date = new Date(placements.date);
+  let driveDate = date.toLocaleDateString("en-IN", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+    weekday: "long",
+  });
+
   // const dataAll = Data.find((item) => item.id === Number(pathNo));
 
   useEffect(() => {
@@ -45,7 +54,20 @@ const driveinfo = () => {
     if (userRole === 3) {
       setShow(true);
     }
+
+    const timeDate = setTimeout(() => {
+      setShowDate(true);
+    }, 1500);
   }, [userRole]);
+
+  const handleViewPDF = () => {
+    if (placements.pdfFileURL) {
+      window.open(placements.pdfFileURL, "_blank");
+    }
+  };
+  // if (!dataAll) {
+  //   return notFound();
+  // }
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -62,10 +84,6 @@ const driveinfo = () => {
     );
   }
 
-  // if (!dataAll) {
-  //   return notFound();
-  // }
-
   return (
     <div className="flex items-center justify-center py-10 mb-10 h-auto bg-background-clr font-inter font-normal">
       <section className="flex flex-col p-5 sm:p-8 lg:p-16 w-11/12 sm:w-10/12 md:w-2/3 lg:w-3/5 border-white h-auto rounded-md bg-primary-card">
@@ -81,6 +99,9 @@ const driveinfo = () => {
         <h2 className="text-2xl lg:text-4xl mb-1 font-semibold">
           {placements.company}
         </h2>
+        <div className="text-md lg:text-xl py-2 leading-tight lg:leading-tight font-medium">
+          <p>Date: {showDate && driveDate}</p>
+        </div>
         <div className="text-md lg:text-xl py-2 leading-tight lg:leading-tight font-medium">
           <p>{placements.description}</p>
         </div>
@@ -100,6 +121,15 @@ const driveinfo = () => {
         </div>
         {/* <RegisterButton /> */}
 
+        <hr className=" border-divider-color mt-5" />
+        <div className="flex flex-row items-center justify-between mt-3">
+          <button
+            onClick={handleViewPDF}
+            className="px-4 py-2 bg-green-600 text-white rounded shadow hover:bg-logo-bg"
+          >
+            View PDF
+          </button>
+        </div>
         <hr className=" border-divider-color mt-5" />
 
         {show && <ManagerDriveButtons props={placements.is_draft} />}

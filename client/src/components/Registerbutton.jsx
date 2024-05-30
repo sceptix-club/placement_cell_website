@@ -6,7 +6,6 @@ import supabase from "@/data/supabase";
 import { usePathname } from "next/navigation";
 import FetchUidComponent from "@/app/api/fetchUid";
 import RolesCard from "@/components/RolesCard";
-
 import QuestionPopup from "@/components/QuestionPopup";
 
 export default function Page() {
@@ -16,28 +15,27 @@ export default function Page() {
   const [roleIds, setRoleIds] = useState([]);
   const [placements, setPlacements] = useState([]);
   const [roles, setRoles] = useState([]);
+  const [studentSem, setStudentSem] = useState(null); // State to store student semester
   const [showQuestionPopup, setShowQuestionPopup] = useState(false); // State to control the visibility of the question popup
   const pathName = usePathname();
   const pathNo = pathName.slice("/drive/".length);
 
   useEffect(() => {
-    // Fetch placement data for the specific drive
     const fetchPlacement = async () => {
       const { data, error } = await supabase
-        .schema("placements")
         .from("drive")
         .select("*")
         .eq("id", pathNo)
         .single();
       if (!error) {
         setPlacements(data);
+      } else {
+        console.error("Error fetching placements:", error.message);
       }
     };
 
-    // Fetch roles for the specific drive
     const fetchRoles = async () => {
       const { data: roleData, error: roleError } = await supabase
-        .schema("placements")
         .from("role")
         .select("*")
         .eq("drive_id", pathNo);
@@ -47,20 +45,36 @@ export default function Page() {
           const roleIds = roleData.map((role) => role.id);
           setRoleIds(roleIds);
         }
+      } else {
+        console.error("Error fetching roles:", roleError.message);
       }
     };
 
+    const fetchStudentDetails = async (studentId) => {
+      const { data, error } = await supabase
+        .from("student")
+        .select("sem")
+        .eq("id", studentId)
+        .single();
+      if (!error) {
+        setStudentSem(data.sem);
+      } else {
+        console.error("Error fetching student details:", error.message);
+      }
+    };
+
+    if (uid) {
+      fetchStudentDetails(uid);
+    }
+
     fetchPlacement();
     fetchRoles();
-  }, [pathNo]);
+  }, [pathNo, uid]);
 
-  // Handle registration for a specific role
   const handleRegistration = async (roleId) => {
     const student_id = uid;
 
-    // Check if the student is already registered for this role
     const { data: existingStats, error: statsError } = await supabase
-      .schema("placements")
       .from("stat")
       .select()
       .eq("drive_id", pathNo)
@@ -72,18 +86,14 @@ export default function Page() {
       return;
     }
 
-    // Show the question popup when registering for a role
     setShowQuestionPopup(true);
   };
 
-  // Handle registration with answers
   const handleRegistrationWithAnswers = async (answers) => {
     const student_id = uid;
     const roleId = selectedRole.id;
 
-    // Insert the student_id, roleId, and drive_id into the stat table along with answers
     const { error: insertError } = await supabase
-      .schema("placements")
       .from("stat")
       .insert([{ student_id, role_id: roleId, drive_id: pathNo, ...answers }]);
 
@@ -92,15 +102,17 @@ export default function Page() {
       return;
     }
 
-    // Set registered state to true and show success message
     setRegistered(true);
     alert("You have been successfully registered for this role.");
 
     setShowQuestionPopup(false);
   };
 
-  // Select the first role from the roles array
   const selectedRole = roles.length > 0 ? roles[0] : null;
+
+  const handleDisabledRegistrationClick = () => {
+    alert("Registrations are open only for students in the 7th semester or higher.");
+  };
 
   return (
     <div>
@@ -108,15 +120,23 @@ export default function Page() {
       <section className="flex flex-wrap">
         {selectedRole && (
           <div key={selectedRole.id} className="flex items-center">
-            {/* <h3>{selectedRole.name}</h3> */}
             <button
-              className="bg-logo-bg text-black font-bold  px-1 py-1 rounded-md mb-1 ml-1 mt-2 -m-3 text-sm"
+              className={`font-bold px-4 py-2 rounded-md mb-1 ml-1 mt-2 -m-3 text-sm text-white shadow ${
+                studentSem >= 7 ? "bg-green-600 hover:bg-logo-bg" : "bg-gray-400 cursor-not-allowed"
+              }`}
               type="button"
-              onClick={() => handleRegistration(selectedRole.id)}
-              disabled={registered}
+              onClick={
+                studentSem >= 7
+                  ? () => handleRegistration(selectedRole.id)
+                  : handleDisabledRegistrationClick
+              }
+              disabled={registered || (studentSem !== null && studentSem < 7)}
             >
               REGISTER
             </button>
+            {studentSem < 7 && studentSem !== null && (
+              <span className="text-xs text-red-500 ml-5">(Open for 7th semester and above)</span>
+            )}
           </div>
         )}
       </section>

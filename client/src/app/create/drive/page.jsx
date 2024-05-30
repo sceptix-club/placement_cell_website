@@ -1,82 +1,122 @@
 "use client";
-import React, { useEffect, useState, useContext } from "react";
-import { FaRegEye, FaEyeSlash } from "react-icons/fa";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-import supabase from "../../data/supabase";
-import { LoginContext } from "@/context";
 
-const Login = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [initialLoading, setInitialLoading] = useState(true);
-  const { isLoggedIn, setIsLoggedIn } = useContext(LoginContext);
-  const router = useRouter();
+import React, { useState } from "react";
+import supabase from "@/data/supabase";
 
-  useEffect(() => {
-    const checkUserStatus = async () => {
-      const { data } = await supabase.auth.getSession();
-      if (data.session !== null) {
-        document.cookie = `accessToken=${data.session.access_token}; path=/`;
-        document.cookie = `refreshToken=${data.session.refresh_token}; path=/`;
-        router.push("/profile");
-        setIsLoggedIn(true);
-      }
-      setInitialLoading(false);
-    };
+const create = () => {
+  const [submitData, setSubmitData] = useState({
+    name: "",
+    company: "",
+    description: "",
+    date: "",
+    que1: "",
+    que2: "",
+    que3: "",
+    que4: "",
+  });
+  const [pdfFile, setPdfFile] = useState(null);
 
-    setTimeout(() => {
-      checkUserStatus();
-    }, 2000);
-  }, [router, setIsLoggedIn]);
+  const [questionInputs, setQuestionInputs] = useState(Array(4).fill(""));
+  const [numberOfQuestions, setNumberOfQuestions] = useState(4);
 
-  const handleLogin = () => {
-    const emailRegex = /@sjec\.ac\.in/;
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setSubmitData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    setPdfFile(file);
 
-    if (email.trim() === "" || password.trim() === "") {
-      setErrorMessage("Invalid Credentials: Email and password cannot be empty.");
-    } else if (!emailRegex.test(email)) {
-      setErrorMessage("Invalid Credentials: Entered email is incorrect.");
-    } else {
-      setErrorMessage(""); // Clear error message if login is successful
-      console.log(`Logging in with email: ${email} and password: ${password}`);
-      setLoading(true); // Start loading
-
-      const handlelogin = async () => {
-        try {
-          const { data, error } = await supabase.auth.signInWithPassword({
-            email: email,
-            password: password,
-          });
-          if (data.session !== null) {
-            document.cookie = `accessToken=${data.session.access_token}; path=/`;
-            document.cookie = `refreshToken=${data.session.refresh_token}; path=/`;
-            setIsLoggedIn(true);
-            router.push("/profile");
-          } else if (error) {
-            setErrorMessage("Login failed. Please check your credentials.");
-          }
-        } catch (err) {
-          console.log(err);
-          setErrorMessage("An error occurred. Please try again.");
-        } finally {
-          // Simulate a longer loading duration
-          setTimeout(() => {
-            setLoading(false); // Stop loading
-          }, 2000);
-        }
-      };
-
-      handlelogin();
-    }
+    // Store the full filename with extension in state
+    setSubmitData((prev) => ({
+      ...prev,
+      pdfFileName: file ? file.name : "", // Store the full filename or an empty string if no file is selected
+    }));
   };
 
-  const handleKeyPress = (e) => {
-    if (e.key === "Enter") {
-      handleLogin();
+  const handleQuestionInputChange = (index, value) => {
+    const newQuestionInputs = [...questionInputs];
+    newQuestionInputs[index] = value;
+    setQuestionInputs(newQuestionInputs);
+    setSubmitData((prev) => ({
+      ...prev,
+      [`que${index + 1}`]: value,
+    }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    // Upload PDF file to Supabase Storage
+    let fileURL = null;
+    if (pdfFile) {
+      const { data: uploadedFile, error: uploadError } = await supabase.storage
+        .from("Drive_Doc")
+        .upload(`public/${pdfFile.name}`, pdfFile, {
+          cacheControl: "3600",
+        });
+
+      if (uploadError) {
+        console.error("Error uploading PDF file:", uploadError.message);
+        return;
+      }
+
+      // Generate URL for the uploaded file
+      const fileName = submitData.pdfFileName;
+      const { data: urlData, error: urlError } = await supabase.storage
+        .from("Drive_Doc")
+        .getPublicUrl(`public/${fileName}`);
+
+      if (urlError) {
+        console.error(
+          "Error generating URL for uploaded file:",
+          urlError.message
+        );
+        return;
+      }
+
+      const timestamp = new Date().toISOString();
+      fileURL = `${urlData.publicUrl}?t=${encodeURIComponent(timestamp)}`;
+      console.log("PDF file uploaded successfully:", fileURL);
+    }
+
+    // Prepare data to be saved
+    const dataToSave = {
+      ...submitData,
+      pdfFileURL: fileURL,
+    };
+
+    // Save data to Supabase database
+    try {
+      const { data: insertedData, error: insertError } = await supabase
+        // .schema("placements")
+        .from("drive")
+        .insert([dataToSave]);
+
+      if (insertError) {
+        console.error("Error saving placement:", insertError.message);
+        return;
+      }
+      alert("New drive successfully created!");
+
+      console.log("Placement saved successfully:", insertedData);
+      setSubmitData({
+        name: "",
+        company: "",
+        description: "",
+        date: "",
+        que1: "",
+        que2: "",
+        que3: "",
+        que4: "",
+      });
+      setPdfFile(null);
+      setQuestionInputs(Array(4).fill(""));
+    } catch (error) {
+      console.error("Error saving placement:", error.message);
     }
   };
 

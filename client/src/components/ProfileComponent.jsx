@@ -3,13 +3,13 @@ import { usePathname } from "next/navigation";
 import { useRouter } from "next/navigation";
 import supabase from "@/data/supabase";
 
-const ProfileComponent = ({ routePrefix, onSave }) => {
+const ProfileComponent = ({ routePrefix, isVerify, onUidChange, student }) => {
   const router = useRouter();
   const pathName = usePathname();
   const pathNo = pathName.slice(`/${routePrefix}/`.length);
   const pathWithoutPrefix = pathName.slice(1);
-
   const [verified, setVerified] = useState(true);
+
   const [dataAll, setDataAll] = useState({
     id: "server Error",
     name: " Error",
@@ -24,6 +24,24 @@ const ProfileComponent = ({ routePrefix, onSave }) => {
   });
 
   useEffect(() => {
+    const fetchUserData = async (uid) => {
+      try {
+        const { data: studentData, error: studentError } = await supabase
+          .from("student")
+          .select()
+          .eq("user_id", uid);
+        if (studentError) {
+          throw studentError;
+        }
+        const sid = studentData[0].id;
+        setDataAll(studentData[0]);
+        setVerified(true);
+        if (onUidChange) onUidChange(sid);
+      } catch (error) {
+        console.error("Error fetching student data:", error.message);
+      }
+    };
+
     const checkUserStatus = async () => {
       try {
         const { data, error } = await supabase.auth.getSession();
@@ -45,22 +63,19 @@ const ProfileComponent = ({ routePrefix, onSave }) => {
         }
         const uid = userData[0].id;
 
-        const { data: studentData, error: studentError } = await supabase
-          .from("student")
-          .select()
-          .eq("user_id", uid);
-        if (studentError) {
-          throw studentError;
-        }
-        const sid = studentData[0].id;
-        setDataAll(studentData[0]);
-        setVerified(true); // Assuming user is verified if data is successfully fetched
+        fetchUserData(uid);
       } catch (error) {
-        console.error("Error fetching data:", error.message);
+        console.error("Error fetching user data:", error.message);
       }
     };
-    checkUserStatus();
-  }, []);
+
+    if (!student) {
+      checkUserStatus();
+    } else {
+      setDataAll(student);
+      setVerified(true);
+    }
+  }, [student]);
 
   const [editMode, setEditMode] = useState(false);
   const [newSkill, setNewSkill] = useState("");
@@ -89,8 +104,6 @@ const ProfileComponent = ({ routePrefix, onSave }) => {
 
       setEditMode(false);
       setAddingSkill(false);
-      onSave(); // Trigger the toast in ProfilePage
-      router.push(`/edit/${pathNo}`); // Redirect to edit page after saving
     } catch (error) {
       console.error("Error updating data:", error.message);
     }
@@ -103,8 +116,6 @@ const ProfileComponent = ({ routePrefix, onSave }) => {
   };
 
   const handleAddSkill = () => {
-   
-
     setAddingSkill(true);
   };
 
@@ -132,7 +143,7 @@ const ProfileComponent = ({ routePrefix, onSave }) => {
   };
 
   return (
-    <div className="bg-background-clr text-primary-text">
+    <div className="bg-background-clr text-primary-text ">
       <div className="flex flex-col md:flex-row justify-center items-center mt-10 mb-16 mx-4">
         <div className="w-full md:w-1/3 mb-4 md:mb-0 md:mr-4">
           <h2 className="text-2xl mb-4">Personal Details</h2>
@@ -166,12 +177,6 @@ const ProfileComponent = ({ routePrefix, onSave }) => {
                     type="text"
                     className="text-white bg-secondary-card rounded-md w-full p-2 text-center ml-auto h-8"
                     defaultValue={dataAll?.cgpa}
-                    onChange={(e) =>
-                      setDataAll((prevData) => ({
-                        ...prevData,
-                        cgpa: e.target.value,
-                      }))
-                    }
                   />
                 ) : (
                   <div className="text-white bg-secondary-card rounded-md w-full p-2 text-center ml-auto h-8">
@@ -190,12 +195,6 @@ const ProfileComponent = ({ routePrefix, onSave }) => {
                     type="text"
                     className="text-white bg-secondary-card rounded-md w-full p-2 text-center h-8"
                     defaultValue={dataAll?.activeBacklogs}
-                    onChange={(e) =>
-                      setDataAll((prevData) => ({
-                        ...prevData,
-                        activeBacklogs: e.target.value,
-                      }))
-                    }
                   />
                 ) : (
                   <div className="text-white bg-secondary-card rounded-md w-full p-2 text-center h-8">
@@ -210,11 +209,10 @@ const ProfileComponent = ({ routePrefix, onSave }) => {
               {dataAll?.skills?.map((skill, index) => (
                 <div
                   key={index}
-                  className={`w-1/3 px-2 mb-4 text ${
-                    editMode && index === dataAll.skills.length - 1
-                      ? "w-1/4"
-                      : ""
-                  }`}
+                  className={`w-1/3 px-2 mb-4 text ${editMode && index === dataAll.skills.length - 1
+                    ? "w-1/4"
+                    : ""
+                    }`}
                 >
                   {editMode ? (
                     <div className="flex items-center">
@@ -257,6 +255,7 @@ const ProfileComponent = ({ routePrefix, onSave }) => {
               ))}
             </div>
 
+            {/* Add Skill button */}
             {editMode && addingSkill && (
               <div className="mb-4 flex justify-center items-center">
                 <input
@@ -276,6 +275,7 @@ const ProfileComponent = ({ routePrefix, onSave }) => {
             )}
 
             <hr className="my-4" />
+            {/* Resume upload */}
             <div className="flex mb-4 items-center">
               <div className="w-1/3">
                 <label className="block text-white ml-8 w-full max-w-[360px] mx-auto">
@@ -303,6 +303,7 @@ const ProfileComponent = ({ routePrefix, onSave }) => {
               </div>
             </div>
 
+            {/* Aadhaar upload */}
             <div className="flex mb-4 items-center">
               <div className="w-1/3">
                 <label className="block text-white ml-8 w-full max-w-[360px] mx-auto">
@@ -339,12 +340,21 @@ const ProfileComponent = ({ routePrefix, onSave }) => {
                   Cancel
                 </button>
               )}
-              <button
-                className="bg-logo-bg text-black font-bold px-4 py-2 rounded-md ml-2"
-                onClick={editMode ? handleSaveClick : handleEditClick}
-              >
-                {editMode ? "Save" : "Edit"}
-              </button>
+              {isVerify ? (
+                <button
+                  className="bg-logo-bg text-black font-bold px-10 py-0 rounded-md"
+                // onClick={handleVerifyClick}
+                >
+                  {isVerify ? "Verify" : "Edit"}
+                </button>
+              ) : (
+                <button
+                  className="bg-logo-bg text-black font-bold px-4 py-2 rounded-md ml-2"
+                  onClick={editMode ? handleSaveClick : handleEditClick}
+                >
+                  {editMode ? "Save" : "Edit"}
+                </button>
+              )}
             </div>
           </div>
         </div>
@@ -354,3 +364,4 @@ const ProfileComponent = ({ routePrefix, onSave }) => {
 };
 
 export default ProfileComponent;
+
