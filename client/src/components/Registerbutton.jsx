@@ -5,19 +5,17 @@ import { useState, useEffect } from "react";
 import supabase from "@/data/supabase";
 import { usePathname } from "next/navigation";
 import FetchUidComponent from "@/app/api/fetchUid";
-import RolesCard from "@/components/RolesCard";
 import QuestionPopup from "@/components/QuestionPopup";
 
 export default function Page() {
   const router = useRouter();
-  const [registered, setRegistered] = useState(false);
+  const [registeredRoles, setRegisteredRoles] = useState([]);
   const [uid, setUid] = useState(null);
-  const [roleIds, setRoleIds] = useState([]);
   const [placements, setPlacements] = useState([]);
   const [roles, setRoles] = useState([]);
-  const [studentSem, setStudentSem] = useState(null); // State to store student semester
-  const [showQuestionPopup, setShowQuestionPopup] = useState(false); // State to control the visibility of the question popup
-  const [selectedRole, setSelectedRole] = useState(null); // State to store selected role
+  const [studentSem, setStudentSem] = useState(null);
+  const [showQuestionPopup, setShowQuestionPopup] = useState(false);
+  const [selectedRole, setSelectedRole] = useState(null);
   const pathName = usePathname();
   const pathNo = pathName.slice("/drive/".length);
 
@@ -42,10 +40,6 @@ export default function Page() {
         .eq("drive_id", pathNo);
       if (!roleError) {
         setRoles(roleData);
-        if (roleData && roleData.length > 0) {
-          const roleIds = roleData.map((role) => role.id);
-          setRoleIds(roleIds);
-        }
       } else {
         console.error("Error fetching roles:", roleError.message);
       }
@@ -64,28 +58,26 @@ export default function Page() {
       }
     };
 
-    const checkRegistrationStatus = async (studentId, roleIds) => {
+    const checkRegistrationStatus = async (studentId) => {
       const { data, error } = await supabase
         .from("stat")
-        .select()
+        .select("role_id")
         .eq("student_id", studentId)
-        .in("role_id", roleIds);
+        .eq("drive_id", pathNo);
 
-      if (!error && data.length > 0) {
-        setRegistered(true);
-      } else if (error) {
-        console.error("Error checking registration status:", error.message);
+      if (!error) {
+        setRegisteredRoles(data.map((stat) => stat.role_id));
       }
     };
 
     if (uid) {
       fetchStudentDetails(uid);
-      checkRegistrationStatus(uid, roleIds);
+      checkRegistrationStatus(uid);
     }
 
     fetchPlacement();
     fetchRoles();
-  }, [pathNo, uid, roleIds]);
+  }, [pathNo, uid]);
 
   const handleRegistration = async (roleId) => {
     const student_id = uid;
@@ -99,7 +91,6 @@ export default function Page() {
 
     if (existingStats && existingStats.length > 0) {
       alert("You are already registered for this role in this drive.");
-      setRegistered(true);
       return;
     }
 
@@ -120,14 +111,14 @@ export default function Page() {
       return;
     }
 
-    setRegistered(true);
+    setRegisteredRoles([...registeredRoles, roleId]);
     alert("You have been successfully registered for this role.");
 
     setShowQuestionPopup(false);
   };
 
   const handleDisabledRegistrationClick = () => {
-    if (registered) {
+    if (registeredRoles.includes(selectedRole)) {
       alert("You are already registered for this role in this drive.");
     } else {
       alert("Registrations are open only for students in the 7th semester or higher.");
@@ -139,33 +130,33 @@ export default function Page() {
       <FetchUidComponent setUid={setUid} />
       <section className="flex flex-wrap">
         {roles.map((role) => (
-          <div key={role.id} className="flex items-center mb-2">
-            <button
-              className={`font-bold px-4 py-2 rounded-md text-sm text-white shadow ${
-                (registered || studentSem < 7)
-                  ? "bg-gray-400 cursor-not-allowed"
-                  : "bg-green-600 hover:bg-logo-bg"
-              }`}
-              type="button"
-              onClick={
-                (registered || studentSem < 7)
-                  ? handleDisabledRegistrationClick
-                  : () => handleRegistration(role.id)
-              }
-              disabled={registered || (studentSem !== null && studentSem < 7)}
-            >
-              REGISTER
-            </button>
-            {registered && (
-              <span className="text-xs text-red-500 ml-5">
-                You have already registered.
-              </span>
-            )}
-            {studentSem < 7 && studentSem !== null && !registered && (
-              <span className="text-xs text-red-500 ml-5">
-                (Open for 7th semester and above)
-              </span>
-            )}
+          <div key={role.id} className="flex flex-col items-start mb-2">
+                <button
+                  className={`font-bold px-4 py-2 rounded-md text-sm text-white shadow ${
+                    registeredRoles.includes(role.id) || studentSem < 7
+                      ? "bg-gray-400 cursor-not-allowed"
+                      : "bg-green-600 hover:bg-logo-bg"
+                  }`}
+                  type="button"
+                  onClick={
+                    registeredRoles.includes(role.id) || studentSem < 7
+                      ? handleDisabledRegistrationClick
+                      : () => handleRegistration(role.id)
+                  }
+                  disabled={registeredRoles.includes(role.id) || (studentSem !== null && studentSem < 7)}
+                >
+                  REGISTER
+                </button>
+                {registeredRoles.includes(role.id) && (
+                  <span className="text-xs text-red-500 ml-5">
+                    You have already registered.
+                  </span>
+                )}
+                {studentSem < 7 && studentSem !== null && !registeredRoles.includes(role.id) && (
+                  <span className="text-xs text-red-500 ml-5">
+                    (Open for 7th semester and above)
+                  </span>
+                )}
           </div>
         ))}
       </section>
