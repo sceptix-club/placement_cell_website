@@ -244,8 +244,23 @@ const ProfileComponent = ({ routePrefix, isVerify, onUidChange, student }) => {
     }
   };
 
-  const handleVerifyClick = () => {
-    window.alert("Verification Successful!");
+  const handleVerifyClick = async () => {
+    try {
+      const { data, error } = await supabase
+        .from("academics")
+        .update({ verified: 1 })
+        .eq("student_id", dataAll.id);
+      if (error) {
+        throw error;
+      }
+      setAcademics((prevAcademics) => ({
+        ...prevAcademics,
+        verify: 1,
+      }));
+      window.alert("Verification Successful!");
+    } catch (error) {
+      console.error("Error updating verification status:", error.message);
+    }
   };
 
   return (
