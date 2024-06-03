@@ -1,6 +1,7 @@
 import React, { useContext } from "react";
-import RegisterButton from "@/components/RegisterButton";
+import RegisterButton from "@/components/Registerbutton";
 import { LoginContext } from "@/context";
+import ManagerView from "@/components/ManagerView";
 
 const RolesCard = ({ role, placementDate }) => {
   const { userRole } = useContext(LoginContext);
@@ -52,6 +53,8 @@ const RolesCard = ({ role, placementDate }) => {
             </button>
           )
         )}
+
+        {userRole === 3 && <ManagerView />}
       </div>
     </section>
   );
