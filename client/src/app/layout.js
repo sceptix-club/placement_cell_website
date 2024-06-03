@@ -23,7 +23,7 @@ export default function RootLayout({ children }) {
         <body className={inter.className}>
           {/* <Header /> */}
           <Header2 />
-          <div className="  bg-background-clr">{children}</div>
+          <div className=" md:mb-24 mb-40 bg-background-clr">{children}</div>
           <Footer />
         </body>
       </html>
