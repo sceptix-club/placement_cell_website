@@ -17,7 +17,7 @@ const create = () => {
   const [pdfFile, setPdfFile] = useState(null);
 
   const [questionInputs, setQuestionInputs] = useState(Array(4).fill(""));
-  const [numberOfQuestions, setNumberOfQuestions] = useState(4);
+  const [numberOfQuestions, setNumberOfQuestions] = useState(0);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -115,6 +115,7 @@ const create = () => {
       });
       setPdfFile(null);
       setQuestionInputs(Array(4).fill(""));
+      setNumberOfQuestions(0);
     } catch (error) {
       console.error("Error saving placement:", error.message);
     }
@@ -234,13 +235,13 @@ const create = () => {
             }}
             className="bg-secondary-card rounded-md px-5 py-2 mb-5 text-white"
           >
-            {[1, 2, 3, 4].map((number) => (
+            {[0, 1, 2, 3, 4].map((number) => (
               <option key={number} value={number}>
                 {number}
               </option>
             ))}
           </select>
-          {questionInputs.map((questionInput, index) => (
+          {questionInputs.map((questionInput, index) => numberOfQuestions > 0 && (
             <div key={index}>
               <label>Question {index + 1}</label>
               <input
