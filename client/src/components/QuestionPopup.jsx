@@ -7,6 +7,7 @@ const QuestionPopup = ({ driveId, roleId, uid, onClose, onRegister }) => {
   const [roleName, setRoleName] = useState("");
   const [driveName, setDriveName] = useState("");
   const [driveDate, setDriveDate] = useState("");
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -58,6 +59,16 @@ const QuestionPopup = ({ driveId, roleId, uid, onClose, onRegister }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    // Check if all questions have been answered
+    const unansweredQuestions = questions.some(
+      (question, index) => !answers[`ans${index + 1}`]
+    );
+
+    if (unansweredQuestions) {
+      setError("Please answer all the questions.");
+      return;
+    }
+
     onRegister(answers);
     onClose();
   };
@@ -89,7 +100,7 @@ const QuestionPopup = ({ driveId, roleId, uid, onClose, onRegister }) => {
     >
       <div className="bg-black rounded-lg p-6 max-w-md w-full relative">
         <span
-          className="absolute top-2 right-2 text-gray-600 cursor-pointer"
+          className="absolute top-2 right-2 text-gray-300 cursor-pointer"
           onClick={onClose}
         >
           &times;
@@ -103,6 +114,7 @@ const QuestionPopup = ({ driveId, roleId, uid, onClose, onRegister }) => {
           <span className="text-green-500"> {driveDate} </span>
         </h1>
         <h2 className="text-lg font-semibold mb-4">Answer the questions:</h2>
+        {error && <p className="text-red-500 mb-4">{error}</p>}
         <form onSubmit={handleSubmit}>
           {questions.map((question, index) => (
             <div key={index} className="mb-4">
@@ -115,7 +127,7 @@ const QuestionPopup = ({ driveId, roleId, uid, onClose, onRegister }) => {
                 type="text"
                 value={answers[`ans${index + 1}`] || ""}
                 onChange={(e) => handleAnswerChange(index, e.target.value)}
-                className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm text-black border-gray-300 rounded-md"
+                className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm text-white border-white-300 rounded-md"
               />
             </div>
           ))}
