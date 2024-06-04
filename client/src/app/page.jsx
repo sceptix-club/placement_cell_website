@@ -42,7 +42,7 @@ const Home = () => {
 
   return (
     <>
-      <div className="lg:flex w-full mt-10 justify-center items-center flex-col bg-background-clr overflow-y-auto sm: flex l">
+      <div className="font-gabarito lg:flex w-full mt-10 justify-center items-center flex-col bg-background-clr overflow-y-auto sm: flex l">
         {userRole === 3 && (
           // <div className="lg:w-2/3 sm: w-3/4">
           <section className="lg:w-2/3 sm: w-3/4">
