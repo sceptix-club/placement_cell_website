@@ -100,7 +100,7 @@ const QuestionPopup = ({ driveId, roleId, uid, onClose, onRegister }) => {
     >
       <div className="bg-black rounded-lg p-6 max-w-md w-full relative">
         <span
-          className="absolute top-2 right-2 text-gray-600 cursor-pointer"
+          className="absolute top-2 right-2 text-gray-300 cursor-pointer"
           onClick={onClose}
         >
           &times;
@@ -127,7 +127,7 @@ const QuestionPopup = ({ driveId, roleId, uid, onClose, onRegister }) => {
                 type="text"
                 value={answers[`ans${index + 1}`] || ""}
                 onChange={(e) => handleAnswerChange(index, e.target.value)}
-                className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm text-black border-gray-300 rounded-md"
+                className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm text-white border-white-300 rounded-md"
               />
             </div>
           ))}

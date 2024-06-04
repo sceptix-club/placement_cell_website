@@ -90,6 +90,16 @@ const RegisterButton = ({ role }) => {
       >
         REGISTER
       </button>
+      {registered && (
+              <span className="text-sm  text-red-500 ml-5">
+                You have already registered.
+              </span>
+            )}
+            {studentSem < 7 && studentSem !== null && !registered && (
+              <span className="text-sm text-red-500 ml-5">
+                (Open for 7th semester and above)
+              </span>
+            )}
 
       {showQuestionPopup && (
         <QuestionPopup
