@@ -127,14 +127,14 @@ const create = () => {
     ).length >= numberOfQuestions;
 
   return (
-    <div className="flex justify-center items-center h-auto py-10 mb-10">
+    <div className="flex justify-center items-center h-auto py-10 mb-10 font-gabarito">
       <section className="w-10/12  sm:w-sm md:w-md lg:w-lg h-auto p-4 sm:p-8 md:p-12 bg-primary-card rounded-md">
-        <h2 className="font-inter text-2xl sm:text-3xl md:text-4xl font-bold text-divider-color mb-8">
+        <h2 className=" text-2xl sm:text-3xl md:text-4xl font-bold text-divider-color mb-8">
           Create a Draft
         </h2>
         <form onSubmit={handleSubmit} className="flex flex-col">
           <label
-            className="font-inter text-lg sm:text-xl md:text-2xl font-medium text-divider-color"
+            className=" text-lg sm:text-xl md:text-2xl font-medium text-divider-color"
             htmlFor="name"
           >
             Placement Name
@@ -150,7 +150,7 @@ const create = () => {
             onChange={handleInputChange}
           />
           <label
-            className="font-inter text-lg sm:text-xl md:text-2xl font-medium text-divider-color"
+            className=" text-lg sm:text-xl md:text-2xl font-medium text-divider-color"
             htmlFor="company"
           >
             Company Name
@@ -166,7 +166,7 @@ const create = () => {
             onChange={handleInputChange}
           />
           <label
-            className="font-inter text-lg sm:text-xl md:text-2xl font-medium text-divider-color"
+            className=" text-lg sm:text-xl md:text-2xl font-medium text-divider-color"
             htmlFor="description"
           >
             Company Description
@@ -183,7 +183,7 @@ const create = () => {
             onChange={handleInputChange}
           />
           <label
-            className="font-inter text-lg sm:text-xl md:text-2xl font-medium text-divider-color"
+            className=" text-lg sm:text-xl md:text-2xl font-medium text-divider-color"
             htmlFor="date"
           >
             Date
@@ -198,7 +198,7 @@ const create = () => {
             onChange={handleInputChange}
           />
           <label
-            className="font-inter text-lg sm:text-xl md:text-2xl font-medium text-divider-color"
+            className=" text-lg sm:text-xl md:text-2xl font-medium text-divider-color"
             htmlFor="pdfFile"
           >
             Upload PDF
@@ -220,7 +220,7 @@ const create = () => {
             onChange={handleFileChange}
           />
           <label
-            className="font-inter text-lg sm:text-xl md:text-2xl font-medium text-divider-color"
+            className=" text-lg sm:text-xl md:text-2xl font-medium text-divider-color"
             htmlFor="pdfFile"
           >
             Ask Questions
@@ -241,19 +241,22 @@ const create = () => {
               </option>
             ))}
           </select>
-          {questionInputs.map((questionInput, index) => numberOfQuestions > 0 && (
-            <div key={index}>
-              <label>Question {index + 1}</label>
-              <input
-                type="text"
-                value={questionInput}
-                onChange={(e) =>
-                  handleQuestionInputChange(index, e.target.value)
-                }
-                className="bg-secondary-card rounded-md px-5 py-2 ml-5 mb-5 text-white"
-              />
-            </div>
-          ))}
+          {questionInputs.map(
+            (questionInput, index) =>
+              numberOfQuestions > 0 && (
+                <div key={index}>
+                  <label>Question {index + 1}</label>
+                  <input
+                    type="text"
+                    value={questionInput}
+                    onChange={(e) =>
+                      handleQuestionInputChange(index, e.target.value)
+                    }
+                    className="bg-secondary-card rounded-md px-5 py-2 ml-5 mb-5 text-white"
+                  />
+                </div>
+              )
+          )}
           <div className="flex justify-center w-32 h-10">
             <button
               className="font-medium bg-logo-bg w-32 h-10 rounded-md "
