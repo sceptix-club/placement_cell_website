@@ -17,11 +17,16 @@ const ProfileComponent = ({ routePrefix, isVerify, onUidChange, student }) => {
     branch: "server Error",
     year: "server Error",
     email: "server Error",
-    cgpa: "server Error",
     phone: "Server Error",
-    activeBacklogs: "server Error",
     skills: ["", ""],
   });
+
+  const [academics, setAcademics] = useState({
+    cgpa: "",
+    backlogs: "",
+  });
+
+  const [academicsExists, setAcademicsExists] = useState(false);
 
   useEffect(() => {
     const fetchUserData = async (uid) => {
@@ -37,6 +42,21 @@ const ProfileComponent = ({ routePrefix, isVerify, onUidChange, student }) => {
         setDataAll(studentData[0]);
         setVerified(true);
         if (onUidChange) onUidChange(sid);
+
+        // Fetch academics data
+        const { data: academicsData, error: academicsError } = await supabase
+          .from("academics")
+          .select()
+          .eq("student_id", sid);
+        if (academicsError) {
+          throw academicsError;
+        }
+        if (academicsData.length > 0) {
+          setAcademics(academicsData[0]);
+          setAcademicsExists(true); // Indicates that the academic data exists
+
+        }
+
       } catch (error) {
         console.error("Error fetching student data:", error.message);
       }
@@ -74,6 +94,28 @@ const ProfileComponent = ({ routePrefix, isVerify, onUidChange, student }) => {
     } else {
       setDataAll(student);
       setVerified(true);
+
+      // Fetch academics data
+      const fetchAcademicsData = async () => {
+        try {
+          const { data: academicsData, error: academicsError } = await supabase
+            .from("academics")
+            .select()
+            .eq("student_id", student.id);
+          if (academicsError) {
+            throw academicsError;
+          }
+          if (academicsData.length > 0) {
+            setAcademics(academicsData[0]);
+            setAcademicsExists(true); // Indicates that the academic data exists
+
+          }
+        } catch (error) {
+          console.error("Error fetching academics data:", error.message);
+        }
+      };
+
+      fetchAcademicsData();
     }
   }, [student]);
 
@@ -87,9 +129,9 @@ const ProfileComponent = ({ routePrefix, isVerify, onUidChange, student }) => {
     setEditMode(true);
   };
 
-  const handleSaveClick = async () => {
+  const handleSaveClick = async (sid) => {
     try {
-      const { data, error } = await supabase
+      const { data: studentData, error: studentError } = await supabase
         .from("student")
         .update({
           ...dataAll,
@@ -98,14 +140,78 @@ const ProfileComponent = ({ routePrefix, isVerify, onUidChange, student }) => {
         })
         .eq("id", dataAll.id);
 
-      if (error) {
-        throw error;
+      if (studentError) {
+        throw studentError;
       }
+
+      if (academicsExists) {
+        const { data: academicsData, error: academicsError } = await supabase
+          .from("academics")
+          .update({
+            cgpa: academics.cgpa,
+            backlogs: academics.backlogs,
+          })
+          .eq("student_id", dataAll.id);
+
+        if (academicsError) {
+          throw academicsError;
+        }
+      } else {
+        const { data: academicsData, error: academicsError } = await supabase
+          .from("academics")
+          .insert({
+            student_id: dataAll.id,
+            cgpa: academics.cgpa,
+            backlogs: academics.backlogs,
+          });
+
+        if (academicsError) {
+          throw academicsError;
+        }
+        setAcademicsExists(true); // Now academics data exists
+      }
+
+      // Fetch updated data
+      await fetchUpdatedData(dataAll.id);
 
       setEditMode(false);
       setAddingSkill(false);
     } catch (error) {
       console.error("Error updating data:", error.message);
+    }
+  };
+
+  const handleAcademicsChange = (field, value) => {
+    setAcademics((prevAcademics) => ({
+      ...prevAcademics,
+      [field]: value,
+    }));
+  };
+
+  const fetchUpdatedData = async (sid) => {
+    try {
+      const { data: updatedStudentData, error: studentError } = await supabase
+        .from("student")
+        .select()
+        .eq("id", sid);
+      if (studentError) {
+        throw studentError;
+      }
+      setDataAll(updatedStudentData[0]);
+
+      const { data: updatedAcademicsData, error: academicsError } = await supabase
+        .from("academics")
+        .select()
+        .eq("student_id", sid);
+      if (academicsError) {
+        throw academicsError;
+      }
+      if (updatedAcademicsData.length > 0) {
+        setAcademics(updatedAcademicsData[0]);
+
+      }
+    } catch (error) {
+      console.error("Error fetching updated data:", error.message);
     }
   };
 
@@ -138,12 +244,27 @@ const ProfileComponent = ({ routePrefix, isVerify, onUidChange, student }) => {
     }
   };
 
-  const handleVerifyClick = () => {
-    window.alert("Verification Successful!");
+  const handleVerifyClick = async () => {
+    try {
+      const { data, error } = await supabase
+        .from("academics")
+        .update({ verified: 1 })
+        .eq("student_id", dataAll.id);
+      if (error) {
+        throw error;
+      }
+      setAcademics((prevAcademics) => ({
+        ...prevAcademics,
+        verify: 1,
+      }));
+      window.alert("Verification Successful!");
+    } catch (error) {
+      console.error("Error updating verification status:", error.message);
+    }
   };
 
   return (
-    <div className="bg-background-clr text-primary-text ">
+    <div className="bg-background-clr text-primary-text">
       <div className="flex flex-col md:flex-row justify-center items-center mt-10 mb-16 mx-4">
         <div className="w-full md:w-1/3 mb-4 md:mb-0 md:mr-4">
           <h2 className="text-2xl mb-4">Personal Details</h2>
@@ -164,6 +285,7 @@ const ProfileComponent = ({ routePrefix, isVerify, onUidChange, student }) => {
           </div>
         </div>
 
+
         <div className="w-full md:w-1/3 ml-4">
           <h2 className="text-2xl mb-4">Academics</h2>
           <div className="bg-primary-card p-8 rounded-lg md:h-[460px]">
@@ -176,29 +298,31 @@ const ProfileComponent = ({ routePrefix, isVerify, onUidChange, student }) => {
                   <input
                     type="text"
                     className="text-white bg-secondary-card rounded-md w-full p-2 text-center ml-auto h-8"
-                    defaultValue={dataAll?.cgpa}
+                    value={academics.cgpa}
+                    onChange={(e) => handleAcademicsChange("cgpa", e.target.value)}
                   />
                 ) : (
                   <div className="text-white bg-secondary-card rounded-md w-full p-2 text-center ml-auto h-8">
-                    {dataAll?.cgpa}
+                    {academics.cgpa}
                   </div>
                 )}
               </div>
             </div>
             <div className="flex mb-4 items-center">
               <div className="w-2/3">
-                <label className="block text-white">Active Backlogs:</label>
+                <label className="block text-white">Backlogs:</label>
               </div>
               <div className="w-2/3">
                 {editMode ? (
                   <input
                     type="text"
                     className="text-white bg-secondary-card rounded-md w-full p-2 text-center h-8"
-                    defaultValue={dataAll?.activeBacklogs}
+                    value={academics.backlogs}
+                    onChange={(e) => handleAcademicsChange("backlogs", e.target.value)}
                   />
                 ) : (
                   <div className="text-white bg-secondary-card rounded-md w-full p-2 text-center h-8">
-                    {dataAll?.activeBacklogs}
+                    {academics.backlogs}
                   </div>
                 )}
               </div>
@@ -300,6 +424,7 @@ const ProfileComponent = ({ routePrefix, isVerify, onUidChange, student }) => {
                     value={resumeLink}
                   />
                 )}
+
               </div>
             </div>
 
@@ -343,7 +468,7 @@ const ProfileComponent = ({ routePrefix, isVerify, onUidChange, student }) => {
               {isVerify ? (
                 <button
                   className="bg-logo-bg text-black font-bold px-10 py-0 rounded-md"
-                // onClick={handleVerifyClick}
+                  onClick={handleVerifyClick}
                 >
                   {isVerify ? "Verify" : "Edit"}
                 </button>
@@ -364,4 +489,3 @@ const ProfileComponent = ({ routePrefix, isVerify, onUidChange, student }) => {
 };
 
 export default ProfileComponent;
-
