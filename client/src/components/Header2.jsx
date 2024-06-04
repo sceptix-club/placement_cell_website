@@ -209,7 +209,7 @@ const Header2 = () => {
             </a>
           ) : (
             <a
-              className="btn font-bold text-white hover:bg-green-500 hover:text-black "
+              className="btn font-bold bg-background-clr border-black hover:border-black text-white hover:bg-green-500 hover:text-black "
               href="/login"
             >
               Login
