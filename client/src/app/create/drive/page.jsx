@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import supabase from "@/data/supabase";
+import { toast } from "sonner";
 
 const create = () => {
   const [submitData, setSubmitData] = useState({
@@ -61,6 +62,7 @@ const create = () => {
 
       if (uploadError) {
         console.error("Error uploading PDF file:", uploadError.message);
+        toast.error("Error uploading PDF file. Please try again later.");
         return;
       }
 
@@ -74,6 +76,9 @@ const create = () => {
         console.error(
           "Error generating URL for uploaded file:",
           urlError.message
+        );
+        toast.error(
+          "Error generating URL for uploaded file. Please try again later."
         );
         return;
       }
@@ -98,11 +103,12 @@ const create = () => {
 
       if (insertError) {
         console.error("Error saving placement:", insertError.message);
+        toast.error("Error saving placement. Please try again later.");
         return;
       }
-      alert("New drive successfully created!");
+      // alert("New drive successfully created!");
+      toast.success("Placement saved successfully");
 
-      console.log("Placement saved successfully:", insertedData);
       setSubmitData({
         name: "",
         company: "",
@@ -118,6 +124,7 @@ const create = () => {
       setNumberOfQuestions(0);
     } catch (error) {
       console.error("Error saving placement:", error.message);
+      toast.error("Error saving placement. Please try again later.");
     }
   };
 
@@ -261,7 +268,7 @@ const create = () => {
             <button
               className="font-medium bg-logo-bg w-32 h-10 rounded-md "
               type="submit"
-              disabled={isQuestionInputDisabled}
+              // disabled={isQuestionInputDisabled}
             >
               Save
             </button>
