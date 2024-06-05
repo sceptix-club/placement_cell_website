@@ -2,10 +2,9 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/header";
 import Header2 from "@/components/Header2";
-
+import { Toaster } from "sonner";
 import Footer from "@/components/footer";
 import LoginProvider from "@/provider";
-// import { RoleProvider } from "@/context/RoleContext";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -24,6 +23,7 @@ export default function RootLayout({ children }) {
           {/* <Header /> */}
           <Header2 />
           <div className=" md:mb-24 mb-40 bg-background-clr">{children}</div>
+          <Toaster richColors />
           <Footer />
         </body>
       </html>
