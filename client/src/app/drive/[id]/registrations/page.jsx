@@ -10,8 +10,7 @@ const Registrations = () => {
 
   const [drive, setDrive] = useState([]);
   const [registrations, setRegistrations] = useState([]);
-
-  const [loading, setLoading] = useState(true);
+  const [questions, setQuestions] = useState([{}]);
 
   useEffect(() => {
     const fetchRegistrations = async () => {
@@ -23,6 +22,7 @@ const Registrations = () => {
         setRegistrations(data);
         if (data.length != 0) {
           setDrive(data[0].role_id.drive_id.name);
+          setQuestions(data[0].role_id.drive_id);
         } else {
           setDrive("No Registrations Yet!");
         }
@@ -33,10 +33,6 @@ const Registrations = () => {
 
     fetchRegistrations();
   }, []);
-
-  setTimeout(() => {
-    setLoading(false);
-  }, 1000);
 
   return (
     <>
@@ -54,11 +50,10 @@ const Registrations = () => {
                 <th>Year</th>
                 <th>Semester</th>
                 <th>Role Registered</th>
-
-                <th>{!loading && registrations[0].role_id.drive_id.que1}</th>
-                <th>{!loading && registrations[0].role_id.drive_id.que2}</th>
-                <th>{!loading && registrations[0].role_id.drive_id.que3}</th>
-                <th>{!loading && registrations[0].role_id.drive_id.que4}</th>
+                <th>{questions.que1}</th>
+                <th>{questions.que2}</th>
+                <th>{questions.que3}</th>
+                <th>{questions.que4}</th>
               </tr>
             </thead>
             <tbody>
