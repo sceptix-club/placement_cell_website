@@ -54,9 +54,7 @@ const ProfileComponent = ({ routePrefix, isVerify, onUidChange, student }) => {
         if (academicsData.length > 0) {
           setAcademics(academicsData[0]);
           setAcademicsExists(true); // Indicates that the academic data exists
-
         }
-
       } catch (error) {
         console.error("Error fetching student data:", error.message);
       }
@@ -108,7 +106,6 @@ const ProfileComponent = ({ routePrefix, isVerify, onUidChange, student }) => {
           if (academicsData.length > 0) {
             setAcademics(academicsData[0]);
             setAcademicsExists(true); // Indicates that the academic data exists
-
           }
         } catch (error) {
           console.error("Error fetching academics data:", error.message);
@@ -199,16 +196,13 @@ const ProfileComponent = ({ routePrefix, isVerify, onUidChange, student }) => {
       }
       setDataAll(updatedStudentData[0]);
 
-      const { data: updatedAcademicsData, error: academicsError } = await supabase
-        .from("academics")
-        .select()
-        .eq("student_id", sid);
+      const { data: updatedAcademicsData, error: academicsError } =
+        await supabase.from("academics").select().eq("student_id", sid);
       if (academicsError) {
         throw academicsError;
       }
       if (updatedAcademicsData.length > 0) {
         setAcademics(updatedAcademicsData[0]);
-
       }
     } catch (error) {
       console.error("Error fetching updated data:", error.message);
@@ -264,7 +258,7 @@ const ProfileComponent = ({ routePrefix, isVerify, onUidChange, student }) => {
   };
 
   return (
-    <div className="bg-background-clr text-primary-text">
+    <div className="bg-background-clr text-primary-text font-gabarito">
       <div className="flex flex-col md:flex-row justify-center items-center mt-10 mb-16 mx-4">
         <div className="w-full md:w-1/3 mb-4 md:mb-0 md:mr-4">
           <h2 className="text-2xl mb-4">Personal Details</h2>
@@ -285,7 +279,6 @@ const ProfileComponent = ({ routePrefix, isVerify, onUidChange, student }) => {
           </div>
         </div>
 
-
         <div className="w-full md:w-1/3 ml-4">
           <h2 className="text-2xl mb-4">Academics</h2>
           <div className="bg-primary-card p-8 rounded-lg md:h-[460px]">
@@ -299,7 +292,9 @@ const ProfileComponent = ({ routePrefix, isVerify, onUidChange, student }) => {
                     type="text"
                     className="text-white bg-secondary-card rounded-md w-full p-2 text-center ml-auto h-8"
                     value={academics.cgpa}
-                    onChange={(e) => handleAcademicsChange("cgpa", e.target.value)}
+                    onChange={(e) =>
+                      handleAcademicsChange("cgpa", e.target.value)
+                    }
                   />
                 ) : (
                   <div className="text-white bg-secondary-card rounded-md w-full p-2 text-center ml-auto h-8">
@@ -318,7 +313,9 @@ const ProfileComponent = ({ routePrefix, isVerify, onUidChange, student }) => {
                     type="text"
                     className="text-white bg-secondary-card rounded-md w-full p-2 text-center h-8"
                     value={academics.backlogs}
-                    onChange={(e) => handleAcademicsChange("backlogs", e.target.value)}
+                    onChange={(e) =>
+                      handleAcademicsChange("backlogs", e.target.value)
+                    }
                   />
                 ) : (
                   <div className="text-white bg-secondary-card rounded-md w-full p-2 text-center h-8">
@@ -333,10 +330,11 @@ const ProfileComponent = ({ routePrefix, isVerify, onUidChange, student }) => {
               {dataAll?.skills?.map((skill, index) => (
                 <div
                   key={index}
-                  className={`w-1/3 px-2 mb-4 text ${editMode && index === dataAll.skills.length - 1
-                    ? "w-1/4"
-                    : ""
-                    }`}
+                  className={`w-1/3 px-2 mb-4 text ${
+                    editMode && index === dataAll.skills.length - 1
+                      ? "w-1/4"
+                      : ""
+                  }`}
                 >
                   {editMode ? (
                     <div className="flex items-center">
@@ -424,7 +422,6 @@ const ProfileComponent = ({ routePrefix, isVerify, onUidChange, student }) => {
                     value={resumeLink}
                   />
                 )}
-
               </div>
             </div>
 

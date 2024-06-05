@@ -36,7 +36,7 @@ const Registrations = () => {
 
   return (
     <>
-      <div className="p-8 m-5">
+      <div className="p-8 m-5 font-gabarito">
         <h1 className="text-3xl font-bold py-4">{drive}</h1>
         <div className="overflow-x-auto">
           <table className="table">

@@ -124,7 +124,7 @@ const candidates = () => {
 
   return (
     <>
-      <div className="flex justify-center items-center h-screen w-full bg-background-clr">
+      <div className="font-gabarito flex justify-center items-center h-screen w-full bg-background-clr">
         <div className="flex flex-row h-4/5 w-4/5 ">
           <div className="flex basis-1/4 flex-col bg-primary-card ml-2 mr-2 rounded-md">
             <div className="h-10 w-full py-1 border-b-2 font-bold text-center text-lg border-divider-color">

@@ -74,7 +74,7 @@ const login = () => {
 
   return (
     <>
-      <div className="flex items-center justify-center h-screen font-sans bg-[#222222] ">
+      <div className="font-gabarito flex items-center justify-center h-screen bg-[#222222] ">
         <div className="bg-white p-10 rounded shadow-md w-96 hover-shadow md:max-w-md lg:max-w-lg xl:max-w-xl">
           <h2 className="text-2xl font-semibold mb-6  text-black text-center">
             Login to your account
