@@ -22,7 +22,7 @@ const login = () => {
       if (data.session !== null) {
         document.cookie = `accessToken=${data.session.access_token}; path=/`;
         document.cookie = `refreshToken=${data.session.refresh_token}; path=/`;
-        router.push("/profile");
+        router.push("/");
         setIsLoggedIn(true);
       }
     };
