@@ -52,7 +52,7 @@ const login = () => {
             document.cookie = `accessToken=${data.session.access_token}; path=/`;
             document.cookie = `refreshToken=${data.session.refresh_token}; path=/`;
             setIsLoggedIn(true);
-            router.push("/profile");
+            router.push("/");
           }
         } catch (err) {
           console.log(err);
