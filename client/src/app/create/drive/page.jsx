@@ -2,8 +2,12 @@
 
 import React, { useState } from "react";
 import supabase from "@/data/supabase";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 const create = () => {
+  const router = useRouter();
+
   const [submitData, setSubmitData] = useState({
     name: "",
     company: "",
@@ -61,6 +65,7 @@ const create = () => {
 
       if (uploadError) {
         console.error("Error uploading PDF file:", uploadError.message);
+        toast.error(`PDF Error: ${uploadError.message}`);
         return;
       }
 
@@ -73,6 +78,10 @@ const create = () => {
       if (urlError) {
         console.error(
           "Error generating URL for uploaded file:",
+          urlError.message
+        );
+        toast.error(
+          "Error generating URL for uploaded file.",
           urlError.message
         );
         return;
@@ -98,11 +107,13 @@ const create = () => {
 
       if (insertError) {
         console.error("Error saving placement:", insertError.message);
+        toast.error(`Error: ${insertError.message}`);
         return;
       }
-      alert("New drive successfully created!");
+      // alert("New drive successfully created!");
+      toast.success("Placement saved successfully");
+      router.push("/");
 
-      console.log("Placement saved successfully:", insertedData);
       setSubmitData({
         name: "",
         company: "",
@@ -118,6 +129,8 @@ const create = () => {
       setNumberOfQuestions(0);
     } catch (error) {
       console.error("Error saving placement:", error.message);
+      // toast.error("Error saving placement.", error.message);
+      toast.error(`Error saving drive. ${error.message}`);
     }
   };
 
@@ -261,7 +274,7 @@ const create = () => {
             <button
               className="font-medium bg-logo-bg w-32 h-10 rounded-md "
               type="submit"
-              disabled={isQuestionInputDisabled}
+              // disabled={isQuestionInputDisabled}
             >
               Save
             </button>

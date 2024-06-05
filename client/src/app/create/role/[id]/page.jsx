@@ -2,8 +2,11 @@
 import React, { useState, useRef, useEffect } from "react";
 import supabase from "@/data/supabase";
 import { usePathname } from "next/navigation";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 const Role = () => {
+  const router = useRouter();
   const pathName = usePathname();
   const pathNo = pathName.slice("/create/role/".length);
 
@@ -36,8 +39,11 @@ const Role = () => {
 
       if (error) {
         console.error("Error saving role:", error);
+        toast.error(`Error saving role: ${error.message}`);
       } else {
-        console.log("Role saved successfully:", jobInfo);
+        console.log("Role saved successfully:");
+        toast.success("Role saved successfully");
+        router.push(`/drive/${pathNo}`);
       }
       setJobInfo({
         name: "",
@@ -51,11 +57,11 @@ const Role = () => {
       });
     } catch (error) {
       console.error("Error saving role:", error.message);
+      toast.error(`Error: ${error.message}`);
     }
   };
   useEffect(() => {
     textAreaRef.current.style.height = "auto";
-    console.log("path", pathNo);
 
     textAreaRef.current.style.height = textAreaRef.current.scrollHeight + "px";
   }, [jobInfo]);

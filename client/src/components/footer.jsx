@@ -3,7 +3,7 @@ import Image from "next/image";
 
 const Footer = () => {
   return (
-    <footer className="p-5 w-full bg-primary-card text-white text-sm flex flex-col md:flex-row justify-between items-center absolute bottom-0 ">
+    <footer className="p-5 w-full bg-primary-card text-white text-sm flex flex-col md:flex-row justify-between items-center absolute bottom-0 font-gabarito">
       <Image
         src="/sjeclogo.avif"
         alt="Logo"
