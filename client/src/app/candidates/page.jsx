@@ -31,6 +31,7 @@ const candidates = () => {
   const [selectedCGPAOptions, setSelectedCGPAOptions] = useState([]);
   const [selectedSkillsOptions, setSelectedSkillsOptions] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
+  const [originalData, setOriginalData] = useState([]);
 
   const handleSearch = (event) => {
     setSearchTerm(event.target.value);
@@ -72,6 +73,7 @@ const candidates = () => {
       const { data, error } = await supabase.from("student").select("*");
       console.log("data", data);
       if (!error) {
+        setOriginalData(data);
         setFilteredData(data);
       }
     };
@@ -80,7 +82,7 @@ const candidates = () => {
 
   //To filter out the data based on the selected options
   useEffect(() => {
-    let newFilteredData = filteredData;
+    let newFilteredData = originalData;
 
     if (selectedBranchOptions.length > 0) {
       newFilteredData = newFilteredData.filter((candidate) =>
@@ -113,6 +115,7 @@ const candidates = () => {
 
     setFilteredData(newFilteredData);
   }, [
+    originalData,
     selectedBranchOptions,
     selectedCGPAOptions,
     selectedSkillsOptions,
