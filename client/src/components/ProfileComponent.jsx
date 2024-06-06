@@ -272,7 +272,7 @@ const ProfileComponent = ({ routePrefix, isVerify, onUidChange, student }) => {
             </div>
             <div className="text-left mt-0 text-main-text">
               <p className="mb-[10px]">USN: {dataAll?.usn}</p>
-              <p className="mb-[10px]">BRANCH:{dataAll?.branch}</p>
+              <p className="mb-[10px]">BRANCH: {dataAll?.branch}</p>
               <p className="mb-[10px]">YEAR: {dataAll?.year}</p>
               <p className="mb-[10px]">Email: {dataAll?.email}</p>
               <p className="mb-[10px]">Phone Number: {dataAll?.phone}</p>
