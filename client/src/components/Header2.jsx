@@ -50,7 +50,7 @@ const Header2 = () => {
 
   return (
     <Headroom>
-      <div className="navbar bg-green-500 rounded-xl w-11/12 mx-auto my-5">
+      <div className="navbar bg-green-500 rounded-xl w-11/12 mx-auto my-5 font-gabarito">
         <div className="navbar-start">
           <div className="dropdown">
             {isLoggedIn ? (
@@ -80,7 +80,7 @@ const Header2 = () => {
               tabIndex={0}
               className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-green-500 rounded-lg w-52 "
             >
-              {isLoggedIn ? (
+              {isLoggedIn && userRole !== 3 ? (
                 <li>
                   <a className="hover:underline" href="/">
                     Home
@@ -135,7 +135,7 @@ const Header2 = () => {
 
         <div className="navbar-center hidden lg:flex">
           <ul className="menu menu-horizontal px-1">
-            {isLoggedIn ? (
+            {isLoggedIn && userRole !== 3 ? (
               <li>
                 <Link className="hover:bg-green-500" href="/">
                   <button className="text-lg text-white border-b-2 border-transparent  hover:border-white transition-colors duration-200">
@@ -209,7 +209,7 @@ const Header2 = () => {
             </a>
           ) : (
             <a
-              className="btn font-bold text-white hover:bg-green-500 hover:text-black "
+              className="btn font-bold bg-background-clr border-black hover:border-black text-white hover:bg-green-500 hover:text-black "
               href="/login"
             >
               Login

@@ -29,7 +29,9 @@ const DriveInfo = () => {
   useEffect(() => {
     const checkUserRole = async () => {
       console.log("Checking user role");
-      const { data: { user } } = await supabase.auth.getUser();
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
       if (user) {
         const { data, error } = await supabase
           .from("user")
@@ -58,7 +60,7 @@ const DriveInfo = () => {
   };
 
   return (
-    <div className="flex items-center justify-center py-10 mb-10 h-auto bg-background-clr font-inter font-normal">
+    <div className="font-gabarito flex items-center justify-center py-10 mb-10 h-auto bg-background-clr font-normal">
       <section className="flex flex-col p-5 sm:p-8 lg:p-16  w-11/12 sm:w-10/12 md:w-2/3 lg:w-3/5 border-white h-auto rounded-md bg-primary-card">
         <PlacementAPI
           pathNo={pathNo}
@@ -72,9 +74,9 @@ const DriveInfo = () => {
           {placements.company}
         </h2>
         <div className="text-md lg:text-xl py-2 leading-tight lg:leading-tight font-medium">
-          <p>Date: {showDate && driveDate}</p>
+          <p>{showDate && driveDate}</p>
         </div>
-        <div className="text-md lg:text-xl py-2 leading-tight lg:leading-tight font-medium">
+        <div className="text-md lg:text-xl py-2 leading-tight lg:leading-tight ">
           <p>{placements.description}</p>
         </div>
         <div className="flex flex-row item-center mt-4 lg:mt-5">

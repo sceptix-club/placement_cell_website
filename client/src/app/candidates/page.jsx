@@ -31,6 +31,7 @@ const candidates = () => {
   const [selectedCGPAOptions, setSelectedCGPAOptions] = useState([]);
   const [selectedSkillsOptions, setSelectedSkillsOptions] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
+  const [originalData, setOriginalData] = useState([]);
 
   const handleSearch = (event) => {
     setSearchTerm(event.target.value);
@@ -72,6 +73,7 @@ const candidates = () => {
       const { data, error } = await supabase.from("student").select("*");
       console.log("data", data);
       if (!error) {
+        setOriginalData(data);
         setFilteredData(data);
       }
     };
@@ -80,7 +82,7 @@ const candidates = () => {
 
   //To filter out the data based on the selected options
   useEffect(() => {
-    let newFilteredData = filteredData;
+    let newFilteredData = originalData;
 
     if (selectedBranchOptions.length > 0) {
       newFilteredData = newFilteredData.filter((candidate) =>
@@ -113,6 +115,7 @@ const candidates = () => {
 
     setFilteredData(newFilteredData);
   }, [
+    originalData,
     selectedBranchOptions,
     selectedCGPAOptions,
     selectedSkillsOptions,
@@ -121,7 +124,7 @@ const candidates = () => {
 
   return (
     <>
-      <div className="flex justify-center items-center h-screen w-full bg-background-clr">
+      <div className="font-gabarito flex justify-center items-center h-screen w-full bg-background-clr">
         <div className="flex flex-row h-4/5 w-4/5 ">
           <div className="flex basis-1/4 flex-col bg-primary-card ml-2 mr-2 rounded-md">
             <div className="h-10 w-full py-1 border-b-2 font-bold text-center text-lg border-divider-color">

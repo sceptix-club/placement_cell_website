@@ -10,6 +10,7 @@ const Registrations = () => {
 
   const [drive, setDrive] = useState([]);
   const [registrations, setRegistrations] = useState([]);
+  const [questions, setQuestions] = useState([{}]);
 
   useEffect(() => {
     const fetchRegistrations = async () => {
@@ -21,6 +22,7 @@ const Registrations = () => {
         setRegistrations(data);
         if (data.length != 0) {
           setDrive(data[0].role_id.drive_id.name);
+          setQuestions(data[0].role_id.drive_id);
         } else {
           setDrive("No Registrations Yet!");
         }
@@ -31,11 +33,11 @@ const Registrations = () => {
 
     fetchRegistrations();
   }, []);
+
   return (
     <>
-      <div className="p-8 m-5">
+      <div className="p-8 m-5 font-gabarito">
         <h1 className="text-3xl font-bold py-4">{drive}</h1>
-        {/* <p className="text-xl py-4">Students Registered:</p> */}
         <div className="overflow-x-auto">
           <table className="table">
             <thead>
@@ -48,6 +50,10 @@ const Registrations = () => {
                 <th>Year</th>
                 <th>Semester</th>
                 <th>Role Registered</th>
+                <th>{questions.que1}</th>
+                <th>{questions.que2}</th>
+                <th>{questions.que3}</th>
+                <th>{questions.que4}</th>
               </tr>
             </thead>
             <tbody>
@@ -62,6 +68,10 @@ const Registrations = () => {
                     <td>{reg.student_id.year}</td>
                     <td>{reg.student_id.sem}</td>
                     <td>{reg.role_id.name}</td>
+                    <td>{reg.ans1}</td>
+                    <td>{reg.ans2}</td>
+                    <td>{reg.ans3}</td>
+                    <td>{reg.ans4}</td>
                   </tr>
                 );
               })}

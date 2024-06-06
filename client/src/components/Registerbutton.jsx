@@ -3,6 +3,7 @@ import supabase from "@/data/supabase";
 import { usePathname } from "next/navigation";
 import FetchUidComponent from "@/app/api/fetchUid";
 import QuestionPopup from "@/components/QuestionPopup";
+import { toast } from "sonner";
 
 const RegisterButton = ({ role }) => {
   const [uid, setUid] = useState(null);
@@ -57,7 +58,9 @@ const RegisterButton = ({ role }) => {
   const handleRegistrationWithAnswers = async (answers) => {
     const { error } = await supabase
       .from("stat")
-      .insert([{ student_id: uid, role_id: role.id, drive_id: pathNo, ...answers }]);
+      .insert([
+        { student_id: uid, role_id: role.id, drive_id: pathNo, ...answers },
+      ]);
 
     if (error) {
       console.error("Error inserting data:", error.message);
@@ -65,15 +68,17 @@ const RegisterButton = ({ role }) => {
     }
 
     setRegistered(true);
-    alert("You have been successfully registered for this role.");
+    toast.success("You have been successfully registered for this role.");
     setShowQuestionPopup(false);
   };
 
   const handleDisabledRegistrationClick = () => {
     if (registered) {
-      alert("You are already registered for this role in this drive.");
+      toast.error("You are already registered for this role in this drive.");
     } else {
-      alert("Registrations are open only for students in the 7th semester or higher.");
+      alert(
+        "Registrations are open only for students in the 7th semester or higher."
+      );
     }
   };
 
@@ -82,10 +87,16 @@ const RegisterButton = ({ role }) => {
       <FetchUidComponent setUid={setUid} />
       <button
         className={`font-bold px-4 py-2 rounded-md text-sm text-white shadow ${
-          registered || studentSem < 7 ? "bg-gray-400 mt-4 cursor-not-allowed" : "bg-green-600 mt-4 hover:bg-logo-bg"
+          registered || studentSem < 7
+            ? "bg-gray-400 mt-4 cursor-not-allowed"
+            : "bg-green-600 mt-4 hover:bg-logo-bg"
         }`}
         type="button"
-        onClick={registered || studentSem < 7 ? handleDisabledRegistrationClick : handleRegistration}
+        onClick={
+          registered || studentSem < 7
+            ? handleDisabledRegistrationClick
+            : handleRegistration
+        }
         disabled={registered || studentSem < 7}
       >
         REGISTER
