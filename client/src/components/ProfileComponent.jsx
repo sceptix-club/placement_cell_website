@@ -331,11 +331,10 @@ const ProfileComponent = ({ routePrefix, isVerify, onUidChange, student }) => {
               {dataAll?.skills?.map((skill, index) => (
                 <div
                   key={index}
-                  className={`w-1/3 px-2 mb-4 text ${
-                    editMode && index === dataAll.skills.length - 1
-                      ? "w-1/4"
-                      : ""
-                  }`}
+                  className={`w-1/3 px-2 mb-4 text ${editMode && index === dataAll.skills.length - 1
+                    ? "w-1/4"
+                    : ""
+                    }`}
                 >
                   {editMode ? (
                     <div className="flex items-center">
@@ -457,7 +456,7 @@ const ProfileComponent = ({ routePrefix, isVerify, onUidChange, student }) => {
             <div className="mb-4 flex flex-col md:flex-row justify-center items-center">
               {isVerify ? (
                 <button
-                  className="bg-logo-bg text-black font-bold px-10 py-0 rounded-md"
+                  className="bg-logo-bg text-black font-bold px-10 py-1 rounded-md"
                   onClick={handleVerifyClick}
                 >
                   {isVerify ? "Verify" : "Edit"}
