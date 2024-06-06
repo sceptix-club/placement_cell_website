@@ -24,6 +24,7 @@ const ProfileComponent = ({ routePrefix, isVerify, onUidChange, student }) => {
   const [academics, setAcademics] = useState({
     cgpa: "",
     backlogs: "",
+    verified: 0, // Added verification status
   });
 
   const [academicsExists, setAcademicsExists] = useState(false);
@@ -54,7 +55,6 @@ const ProfileComponent = ({ routePrefix, isVerify, onUidChange, student }) => {
         if (academicsData.length > 0) {
           setAcademics(academicsData[0]);
           setAcademicsExists(true); // Indicates that the academic data exists
-
         }
 
       } catch (error) {
@@ -108,7 +108,6 @@ const ProfileComponent = ({ routePrefix, isVerify, onUidChange, student }) => {
           if (academicsData.length > 0) {
             setAcademics(academicsData[0]);
             setAcademicsExists(true); // Indicates that the academic data exists
-
           }
         } catch (error) {
           console.error("Error fetching academics data:", error.message);
@@ -208,7 +207,6 @@ const ProfileComponent = ({ routePrefix, isVerify, onUidChange, student }) => {
       }
       if (updatedAcademicsData.length > 0) {
         setAcademics(updatedAcademicsData[0]);
-
       }
     } catch (error) {
       console.error("Error fetching updated data:", error.message);
@@ -255,7 +253,7 @@ const ProfileComponent = ({ routePrefix, isVerify, onUidChange, student }) => {
       }
       setAcademics((prevAcademics) => ({
         ...prevAcademics,
-        verify: 1,
+        verified: 1,
       }));
       window.alert("Verification Successful!");
     } catch (error) {
@@ -277,7 +275,7 @@ const ProfileComponent = ({ routePrefix, isVerify, onUidChange, student }) => {
             </div>
             <div className="text-left mt-0 text-main-text">
               <p className="mb-[10px]">USN: {dataAll?.usn}</p>
-              <p className="mb-[10px]">BRANCH: {dataAll?.branch}</p>
+              <p className="mb-[10px]">BRANCH:{dataAll?.branch}</p>
               <p className="mb-[10px]">YEAR: {dataAll?.year}</p>
               <p className="mb-[10px]">Email: {dataAll?.email}</p>
               <p className="mb-[10px]">Phone Number: {dataAll?.phone}</p>
@@ -424,7 +422,6 @@ const ProfileComponent = ({ routePrefix, isVerify, onUidChange, student }) => {
                     value={resumeLink}
                   />
                 )}
-
               </div>
             </div>
 
@@ -457,14 +454,6 @@ const ProfileComponent = ({ routePrefix, isVerify, onUidChange, student }) => {
             </div>
 
             <div className="mb-4 flex flex-col md:flex-row justify-center items-center">
-              {editMode && (
-                <button
-                  className="bg-logo-bg text-black font-bold px-4 py-2 rounded-md mb-2 md:mr-4 md:mb-0"
-                  onClick={handleCancelClick}
-                >
-                  Cancel
-                </button>
-              )}
               {isVerify ? (
                 <button
                   className="bg-logo-bg text-black font-bold px-10 py-0 rounded-md"
@@ -474,8 +463,10 @@ const ProfileComponent = ({ routePrefix, isVerify, onUidChange, student }) => {
                 </button>
               ) : (
                 <button
-                  className="bg-logo-bg text-black font-bold px-4 py-2 rounded-md ml-2"
+                  className={`${academics.verified === 1 ? "bg-gray-500 cursor-not-allowed" : "bg-logo-bg"
+                    } text-black font-bold px-4 py-2 rounded-md ml-2`}
                   onClick={editMode ? handleSaveClick : handleEditClick}
+                  disabled={academics.verified === 1} // Disable if verification status is 1
                 >
                   {editMode ? "Save" : "Edit"}
                 </button>
@@ -485,6 +476,7 @@ const ProfileComponent = ({ routePrefix, isVerify, onUidChange, student }) => {
         </div>
       </div>
     </div>
+
   );
 };
 
