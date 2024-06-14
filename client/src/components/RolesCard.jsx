@@ -1,19 +1,91 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import RegisterButton from "@/components/Registerbutton";
 import { LoginContext } from "@/context";
 import ManagerView from "@/components/ManagerView";
+import { toast } from "sonner";
+import supabase from "@/data/supabase";
+import { useRouter } from "next/navigation";
 
 const RolesCard = ({ role, placementDate }) => {
+  const router = useRouter();
   const { userRole } = useContext(LoginContext);
   const currentDate = new Date();
   const placementDateObj = new Date(placementDate);
   const timeDifference = placementDateObj.getTime() - currentDate.getTime();
   const daysDifference = Math.ceil(timeDifference / (1000 * 3600 * 24));
 
+  // const [deleted, setDeleted] = useState(false);
+
+  const deleteDrive = async () => {
+    const { error } = await supabase.from("role").delete().eq("id", role.id);
+    // setDeleted(true);
+    // router.push(`/drive/${role.id}`);
+
+    if (!error) {
+      toast.success(`${role.name} Role Deleted Successfully`);
+      setTimeout(() => {
+        window.location.reload(); //refreshes the page after 1 second to delete the role from the page, otherwise stays on page
+      }, 1000);
+    } else {
+      toast.error("Error Deleting Drive");
+    }
+  };
+  // if (deleted) {
+  //   return null;
+  // }
   return (
     <section className="flex flex-col mt-8 text-sm lg:text-base">
-      <h2 className="text-xl lg:text-2xl font-medium">{role.name}</h2>
       <div className="bg-secondary-card rounded-md px-3 py-4 sm:p-6 lg:p-6 font-medium">
+        <div className="flex flex-row justify-between items-center mb-5">
+          <h2 className="text-xl lg:text-3xl font-medium">{role.name}</h2>
+          {userRole === 3 && (
+            <div>
+              <button className="btn btn-square bg-logo-bg btn-success btn-sm  mx-2 ">
+                <img
+                  src="/icons/pencil.png
+              "
+                  className="w-4 bg-center invert"
+                />
+              </button>
+              <button
+                className="btn btn-square btn-sm btn-error mx-2"
+                onClick={() =>
+                  document.getElementById("role_delete").showModal()
+                }
+              >
+                <img
+                  src="/icons/delete.png
+              "
+                  className="w-4 bg-center invert"
+                />
+              </button>
+              <dialog
+                id="role_delete"
+                className="modal modal-bottom sm:modal-middle"
+              >
+                <div className="modal-box bg-[#393939]">
+                  <h3 className="font-bold text-2xl">Delete Drive!</h3>
+                  <p className="py-4">
+                    Are you sure you want to delete this Role? <br />
+                    This action cannot be undone.
+                  </p>
+                  <div className="modal-action">
+                    <form method="dialog">
+                      {/* if there is a button in form, it will close the modal */}
+                      <button className="btn btn-ghost mx-2">Cancel</button>
+                      <button
+                        className="btn btn-error mx-2"
+                        onClick={deleteDrive}
+                      >
+                        Delete
+                      </button>
+                    </form>
+                  </div>
+                </div>
+              </dialog>
+            </div>
+          )}
+        </div>
         <p className="mb-8 lg:mb-5 sm:leading-tight">{role.description}</p>
 
         <div className="lg:mt-3 mt-5 flex flex-row">
