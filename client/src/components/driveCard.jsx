@@ -14,13 +14,16 @@ const DriveCard = ({ placement }) => {
 
   return (
     <>
-      <div className="p-6 mb-6 flex  md:flex-row flex-col  bg-primary-card rounded-lg lg:w-full hover:scale-110 transition drop-shadow-md">
+      <div className="p-6 mb-2 flex  md:flex-row flex-col  bg-primary-card rounded-lg lg:w-full hover:scale-[103%] transition drop-shadow-md">
         <div className="w-full">
           <div className="flex justify-between">
-            <div>
-              <h3 className="text-2xl font-bold mb-2">{placement.name}</h3>
-              <p className="text-xl font-bold mb-8">{placement.company}</p>
-            </div>
+            <Link href={`/drive/${placement.id}`} passHref>
+              <div>
+                <h3 className="text-2xl font-bold mb-2">{placement.name}</h3>
+                <p className="text-xl font-bold mb-8">{placement.company}</p>
+              </div>
+            </Link>
+
             <div>
               <button className="bg-green-400 rounded-lg w-10 h-10 drop-shadow-lg">
                 <Image
@@ -33,13 +36,14 @@ const DriveCard = ({ placement }) => {
               </button>
             </div>
           </div>
+
           <p className="text-lg text-white mb-8">{driveDate}</p>
           <div className="flex md:flex-row flex-col justify-between w-full">
             <div>
               {placement.role.map((role, index) => (
                 <button
                   key={index}
-                  className="bg-secondary-card text-white text-sm px-4 py-2  rounded mr-2 mb-2 drop-shadow-md "
+                  className="bg-secondary-card text-white text-sm px-4 py-2  rounded mr-2 mb-2 drop-shadow-md cursor-default"
                 >
                   {role.name}
                 </button>
