@@ -1,12 +1,24 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import supabase from "@/data/supabase";
 import { toast } from "sonner";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
+import { usePathname, useParams } from "next/navigation";
+// import pathNo from "@/components/ManagerDriveButtons";
 
-const create = () => {
+const create = (props) => {
   const router = useRouter();
+  // const { pathNo } = useParams();
+  const searchParams = useSearchParams();
+  // const pathNo = props.pathNo;
+  const pathName = usePathname();
+  // const pathNo = pathName.slice("/drive/".length);
+  // console.log("pa", pathName);
+
+
+
+
 
   const [submitData, setSubmitData] = useState({
     name: "",
@@ -22,6 +34,62 @@ const create = () => {
 
   const [questionInputs, setQuestionInputs] = useState(Array(4).fill(""));
   const [numberOfQuestions, setNumberOfQuestions] = useState(0);
+  const [isEditMode, setIsEditMode] = useState(false);
+  const [pathNo, getPathno] = useState(false);
+  const [driveId, setDriveId] = useState(null)
+  useEffect(() => {
+    const editMode = searchParams.get("isEditMode");
+    const pathno = searchParams.get("pathNo");
+
+    console.log("Extracted drive ID:", pathno);
+
+    setDriveId(pathno);
+    setIsEditMode(editMode === "true");
+    if (editMode === "true") {
+      fetchDriveDetails(pathno);
+    }
+  }, [searchParams]);
+
+  const fetchDriveDetails = async (driveId) => {
+    try {
+      const { data, error } = await supabase
+        .from("drive")
+        .select("*")
+        .eq("id", driveId)
+        .single();
+
+      if (error) {
+        toast.error("Error fetching drive details.");
+        return;
+      }
+
+      setSubmitData({
+        name: data.name || "",
+        company: data.company || "",
+        description: data.description || "",
+        date: data.date || "",
+        que1: data.que1 || "",
+        que2: data.que2 || "",
+        que3: data.que3 || "",
+        que4: data.que4 || "",
+      });
+
+      setQuestionInputs([
+        data.que1 || "",
+        data.que2 || "",
+        data.que3 || "",
+        data.que4 || "",
+      ]);
+
+      setNumberOfQuestions(
+        [data.que1, data.que2, data.que3, data.que4].filter((q) => q).length
+      );
+    } catch (error) {
+      toast.error("Error fetching drive details.");
+      console.error(error);
+    }
+  }
+
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -100,18 +168,33 @@ const create = () => {
 
     // Save data to Supabase database
     try {
-      const { data: insertedData, error: insertError } = await supabase
-        // .schema("placements")
-        .from("drive")
-        .insert([dataToSave]);
+      if (isEditMode) {
+        const { data: updatedData, error: updateError } = await supabase
+          .from("drive")
+          .update(dataToSave)
+          .eq("id", driveId);
 
-      if (insertError) {
-        console.error("Error saving placement:", insertError.message);
-        toast.error(`Error: ${insertError.message}`);
-        return;
+        if (updateError) {
+          console.error("Error updating placement:", updateError.message);
+          toast.error(`Error: ${updateError.message}`);
+          return;
+        }
+
+        toast.success("Placement updated successfully");
+      } else {
+        const { data: insertedData, error: insertError } = await supabase
+          .from("drive")
+          .insert([dataToSave]);
+
+        if (insertError) {
+          console.error("Error saving placement:", insertError.message);
+          toast.error(`Error: ${insertError.message}`);
+          return;
+        }
+
+        toast.success("Placement saved successfully");
       }
-      // alert("New drive successfully created!");
-      toast.success("Placement saved successfully");
+
       router.push("/");
 
       setSubmitData({
@@ -129,10 +212,11 @@ const create = () => {
       setNumberOfQuestions(0);
     } catch (error) {
       console.error("Error saving placement:", error.message);
-      // toast.error("Error saving placement.", error.message);
       toast.error(`Error saving drive. ${error.message}`);
     }
   };
+
+
 
   const isQuestionInputDisabled =
     Object.values(submitData).filter(
@@ -143,7 +227,7 @@ const create = () => {
     <div className="flex justify-center items-center h-auto py-10 mb-10 font-gabarito">
       <section className="w-10/12  sm:w-sm md:w-md lg:w-lg h-auto p-4 sm:p-8 md:p-12 bg-primary-card rounded-md">
         <h2 className=" text-2xl sm:text-3xl md:text-4xl font-bold text-divider-color mb-8">
-          Create a Draft
+          {isEditMode ? "Edit Drive" : "Create a Draft"}
         </h2>
         <form onSubmit={handleSubmit} className="flex flex-col">
           <label
@@ -272,14 +356,14 @@ const create = () => {
           )}
           <div className="flex justify-center w-32 h-10">
             <button
-              className="font-medium bg-logo-bg w-32 h-10 rounded-md "
+              className="font-medium bg-logo-bg w-32 h-10 rounded-md"
               type="submit"
-              // disabled={isQuestionInputDisabled}
             >
-              Save
+              {isEditMode ? "Edit" : "Save"}
             </button>
           </div>
         </form>
+
       </section>
     </div>
   );
