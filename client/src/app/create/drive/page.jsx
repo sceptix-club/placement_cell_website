@@ -4,20 +4,15 @@ import React, { useState, useEffect } from "react";
 import supabase from "@/data/supabase";
 import { toast } from "sonner";
 import { useRouter, useSearchParams } from "next/navigation";
-import { usePathname, useParams } from "next/navigation";
-// import pathNo from "@/components/ManagerDriveButtons";
+import { usePathname } from "next/navigation";
+
 
 const create = (props) => {
   const router = useRouter();
-  // const { pathNo } = useParams();
+
   const searchParams = useSearchParams();
-  // const pathNo = props.pathNo;
+
   const pathName = usePathname();
-  // const pathNo = pathName.slice("/drive/".length);
-  // console.log("pa", pathName);
-
-
-
 
 
   const [submitData, setSubmitData] = useState({
@@ -35,7 +30,6 @@ const create = (props) => {
   const [questionInputs, setQuestionInputs] = useState(Array(4).fill(""));
   const [numberOfQuestions, setNumberOfQuestions] = useState(0);
   const [isEditMode, setIsEditMode] = useState(false);
-  const [pathNo, getPathno] = useState(false);
   const [driveId, setDriveId] = useState(null)
   useEffect(() => {
     const editMode = searchParams.get("isEditMode");
