@@ -14,9 +14,9 @@ export default function ManagerDriveButtons(props) {
 
   const router = useRouter();
 
-  // const prop = props.props;
+  const prop = props.props;
   const [published, setPublished] = useState(true);
-  // const [isEditMode, setIsEditMode] = React.useState(false);
+
 
   const publishDrive = async () => {
     const { data, error } = await supabase

@@ -43,11 +43,15 @@ const create = (props) => {
 
     console.log("Extracted drive ID:", pathno);
 
-    setDriveId(pathno);
+
     setIsEditMode(editMode === "true");
-    if (editMode === "true") {
+    if (editMode === "true" && pathno) {
+      setDriveId(pathno);
       fetchDriveDetails(pathno);
+    } else {
+      resetFormFields();
     }
+
   }, [searchParams]);
 
   const fetchDriveDetails = async (driveId) => {
@@ -89,6 +93,21 @@ const create = (props) => {
       console.error(error);
     }
   }
+  const resetFormFields = () => {
+    setSubmitData({
+      name: "",
+      company: "",
+      description: "",
+      date: "",
+      que1: "",
+      que2: "",
+      que3: "",
+      que4: "",
+    });
+    setPdfFile(null);
+    setQuestionInputs(Array(4).fill(""));
+    setNumberOfQuestions(0);
+  };
 
 
   const handleInputChange = (e) => {
@@ -195,7 +214,11 @@ const create = (props) => {
         toast.success("Placement saved successfully");
       }
 
-      router.push("/");
+      if (isEditMode) {
+        router.push(`/drive/${driveId}`);
+      } else {
+        router.push("/");
+      }
 
       setSubmitData({
         name: "",

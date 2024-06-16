@@ -4,15 +4,18 @@ import { LoginContext } from "@/context";
 import ManagerView from "@/components/ManagerView";
 import { toast } from "sonner";
 import supabase from "@/data/supabase";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 
-const RolesCard = ({ role, placementDate }) => {
+export default function RolesCard({ role, placementDate }) {
   const router = useRouter();
   const { userRole } = useContext(LoginContext);
   const currentDate = new Date();
   const placementDateObj = new Date(placementDate);
   const timeDifference = placementDateObj.getTime() - currentDate.getTime();
   const daysDifference = Math.ceil(timeDifference / (1000 * 3600 * 24));
+  // const pathName = usePathname();
+  // const pathNo = pathName.slice("/drive/".length);
+
 
   // const [deleted, setDeleted] = useState(false);
 
@@ -30,6 +33,9 @@ const RolesCard = ({ role, placementDate }) => {
       toast.error("Error Deleting Drive");
     }
   };
+  const handleEdit = () => {
+    router.push(`/create/role/${role.id}?isEditMode=true`);
+  };
   // if (deleted) {
   //   return null;
   // }
@@ -40,7 +46,7 @@ const RolesCard = ({ role, placementDate }) => {
           <h2 className="text-xl lg:text-3xl font-medium">{role.name}</h2>
           {userRole === 3 && (
             <div>
-              <button className="btn btn-square bg-logo-bg btn-success btn-sm  mx-2 ">
+              <button className="btn btn-square bg-logo-bg btn-success btn-sm  mx-2 " onClick={handleEdit}>
                 <img
                   src="/icons/pencil.png
               "
@@ -132,4 +138,4 @@ const RolesCard = ({ role, placementDate }) => {
   );
 };
 
-export default RolesCard;
+

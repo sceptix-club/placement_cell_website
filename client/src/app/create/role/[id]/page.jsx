@@ -3,10 +3,12 @@ import React, { useState, useRef, useEffect } from "react";
 import supabase from "@/data/supabase";
 import { usePathname } from "next/navigation";
 import { toast } from "sonner";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
+
 
 const Role = () => {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const pathName = usePathname();
   const pathNo = pathName.slice("/create/role/".length);
 
@@ -21,6 +23,7 @@ const Role = () => {
     serviceAgreement: "",
   });
   const textAreaRef = useRef(null);
+  const [isEditMode, setIsEditMode] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -29,13 +32,55 @@ const Role = () => {
       [name]: value,
     });
   };
+  useEffect(() => {
+    const editMode = searchParams.get("isEditMode");
+
+
+    console.log("Extracted drive ID:", pathNo);
+
+
+    setIsEditMode(editMode === "true");
+    if (editMode === "true" && pathNo) {
+
+      fetchRoleDetails(pathNo);
+    }
+
+  }, [searchParams, pathNo]);
+  const fetchRoleDetails = async (id) => {
+    try {
+      const { data, error } = await supabase
+        .from("role")
+        .select("*")
+        .eq("id", id)
+        .single();
+
+      if (error) {
+        console.error("Error fetching role details:", error);
+        toast.error(`Error fetching role details: ${error.message}`);
+      } else {
+        setJobInfo(data);
+      }
+    } catch (error) {
+      console.error("Error fetching role details:", error.message);
+      toast.error(`Error: ${error.message}`);
+    }
+  };
 
   const saveRole = async () => {
     try {
-      const { data, error } = await supabase
-        // .schema("placements")
-        .from("role")
-        .insert([{ ...jobInfo, drive_id: pathNo }]);
+      let data, error;
+
+      if (isEditMode) {
+        ({ data, error } = await supabase
+          .from("role")
+          .update(jobInfo)
+          .eq("id", pathNo));
+      } else {
+        ({ data, error } = await supabase
+          .from("role")
+          .insert([{ ...jobInfo, drive_id: pathNo }]));
+      }
+
 
       if (error) {
         console.error("Error saving role:", error);
@@ -67,9 +112,10 @@ const Role = () => {
   }, [jobInfo]);
 
   return (
+
     <div className="flex flex-col justify-center ml-46  h-auto py-10 mb-10">
       <h2 className="font-gabarito ml-10   lg:ml-96 sm:ml-20 text-2xl sm:text-3xl md:text-4xl   font-bold  text-divider-color mb-2">
-        Create a Role
+        {isEditMode ? "Edit Role" : "Create a Role"}
       </h2>
 
       <section className="font-gabarito w-10/12 ml-10 md:ml-40 lg:ml-96 sm:text-2xl md:text-2xl  sm:ml-24    mt-4 p-4 sm:w-sm md:w-md lg:w-lg h-auto md:p-12 sm:p-8  bg-primary-card rounded-md">
@@ -182,11 +228,12 @@ const Role = () => {
               className="  text-lg bg-logo-bg w-32 h-10 rounded-md mt-5"
               type="button"
             >
-              Save
+              {isEditMode ? "Edit" : "Save"}
             </button>
           </div>
         </form>
       </section>
+
     </div>
   );
 };
