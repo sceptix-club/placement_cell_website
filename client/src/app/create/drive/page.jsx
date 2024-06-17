@@ -24,6 +24,8 @@ const create = (props) => {
     que2: "",
     que3: "",
     que4: "",
+    pdfFileName: "",
+
   });
   const [pdfFile, setPdfFile] = useState(null);
 
@@ -70,7 +72,10 @@ const create = (props) => {
         que2: data.que2 || "",
         que3: data.que3 || "",
         que4: data.que4 || "",
+        pdfFileName: data.pdfFileName || "",
+
       });
+
 
       setQuestionInputs([
         data.que1 || "",
@@ -82,11 +87,43 @@ const create = (props) => {
       setNumberOfQuestions(
         [data.que1, data.que2, data.que3, data.que4].filter((q) => q).length
       );
+      if (data.pdfFileName) {
+        fetchPDFFile(data.pdfFileName);
+      }
+
     } catch (error) {
       toast.error("Error fetching drive details.");
       console.error(error);
     }
   }
+  const fetchPDFFile = async (fileName) => {
+    try {
+      const { data, error } = await supabase.storage
+        .from("Drive_Doc")
+        .getPublicUrl(`public/${fileName}`);
+
+      if (error) {
+        console.error("Error fetching PDF file:", error.message);
+        toast.error("Error fetching PDF file.");
+        return;
+      }
+
+      // Handle the PDF file data as needed
+      console.log("PDF file fetched successfully:", data.publicUrl);
+
+      // Extract filename from the URL
+      const url = new URL(data.publicUrl);
+      const pathComponents = url.pathname.split('/');
+      const filename = pathComponents[pathComponents.length - 1];
+
+      console.log("Filename:", filename);
+
+      // You can set this filename to state or use it as required
+    } catch (error) {
+      console.error("Error fetching PDF file:", error.message);
+      toast.error("Error fetching PDF file.");
+    }
+  };
   const resetFormFields = () => {
     setSubmitData({
       name: "",
@@ -333,6 +370,7 @@ const create = (props) => {
             accept=".pdf"
             onChange={handleFileChange}
           />
+
           <label
             className=" text-lg sm:text-xl md:text-2xl font-medium text-divider-color"
             htmlFor="pdfFile"
