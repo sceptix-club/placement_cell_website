@@ -115,6 +115,7 @@ const DriveInfo = () => {
             key={innerRole.id}
             role={innerRole}
             placementDate={placementDate}
+
           />
         ))}
       </section>

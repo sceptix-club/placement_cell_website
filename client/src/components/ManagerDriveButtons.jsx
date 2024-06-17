@@ -1,7 +1,7 @@
 
-'use client'
+
 import Link from "next/link";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { usePathname } from "next/navigation";
 import supabase from "@/data/supabase";
 import { useRouter } from "next/navigation";
@@ -15,7 +15,7 @@ export default function ManagerDriveButtons(props) {
   const router = useRouter();
 
   const prop = props.props;
-  const [published, setPublished] = useState(true);
+  const [published, setPublished] = React.useState(true);
 
 
   const publishDrive = async () => {
