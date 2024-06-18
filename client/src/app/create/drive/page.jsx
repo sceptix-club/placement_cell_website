@@ -5,9 +5,17 @@ import supabase from "@/data/supabase";
 import { toast } from "sonner";
 import { useRouter, useSearchParams } from "next/navigation";
 import { usePathname } from "next/navigation";
+import { Suspense } from "react";
+const CreateDrivePage = () => {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <CreateDriveForm />
+    </Suspense>
+  );
+};
 
 
-const create = (props) => {
+const CreateDriveForm = (props) => {
   const router = useRouter();
 
   const searchParams = useSearchParams();
@@ -444,4 +452,4 @@ const create = (props) => {
   );
 };
 
-export default create;
+export default CreateDrivePage;
