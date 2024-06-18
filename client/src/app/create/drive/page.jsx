@@ -28,6 +28,7 @@ const create = (props) => {
 
   });
   const [pdfFile, setPdfFile] = useState(null);
+  const [pdfURL, setPdfURL] = useState(null);
 
   const [questionInputs, setQuestionInputs] = useState(Array(4).fill(""));
   const [numberOfQuestions, setNumberOfQuestions] = useState(0);
@@ -117,6 +118,7 @@ const create = (props) => {
       const filename = pathComponents[pathComponents.length - 1];
 
       console.log("Filename:", filename);
+      setPdfURL(data.publicUrl);
 
       // You can set this filename to state or use it as required
     } catch (error) {
@@ -157,6 +159,10 @@ const create = (props) => {
       ...prev,
       pdfFileName: file ? file.name : "", // Store the full filename or an empty string if no file is selected
     }));
+    if (isEditMode) {
+      // Fetch PDF details if in edit mode
+      fetchPDFFile(file ? file.name : "");
+    }
   };
 
   const handleQuestionInputChange = (index, value) => {
@@ -362,14 +368,27 @@ const create = (props) => {
             accept=".pdf"
             onChange={handleFileChange}
           /> */}
-          <input
-            className="file-input file-input-success w-full max-w-xs mb-2"
-            type="file"
-            id="pdfFile"
-            name="pdfFile"
-            accept=".pdf"
-            onChange={handleFileChange}
-          />
+          <div className="flex items-center">
+            <input
+              className="file-input file-input-success w-full max-w-xs mb-2"
+              type="file"
+              id="pdfFile"
+              name="pdfFile"
+              accept=".pdf"
+              onChange={handleFileChange}
+
+            />
+            {isEditMode && submitData.pdfFileName && pdfURL && (
+              <a
+                href={pdfURL}
+                target="_blank"
+                className="ml-2 cursor-pointer"
+              >
+                {submitData.pdfFileName}
+              </a>
+            )}
+          </div>
+
 
           <label
             className=" text-lg sm:text-xl md:text-2xl font-medium text-divider-color"
