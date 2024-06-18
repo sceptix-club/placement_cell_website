@@ -1,3 +1,5 @@
+
+
 import Link from "next/link";
 import React, { useEffect } from "react";
 import { usePathname } from "next/navigation";
@@ -5,13 +7,16 @@ import supabase from "@/data/supabase";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
+
 export default function ManagerDriveButtons(props) {
   const pathName = usePathname();
   const pathNo = pathName.slice("/drive/".length);
 
   const router = useRouter();
+
   const prop = props.props;
   const [published, setPublished] = React.useState(true);
+
 
   const publishDrive = async () => {
     const { data, error } = await supabase
@@ -23,7 +28,9 @@ export default function ManagerDriveButtons(props) {
     toast.success("Drive Published");
     console.log("Drive Published");
   };
-
+  const handleEdit = () => {
+    router.push(`/create/drive?isEditMode=true&pathNo=${pathNo}`);
+  };
   const unPublishDrive = async () => {
     const { data, error } = await supabase
       .from("drive")
@@ -67,7 +74,7 @@ export default function ManagerDriveButtons(props) {
             Add Role
           </button>
         </Link>
-        <button className="bg-logo-bg text-black font-bold  p-2 rounded-md m-3 text-sm">
+        <button className="bg-logo-bg text-black font-bold  p-2 rounded-md m-3 text-sm" onClick={handleEdit}>
           Edit Drive
         </button>
         {published && (

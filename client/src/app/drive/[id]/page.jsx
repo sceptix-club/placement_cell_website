@@ -1,14 +1,18 @@
 "use client";
+
 import { useEffect, useState, useContext } from "react";
 import { useRouter } from "next/navigation";
 import RolesCard from "@/components/RolesCard";
-import { usePathname } from "next/navigation";
+import { usePathname, useParams } from "next/navigation";
 import PlacementAPI from "@/app/api/PlacementAPI";
 import ManagerDriveButtons from "@/components/ManagerDriveButtons";
 import { LoginContext } from "@/context";
 import supabase from "@/data/supabase";
 
 const DriveInfo = () => {
+
+
+
   const router = useRouter();
   const [placements, setPlacements] = useState([]);
   const [role, setRole] = useState([]);
@@ -111,11 +115,15 @@ const DriveInfo = () => {
             key={innerRole.id}
             role={innerRole}
             placementDate={placementDate}
+
           />
         ))}
       </section>
+
+
     </div>
   );
 };
+
 
 export default DriveInfo;

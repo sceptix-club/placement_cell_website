@@ -1,12 +1,27 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import supabase from "@/data/supabase";
 import { toast } from "sonner";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
+import { usePathname } from "next/navigation";
+import { Suspense } from "react";
+const CreateDrivePage = () => {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <CreateDriveForm />
+    </Suspense>
+  );
+};
 
-const create = () => {
+
+const CreateDriveForm = (props) => {
   const router = useRouter();
+
+  const searchParams = useSearchParams();
+
+  const pathName = usePathname();
+
 
   const [submitData, setSubmitData] = useState({
     name: "",
@@ -17,11 +32,124 @@ const create = () => {
     que2: "",
     que3: "",
     que4: "",
+    pdfFileName: "",
+
   });
   const [pdfFile, setPdfFile] = useState(null);
+  const [pdfURL, setPdfURL] = useState(null);
 
   const [questionInputs, setQuestionInputs] = useState(Array(4).fill(""));
   const [numberOfQuestions, setNumberOfQuestions] = useState(0);
+  const [isEditMode, setIsEditMode] = useState(false);
+  const [driveId, setDriveId] = useState(null)
+  useEffect(() => {
+    const editMode = searchParams.get("isEditMode");
+    const pathno = searchParams.get("pathNo");
+
+    console.log("Extracted drive ID:", pathno);
+
+
+    setIsEditMode(editMode === "true");
+    if (editMode === "true" && pathno) {
+      setDriveId(pathno);
+      fetchDriveDetails(pathno);
+    } else {
+      resetFormFields();
+    }
+
+  }, [searchParams]);
+
+  const fetchDriveDetails = async (driveId) => {
+    try {
+      const { data, error } = await supabase
+        .from("drive")
+        .select("*")
+        .eq("id", driveId)
+        .single();
+
+      if (error) {
+        toast.error("Error fetching drive details.");
+        return;
+      }
+
+      setSubmitData({
+        name: data.name || "",
+        company: data.company || "",
+        description: data.description || "",
+        date: data.date || "",
+        que1: data.que1 || "",
+        que2: data.que2 || "",
+        que3: data.que3 || "",
+        que4: data.que4 || "",
+        pdfFileName: data.pdfFileName || "",
+
+      });
+
+
+      setQuestionInputs([
+        data.que1 || "",
+        data.que2 || "",
+        data.que3 || "",
+        data.que4 || "",
+      ]);
+
+      setNumberOfQuestions(
+        [data.que1, data.que2, data.que3, data.que4].filter((q) => q).length
+      );
+      if (data.pdfFileName) {
+        fetchPDFFile(data.pdfFileName);
+      }
+
+    } catch (error) {
+      toast.error("Error fetching drive details.");
+      console.error(error);
+    }
+  }
+  const fetchPDFFile = async (fileName) => {
+    try {
+      const { data, error } = await supabase.storage
+        .from("Drive_Doc")
+        .getPublicUrl(`public/${fileName}`);
+
+      if (error) {
+        console.error("Error fetching PDF file:", error.message);
+        toast.error("Error fetching PDF file.");
+        return;
+      }
+
+      // Handle the PDF file data as needed
+      console.log("PDF file fetched successfully:", data.publicUrl);
+
+      // Extract filename from the URL
+      const url = new URL(data.publicUrl);
+      const pathComponents = url.pathname.split('/');
+      const filename = pathComponents[pathComponents.length - 1];
+
+      console.log("Filename:", filename);
+      setPdfURL(data.publicUrl);
+
+      // You can set this filename to state or use it as required
+    } catch (error) {
+      console.error("Error fetching PDF file:", error.message);
+      toast.error("Error fetching PDF file.");
+    }
+  };
+  const resetFormFields = () => {
+    setSubmitData({
+      name: "",
+      company: "",
+      description: "",
+      date: "",
+      que1: "",
+      que2: "",
+      que3: "",
+      que4: "",
+    });
+    setPdfFile(null);
+    setQuestionInputs(Array(4).fill(""));
+    setNumberOfQuestions(0);
+  };
+
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -34,11 +162,16 @@ const create = () => {
     const file = e.target.files[0];
     setPdfFile(file);
 
+
     // Store the full filename with extension in state
     setSubmitData((prev) => ({
       ...prev,
       pdfFileName: file ? file.name : "", // Store the full filename or an empty string if no file is selected
     }));
+    if (isEditMode) {
+      // Fetch PDF details if in edit mode
+      fetchPDFFile(file ? file.name : "");
+    }
   };
 
   const handleQuestionInputChange = (index, value) => {
@@ -100,19 +233,38 @@ const create = () => {
 
     // Save data to Supabase database
     try {
-      const { data: insertedData, error: insertError } = await supabase
-        // .schema("placements")
-        .from("drive")
-        .insert([dataToSave]);
+      if (isEditMode) {
+        const { data: updatedData, error: updateError } = await supabase
+          .from("drive")
+          .update(dataToSave)
+          .eq("id", driveId);
 
-      if (insertError) {
-        console.error("Error saving placement:", insertError.message);
-        toast.error(`Error: ${insertError.message}`);
-        return;
+        if (updateError) {
+          console.error("Error updating placement:", updateError.message);
+          toast.error(`Error: ${updateError.message}`);
+          return;
+        }
+
+        toast.success("Placement updated successfully");
+      } else {
+        const { data: insertedData, error: insertError } = await supabase
+          .from("drive")
+          .insert([dataToSave]);
+
+        if (insertError) {
+          console.error("Error saving placement:", insertError.message);
+          toast.error(`Error: ${insertError.message}`);
+          return;
+        }
+
+        toast.success("Placement saved successfully");
       }
-      // alert("New drive successfully created!");
-      toast.success("Placement saved successfully");
-      router.push("/");
+
+      if (isEditMode) {
+        router.push(`/drive/${driveId}`);
+      } else {
+        router.push("/");
+      }
 
       setSubmitData({
         name: "",
@@ -129,10 +281,11 @@ const create = () => {
       setNumberOfQuestions(0);
     } catch (error) {
       console.error("Error saving placement:", error.message);
-      // toast.error("Error saving placement.", error.message);
       toast.error(`Error saving drive. ${error.message}`);
     }
   };
+
+
 
   const isQuestionInputDisabled =
     Object.values(submitData).filter(
@@ -143,7 +296,7 @@ const create = () => {
     <div className="flex justify-center items-center h-auto py-10 mb-10 font-gabarito">
       <section className="w-10/12  sm:w-sm md:w-md lg:w-lg h-auto p-4 sm:p-8 md:p-12 bg-primary-card rounded-md">
         <h2 className=" text-2xl sm:text-3xl md:text-4xl font-bold text-divider-color mb-8">
-          Create a Draft
+          {isEditMode ? "Edit Drive" : "Create a Draft"}
         </h2>
         <form onSubmit={handleSubmit} className="flex flex-col">
           <label
@@ -224,14 +377,28 @@ const create = () => {
             accept=".pdf"
             onChange={handleFileChange}
           /> */}
-          <input
-            className="file-input file-input-success w-full max-w-xs mb-2"
-            type="file"
-            id="pdfFile"
-            name="pdfFile"
-            accept=".pdf"
-            onChange={handleFileChange}
-          />
+          <div className="flex items-center">
+            <input
+              className="file-input file-input-success w-full max-w-xs mb-2"
+              type="file"
+              id="pdfFile"
+              name="pdfFile"
+              accept=".pdf"
+              onChange={handleFileChange}
+
+            />
+            {isEditMode && submitData.pdfFileName && pdfURL && (
+              <a
+                href={pdfURL}
+                target="_blank"
+                className="ml-2 cursor-pointer"
+              >
+                {submitData.pdfFileName}
+              </a>
+            )}
+          </div>
+
+
           <label
             className=" text-lg sm:text-xl md:text-2xl font-medium text-divider-color"
             htmlFor="pdfFile"
@@ -272,17 +439,17 @@ const create = () => {
           )}
           <div className="flex justify-center w-32 h-10">
             <button
-              className="font-medium bg-logo-bg w-32 h-10 rounded-md "
+              className="font-medium bg-logo-bg w-32 h-10 rounded-md"
               type="submit"
-              // disabled={isQuestionInputDisabled}
             >
-              Save
+              {isEditMode ? "Edit" : "Save"}
             </button>
           </div>
         </form>
+
       </section>
     </div>
   );
 };
 
-export default create;
+export default CreateDrivePage;

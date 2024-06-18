@@ -24,6 +24,7 @@ const ProfileComponent = ({ routePrefix, isVerify, onUidChange, student }) => {
   const [academics, setAcademics] = useState({
     cgpa: "",
     backlogs: "",
+    verified: 0, // Added verification status
   });
 
   const [academicsExists, setAcademicsExists] = useState(false);
@@ -249,7 +250,7 @@ const ProfileComponent = ({ routePrefix, isVerify, onUidChange, student }) => {
       }
       setAcademics((prevAcademics) => ({
         ...prevAcademics,
-        verify: 1,
+        verified: 1,
       }));
       window.alert("Verification Successful!");
     } catch (error) {
@@ -330,11 +331,10 @@ const ProfileComponent = ({ routePrefix, isVerify, onUidChange, student }) => {
               {dataAll?.skills?.map((skill, index) => (
                 <div
                   key={index}
-                  className={`w-1/3 px-2 mb-4 text ${
-                    editMode && index === dataAll.skills.length - 1
-                      ? "w-1/4"
-                      : ""
-                  }`}
+                  className={`w-1/3 px-2 mb-4 text ${editMode && index === dataAll.skills.length - 1
+                    ? "w-1/4"
+                    : ""
+                    }`}
                 >
                   {editMode ? (
                     <div className="flex items-center">
@@ -454,25 +454,19 @@ const ProfileComponent = ({ routePrefix, isVerify, onUidChange, student }) => {
             </div>
 
             <div className="mb-4 flex flex-col md:flex-row justify-center items-center">
-              {editMode && (
-                <button
-                  className="bg-logo-bg text-black font-bold px-4 py-2 rounded-md mb-2 md:mr-4 md:mb-0"
-                  onClick={handleCancelClick}
-                >
-                  Cancel
-                </button>
-              )}
               {isVerify ? (
                 <button
-                  className="bg-logo-bg text-black font-bold px-10 py-0 rounded-md"
+                  className="bg-logo-bg text-black font-bold px-10 py-1 rounded-md"
                   onClick={handleVerifyClick}
                 >
                   {isVerify ? "Verify" : "Edit"}
                 </button>
               ) : (
                 <button
-                  className="bg-logo-bg text-black font-bold px-4 py-2 rounded-md ml-2"
+                  className={`${academics.verified === 1 ? "bg-gray-500 cursor-not-allowed" : "bg-logo-bg"
+                    } text-black font-bold px-4 py-2 rounded-md ml-2`}
                   onClick={editMode ? handleSaveClick : handleEditClick}
+                  disabled={academics.verified === 1} // Disable if verification status is 1
                 >
                   {editMode ? "Save" : "Edit"}
                 </button>
@@ -482,6 +476,7 @@ const ProfileComponent = ({ routePrefix, isVerify, onUidChange, student }) => {
         </div>
       </div>
     </div>
+
   );
 };
 
